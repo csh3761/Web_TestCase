@@ -1,0 +1,13 @@
+{
+  "site_url": "https://react01.ifns.devel:1443",
+  "login_url": "https://react01.ifns.devel:1443",
+  "session_check_folder_id": "DOCBOXM_000000000001093",
+  "gubun": "D",
+  "headless": false,
+  "selectors": {
+    "username": "input[name='username'], input#username, input[type='text']",
+    "password": "input[name='password'], input#password, input[type='password']",
+    "submit": "button[type='submit'], button:has-text('로그인'), button:has-text('Login')",
+    "logout": "button:has-text('로그아웃'), button:has-text('Logout'), [data-testid='logout']"
+  }
+}

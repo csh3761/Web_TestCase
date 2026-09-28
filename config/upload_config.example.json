@@ -1,0 +1,24 @@
+{
+  "base_url": "https://react01.ifns.devel/api/v1",
+  "csv_path": "C:\\Dummy\\csv\\업로드목록.csv",
+  "org_root": "C:\\Dummy",
+  "document_root": "C:\\Dummy\\인피니 솔루션",
+  "gubun": "D",
+  "skip_existing_remote": true,
+  "verify_after_upload": true,
+  "remote_name_keys": [
+    "fileName",
+    "documentName",
+    "name",
+    "title",
+    "contentName",
+    "originalFileName",
+    "orgFileName"
+  ],
+  "folder_map": {
+    "재무 회계팀": "DOCBOXM_000000000001093",
+    "재무회계팀": "DOCBOXM_000000000001093",
+    "사내IT지원팀": "DOCBOXM_000000000001099",
+    "총무팀": "DOCBOXM_000000000001105"
+  }
+}
