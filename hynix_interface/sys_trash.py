@@ -818,10 +818,25 @@ async def scroll_grid_to_full_load(
         page.remove_listener("requestfailed", request_finished)
 
 
+SELECT_ALL_HEADER_SCRIPT = """() => {
+    const th = document.querySelector("th[data-column-name='_checked']");
+    const checkbox = th && th.querySelector("input[type='checkbox'], [role='checkbox']");
+    if (!checkbox) {
+        return { status: "HEADER_CHECKBOX_NOT_FOUND" };
+    }
+    const checked = checkbox.matches("input") ? Boolean(checkbox.checked) : checkbox.getAttribute("aria-checked") === "true";
+    if (!checked) {
+        checkbox.click();
+    }
+    return { status: "CLICKED" };
+}"""
+
+
 async def select_document_checkboxes(
     page: Any, selection_limit: int = 0, folder_titles: set[str] | list[str] | None = None
 ) -> dict[str, Any]:
-    """목록을 끝까지 스크롤해 전량을 로딩시킨 뒤, 도출된 목록에서 '문서'만 전부 선택한다.
+    """목록을 끝까지 스크롤해 전량을 로딩시킨 뒤, 그리드 자체의 "전체 선택" 헤더
+    체크박스로 한 번에 전부 선택하고, 폴더/한도 초과 문서만 개별적으로 선택 해제한다.
 
     과거 구현들의 문제:
     - 2단계(전체 스크롤 수집 → 처음부터 다시 스크롤하며 선택) 구조는 선택 단계가
@@ -830,14 +845,22 @@ async def select_document_checkboxes(
     - 이후 수집/선택을 한 스크롤 패스로 합친 구현은 그 문제는 해결했지만, 패스 전체에
       "180초 절대 데드라인"을 걸어놔서 대량 문서(수백~수천 건)에서는 꾸준히 진행 중이어도
       절대 시간 초과로 실패했다.
+    - 스크롤 라운드마다 화면에 걸쳐있는 체크박스를 개별 클릭하는 방식(가상화 때문에
+      "끝까지 스크롤 후 한 번에 선택"하면 화면에 남은 일부만 선택되고 나머지를 놓쳐서
+      한때 도입했던 방식)은, 문서가 대량일 때 클릭 이벤트가 수백~수천 번 연속으로 몰리며
+      그리드/삭제 버튼의 내부 선택 상태가 꼬여 웹 자체 삭제 기능이 정상 동작하지 않는
+      문제가 실측으로 확인됐다.
 
-    이 목록(tui-grid)은 스크롤에 따라 서버가 행을 추가로 내려주는 지연 로딩 방식이라,
-    "로딩이 전부 끝날 때까지 스크롤"과 "체크박스 선택"은 서로 다른 관심사다. 그래서:
-      1단계) 화면에 새 행이 반영되는지/네트워크 요청이 도는지만 보면서 끝까지 스크롤.
-             실패 조건은 절대 경과 시간이 아니라 "진행이 완전히 멈춘 뒤" 무활동 시간으로만
-             판단해, 목록이 아무리 커도 계속 진행 중이면 타임아웃나지 않는다.
-      2단계) 전량이 DOM에 반영된 상태이므로, 스크롤 없이 한 번에 전체 문서 체크박스를
-             선택하고, 놓친 게 있는지 소규모 재검증 스윕만 몇 차례 더 돈다.
+    그래서 방향을 바꾼다: tui-grid는 헤더의 "전체 선택" 체크박스를 누르면 화면에 렌더링된
+    행뿐 아니라 그리드의 내부 데이터 전체를 선택 상태로 표시한다(가상화와 무관하게 동작).
+      1단계) 화면에 새 행이 반영되는지/네트워크 요청이 도는지만 보면서 끝까지 스크롤해
+             서버 지연 로딩을 전부 끝낸다 (아직 선택은 하지 않는다).
+      2단계) 전량 로딩이 끝난 뒤, 헤더 체크박스를 한 번만 클릭해 전체를 일괄 선택한다.
+      3단계) 전체 선택에는 폴더도 함께 포함되고(--delete-selection-limit 테스트 시
+             한도를 넘는 문서도 포함되므로), 다시 한 번 끝까지 스크롤하며 폴더 행과 한도
+             초과 문서 행만 개별적으로 체크 해제한다. 이 단계에서 실제 클릭이 필요한 행은
+             "폴더 수 + 한도 초과분"뿐이라, 문서가 아무리 많아도 클릭 횟수가 전체 문서
+             수에 비례하지 않는다.
     """
     frame = await main_frame(page)
     selected_by_name: dict[str, dict[str, Any]] = {}
@@ -845,7 +868,7 @@ async def select_document_checkboxes(
     pass_history: list[dict[str, Any]] = []
     folder_title_list = sorted({str(t) for t in (folder_titles or []) if t})
 
-    select_visible_script = """(body, { extensions, limit, alreadySelectedCount, folderTitles }) => {
+    cleanup_script = """(body, { extensions, limit, alreadySelectedCount, folderTitles }) => {
             const extensionSet = new Set(extensions.map((item) => String(item).toLowerCase()));
             const selectedItems = [];
             const skippedItems = [];
@@ -909,11 +932,12 @@ async def select_document_checkboxes(
                 return cleanText(parts.filter(Boolean).join(" "));
             };
 
+            // 전체 선택 헤더 체크박스를 이미 눌러서 모든 행이 checked 상태다. 여기서는
+            // 화면에 지금 보이는 행 중 "체크되어 있는데 지우면 안 되는" 것만 찾아서
+            // 체크 해제한다 - 클릭이 필요한 행은 폴더/한도초과 문서뿐이라, 문서가 아무리
+            // 많아도 이 스크립트가 매 라운드 처리하는 클릭 수는 적다.
             const checkboxCells = Array.from(document.querySelectorAll("td[data-column-name='_checked']"));
             for (const cell of checkboxCells) {
-                if (limit > 0 && alreadySelectedCount + selectedItems.length >= limit) {
-                    break;
-                }
                 if (!visible(cell)) {
                     continue;
                 }
@@ -921,48 +945,51 @@ async def select_document_checkboxes(
                 if (!checkbox || !visible(checkbox)) {
                     continue;
                 }
+                const checked = checkbox.matches("input")
+                    ? Boolean(checkbox.checked)
+                    : checkbox.getAttribute("aria-checked") === "true";
+                if (!checked) {
+                    continue;
+                }
                 const rowKey = cell.getAttribute("data-row-key");
                 if (rowKey === null || rowKey === undefined || rowKey === "") {
+                    checkbox.click();
                     skippedItems.push({ reason: "NO_ROW_KEY", text: textFromElements([cell]) });
                     continue;
                 }
                 const sameRowCells = Array.from(document.querySelectorAll(`[data-row-key="${CSS.escape(rowKey)}"]`))
                     .filter((element) => element.getAttribute("data-column-name") !== "_checked" && visible(element));
                 const rowText = textFromElements(sameRowCells);
-                const checked = checkbox.matches("input")
-                    ? Boolean(checkbox.checked)
-                    : checkbox.getAttribute("aria-checked") === "true";
                 if (rowLooksLikeFolder(sameRowCells, rowText)) {
+                    checkbox.click();
                     skippedItems.push({ rowKey, reason: "FOLDER_ROW_SKIPPED", text: rowText.slice(0, 500) });
                     continue;
                 }
                 const matched = fileNameFromElements(sameRowCells);
                 if (!matched) {
+                    checkbox.click();
                     skippedItems.push({ rowKey, reason: "NO_DOCUMENT_EXTENSION", text: rowText.slice(0, 500) });
                     continue;
                 }
-                if (!checked) {
+                if (limit > 0 && alreadySelectedCount + selectedItems.length >= limit) {
                     checkbox.click();
-                }
-                if (!(checkbox.matches("input") ? checkbox.checked : checkbox.getAttribute("aria-checked") === "true")) {
-                    throw new Error("DOCUMENT_CHECK_FAILED: " + rowKey);
+                    skippedItems.push({ rowKey, reason: "SELECTION_LIMIT_REACHED", text: rowText.slice(0, 500) });
+                    continue;
                 }
                 selectedItems.push({ rowKey, fileName: matched.fileName, extension: matched.extension });
             }
 
             return {
-                status: selectedItems.length ? "VISIBLE_DOCUMENT_CHECKBOXES_SELECTED" : "NO_VISIBLE_DOCUMENT_CHECKBOX_SELECTED",
+                status: selectedItems.length ? "VISIBLE_DOCUMENT_CHECKBOXES_KEPT" : "NO_VISIBLE_DOCUMENT_CHECKBOX_KEPT",
                 selectedItems,
                 skippedItems
             };
         }"""
 
-    max_verification_sweeps = 3
-
-    async def select_all_loaded_documents() -> int:
-        """스크롤 없이, 지금 DOM에 반영돼 있는 전체 목록에서 문서 체크박스를 한 번에 선택한다."""
-        visible_result = await frame.locator("body").evaluate(
-            select_visible_script,
+    async def cleanup_visible_selection() -> None:
+        """지금 화면에 보이는 행 중 폴더/한도초과 문서 체크만 해제하고, 유효한 문서는 누적한다."""
+        result = await frame.locator("body").evaluate(
+            cleanup_script,
             {
                 "extensions": list(DOCUMENT_EXTENSIONS),
                 "limit": selection_limit,
@@ -970,64 +997,42 @@ async def select_document_checkboxes(
                 "folderTitles": folder_title_list,
             },
         )
-        before_count = len(selected_by_name)
-        for item in visible_result.get("selectedItems", []):
+        for item in result.get("selectedItems", []):
             selected_by_name.setdefault(item["rowKey"], item)
-        for item in visible_result.get("skippedItems", []):
+        for item in result.get("skippedItems", []):
             row_key = item.get("rowKey")
             if row_key:
                 skipped_by_key.setdefault(row_key, item)
-        return len(selected_by_name) - before_count
 
-    async def select_each_round_and_maybe_stop(_seen_row_count: int) -> bool:
-        # 실측 결과 이 그리드는 렌더링도 가상화(virtualization)돼 있어서, 스크롤을 끝까지
-        # 내린 뒤 맨 위로 돌아가 "한 번에" 선택하면 그 순간 화면에 걸쳐있는 일부(예:
-        # 108건 중 8건)만 선택되고 나머지는 DOM에 아예 없어서 놓친다. 그래서 로딩 여부와
-        # 무관하게 "스크롤하는 매 라운드마다" 그 시점에 화면에 떠 있는 체크박스를 즉시
-        # 선택해서, 지나가는 모든 행을 놓치지 않고 누적한다.
-        await select_all_loaded_documents()
-        return selection_limit > 0 and len(selected_by_name) >= selection_limit
+    async def cleanup_each_round(_seen_row_count: int) -> bool:
+        await cleanup_visible_selection()
+        return False  # 폴더가 뒤쪽에도 있을 수 있으니 끝까지 전부 훑는다
 
     await frame.locator("body").evaluate(SCROLL_TO_TOP_SCRIPT)
     await page.wait_for_timeout(250)
-    load_result = await scroll_grid_to_full_load(page, frame, pass_history, on_round=select_each_round_and_maybe_stop)
+    load_result = await scroll_grid_to_full_load(page, frame, pass_history, on_round=None)
 
-    # 선택 직후 그리드가 내부적으로 다시 렌더링하며 방금 클릭한 체크박스 상태를
-    # 놓치는 경우가 있을 수 있어, 맨 위로 돌아가 같은 방식(스크롤하며 매 라운드 선택)의
-    # 재검증 패스를 몇 차례 더 돈다.
+    header_result = await frame.locator("body").evaluate(SELECT_ALL_HEADER_SCRIPT)
+    if header_result.get("status") != "CLICKED":
+        raise RuntimeError(f"전체 선택 체크박스를 찾지 못했습니다: {header_result}")
+    await page.wait_for_timeout(300)
+
+    # 헤더 전체 선택 직후 그리드가 내부적으로 다시 렌더링할 수 있어, 맨 위로 돌아가
+    # 스크롤하며 매 라운드 폴더/한도초과 행만 체크 해제하는 정리 패스를 끝까지 돈다.
+    await frame.locator("body").evaluate(SCROLL_TO_TOP_SCRIPT)
+    await page.wait_for_timeout(250)
+    await scroll_grid_to_full_load(page, frame, pass_history, on_round=cleanup_each_round)
     converged = True
-    last_sweep_new = 0
-    sweep_count = 0
-    limit_reached = selection_limit > 0 and len(selected_by_name) >= selection_limit
-    if load_result.get("status") != "STOPPED_BY_CALLBACK" and not limit_reached:
-        for sweep_no in range(1, max_verification_sweeps + 1):
-            sweep_count = sweep_no
-            before_sweep_count = len(selected_by_name)
-            await frame.locator("body").evaluate(SCROLL_TO_TOP_SCRIPT)
-            await page.wait_for_timeout(250)
-            await scroll_grid_to_full_load(page, frame, pass_history, on_round=select_each_round_and_maybe_stop)
-            new_selected = len(selected_by_name) - before_sweep_count
-            last_sweep_new = new_selected
-            limit_reached = selection_limit > 0 and len(selected_by_name) >= selection_limit
-            if new_selected == 0 or limit_reached:
-                converged = True
-                break
-            converged = False
+    sweep_count = 1
 
     selected_items = list(selected_by_name.values())
     skipped_items = list(skipped_by_key.values())
     return {
-        "status": (
-            "DOCUMENT_CHECKBOXES_SELECTED"
-            if selected_items and converged
-            else "DOCUMENT_CHECKBOXES_PARTIALLY_SELECTED"
-            if selected_items
-            else "NO_DOCUMENT_CHECKBOX_SELECTED"
-        ),
+        "status": "DOCUMENT_CHECKBOXES_SELECTED" if selected_items else "NO_DOCUMENT_CHECKBOX_SELECTED",
         "selectedCount": len(selected_items),
         "selectedItems": selected_items,
-        "targetCount": len(selected_items) + (0 if converged else last_sweep_new),
-        "missingCount": 0 if converged else last_sweep_new,
+        "targetCount": len(selected_items),
+        "missingCount": 0,
         "missingRowKeys": [],
         "unselectedNonDocumentsCount": len(skipped_items),
         "unselectedNonDocumentsSample": skipped_items[:20],
