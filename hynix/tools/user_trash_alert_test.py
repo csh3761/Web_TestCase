@@ -23,12 +23,12 @@ from typing import Any
 
 from playwright.async_api import async_playwright
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT.parent / "common"))
+
 import explorer_path_test as explorer
 import login_session_check as login
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "hynix_interface"))
-sys.path.insert(0, str(PROJECT_ROOT / "HYNIX"))
 
 from sys_trash import (  # noqa: E402
     DEFAULT_CONFIG,

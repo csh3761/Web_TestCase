@@ -8,7 +8,7 @@ from pathlib import Path
 
 from playwright.async_api import async_playwright
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "react01_interface"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 from re_user_trash import configure_console_output, load_json, DEFAULT_CONFIG  # noqa: E402
 
 

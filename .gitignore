@@ -10,10 +10,10 @@ build/
 release/
 
 # 계정정보/쿠키 등 민감 설정 (예시 파일은 그대로 추적)
-config/*.json
-config/*.txt
-!config/*.example.json
-!config/*.example.txt
+**/config/*.json
+**/config/*.txt
+!**/config/*.example.json
+!**/config/*.example.txt
 
 # 더미 업로드 테스트 데이터 (용량 큼, 재생성 가능)
 더미 폴더/

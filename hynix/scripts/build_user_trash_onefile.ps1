@@ -1,7 +1,8 @@
 $ErrorActionPreference = "Stop"
 
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
-$Python = Join-Path $ProjectRoot ".venv\Scripts\python.exe"
+$RepoRoot = Split-Path -Parent $ProjectRoot
+$Python = Join-Path $RepoRoot ".venv\Scripts\python.exe"
 $BuildRoot = Join-Path $ProjectRoot "build\User_Trash_OneFile"
 $DistRoot = Join-Path $ProjectRoot "release\User_Trash_OneFile"
 $DesktopTarget = Join-Path $env:USERPROFILE "Desktop\User_Trash.exe"
@@ -28,15 +29,16 @@ New-Item -ItemType Directory -Path $DistRoot | Out-Null
     --distpath $DistRoot `
     --workpath (Join-Path $BuildRoot "work") `
     --specpath $BuildRoot `
-    --paths (Join-Path $ProjectRoot "HYNIX") `
-    --paths (Join-Path $ProjectRoot "hynix_interface") `
+    --paths (Join-Path $ProjectRoot "src") `
+    --paths (Join-Path $ProjectRoot "tools") `
+    --paths (Join-Path $RepoRoot "common") `
     --hidden-import explorer_path_test `
     --hidden-import login_session_check `
     --hidden-import sys_trash `
     --hidden-import window_layout `
     --add-data "$PlaywrightSource;ms-playwright" `
     --add-data "$(Join-Path $ProjectRoot "config");config" `
-    (Join-Path $ProjectRoot "HYNIX\user_trash.py")
+    (Join-Path $ProjectRoot "tools\user_trash.py")
 
 Copy-Item -LiteralPath (Join-Path $DistRoot "User_Trash.exe") -Destination $DesktopTarget -Force
 

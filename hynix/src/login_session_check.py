@@ -18,7 +18,7 @@ import explorer_path_test as explorer
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_CSV = PROJECT_ROOT / "csv" / "업로드목록.csv"
+DEFAULT_CSV = PROJECT_ROOT / "data" / "업로드목록.csv"
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "login_config.json"
 DEFAULT_PASSWORD_FILE = PROJECT_ROOT / "config" / "password.txt"
 DEFAULT_REPORT = PROJECT_ROOT / "reports" / "batch_upload_report.json"
@@ -1092,8 +1092,8 @@ async def run(args: argparse.Namespace) -> int:
     except ModuleNotFoundError as exc:
         raise RuntimeError(
             "Playwright가 설치되어 있지 않습니다. "
-            f"{PROJECT_ROOT}\\.venv\\Scripts\\python.exe -m pip install playwright 후 "
-            f"{PROJECT_ROOT}\\.venv\\Scripts\\python.exe -m playwright install chromium 을 실행하세요."
+            f"{PROJECT_ROOT.parent}\\.venv\\Scripts\\python.exe -m pip install playwright 후 "
+            f"{PROJECT_ROOT.parent}\\.venv\\Scripts\\python.exe -m playwright install chromium 을 실행하세요."
         ) from exc
 
     config = load_json(args.config)

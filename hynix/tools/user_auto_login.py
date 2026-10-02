@@ -14,10 +14,13 @@ from typing import Any
 
 from playwright.async_api import async_playwright
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT.parent / "common"))
+
 import explorer_path_test as explorer
 import login_session_check as login
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "hynix_interface"))
 from sys_trash import (  # noqa: E402
     DEFAULT_CONFIG,
     append_log_file,
@@ -31,7 +34,6 @@ from sys_trash import (  # noqa: E402
 from user_trash import read_account_from_user
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 EMBEDDED_USERNAME = ""
 EMBEDDED_PASSWORD = ""
 
@@ -141,7 +143,7 @@ def build_saved_source(source_path: Path, username: str, password: str) -> None:
 def build_saved_exe(args: argparse.Namespace, username: str, password: str) -> Path:
     python = Path(sys.executable)
     if getattr(sys, "frozen", False):
-        python = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
+        python = PROJECT_ROOT.parent / ".venv" / "Scripts" / "python.exe"
     if not python.exists():
         raise FileNotFoundError(f"Python 실행 파일을 찾지 못했습니다: {python}")
 
@@ -175,9 +177,11 @@ def build_saved_exe(args: argparse.Namespace, username: str, password: str) -> P
         "--specpath",
         str(spec_root),
         "--paths",
-        str(PROJECT_ROOT / "HYNIX"),
+        str(PROJECT_ROOT / "src"),
         "--paths",
-        str(PROJECT_ROOT / "hynix_interface"),
+        str(PROJECT_ROOT / "tools"),
+        "--paths",
+        str(PROJECT_ROOT.parent / "common"),
         "--add-data",
         f"{playright_source};ms-playwright",
         "--add-data",

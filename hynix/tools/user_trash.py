@@ -14,10 +14,13 @@ from typing import Any
 
 from playwright.async_api import async_playwright
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT.parent / "common"))
+
 import explorer_path_test as explorer
 import login_session_check as login
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "hynix_interface"))
 from sys_trash import (  # noqa: E402
     DEFAULT_CONFIG,
     USER_TRASH_LIST_API_PATH,
@@ -39,7 +42,6 @@ from sys_trash import (  # noqa: E402
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def runtime_output_path(relative_path: str) -> Path:

@@ -11,7 +11,8 @@ from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "HYNIX"))
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT.parent / "common"))
 
 import explorer_path_test as explorer  # noqa: E402
 import login_session_check as login  # noqa: E402

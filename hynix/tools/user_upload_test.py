@@ -5,14 +5,18 @@ import argparse
 import asyncio
 import json
 import mimetypes
+import sys
 from pathlib import Path
 from typing import Any
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT.parent / "common"))
 
 import explorer_path_test as explorer
 import login_session_check as login
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_REPORT = PROJECT_ROOT / "reports" / "user_upload_test.json"
 DEFAULT_CHUNK_SIZE = 5 * 1024 * 1024

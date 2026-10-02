@@ -1,11 +1,11 @@
 @echo off
 setlocal EnableExtensions
 
-set "PROJECT_ROOT=%~dp0"
-set "PROJECT_ROOT=%PROJECT_ROOT:~0,-1%"
+for %%I in ("%~dp0..") do set "PROJECT_ROOT=%%~fI"
+for %%I in ("%PROJECT_ROOT%\..") do set "REPO_ROOT=%%~fI"
 set "BUILD_SCRIPT=%PROJECT_ROOT%\scripts\build_user_trash_onefile.ps1"
-set "PYTHON_EXE=%PROJECT_ROOT%\.venv\Scripts\python.exe"
-set "SOURCE_FILE=%PROJECT_ROOT%\HYNIX\user_trash.py"
+set "PYTHON_EXE=%REPO_ROOT%\.venv\Scripts\python.exe"
+set "SOURCE_FILE=%PROJECT_ROOT%\tools\user_trash.py"
 set "DESKTOP_EXE=%USERPROFILE%\Desktop\User_Trash.exe"
 
 title User_Trash Build

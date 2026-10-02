@@ -14,7 +14,7 @@ from urllib.parse import unquote, urlparse
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_CSV = PROJECT_ROOT / "csv" / "업로드목록.csv"
+DEFAULT_CSV = PROJECT_ROOT / "data" / "업로드목록.csv"
 DEFAULT_ROOT = PROJECT_ROOT
 DEFAULT_REPORT = PROJECT_ROOT / "reports" / "explorer_path_test.json"
 

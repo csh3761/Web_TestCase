@@ -1,11 +1,11 @@
 @echo off
 setlocal EnableExtensions
 
-set "PROJECT_ROOT=%~dp0"
-set "PROJECT_ROOT=%PROJECT_ROOT:~0,-1%"
+for %%I in ("%~dp0..") do set "PROJECT_ROOT=%%~fI"
+for %%I in ("%PROJECT_ROOT%\..") do set "REPO_ROOT=%%~fI"
 set "BUILD_SCRIPT=%PROJECT_ROOT%\scripts\build_re_user_trash_onefile.ps1"
-set "PYTHON_EXE=%PROJECT_ROOT%\.venv\Scripts\python.exe"
-set "SOURCE_FILE=%PROJECT_ROOT%\react01_interface\re_user_trash.py"
+set "PYTHON_EXE=%REPO_ROOT%\.venv\Scripts\python.exe"
+set "SOURCE_FILE=%PROJECT_ROOT%\tools\re_user_trash.py"
 set "DESKTOP_EXE=%USERPROFILE%\Desktop\Enterprise_Trash_Delete.exe"
 
 title Enterprise_Trash_Delete Build

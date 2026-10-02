@@ -12,7 +12,7 @@ from openpyxl import load_workbook
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 SOURCE = PROJECT_ROOT / "data" / "사용자별_더미문서_업로드목록.xlsx"
-OUTPUT_DIR = PROJECT_ROOT / "csv"
+OUTPUT_DIR = PROJECT_ROOT / "data"
 
 
 def safe_sheet_name(name: str) -> str:
