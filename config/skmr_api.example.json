@@ -1,0 +1,12 @@
+{
+  "base_url": "https://skmr-api.ifns.work",
+  "api_prefix": "/api/v1",
+  "verify_tls": false,
+  "timeout_s": 30,
+  "max_connections": 200,
+  "headers": {
+    "Accept": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
+  },
+  "accounts_file": "config/skmr_accounts.json"
+}

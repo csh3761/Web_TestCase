@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """skmr.ifns.work 대형 패널(2단계 심화) 스캔.
 
-probe_deep_menu_discovery.py에서 "열기만" 했던 큰 패널들 — More options 안의
+api_discovery.py(구 probe_deep_menu_discovery.py)의 자동 스캔에서 "열기만" 했던 큰 패널들 — More options 안의
 전사관리자/업무함 관리자/설정, 대시보드의 위젯 추가, 최근·최신 문서의 더보기,
 권한 요청 패널의 조회 — 를 실제로 한 번 더 클릭해서 그 안의 최상위 버튼/링크까지
 훑는다(각 패널이 자체적으로 또 다른 화면일 수 있음을 확인하기 위함).
@@ -19,7 +19,7 @@ from typing import Any
 from playwright.async_api import async_playwright
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from probe_deep_menu_discovery import login  # noqa: E402
+from api_discovery import login  # noqa: E402
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

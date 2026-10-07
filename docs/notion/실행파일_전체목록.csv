@@ -1,0 +1,37 @@
+﻿프로젝트,구분,파일 또는 명령,기능,비고
+hynix,실행 도구,hynix/tools/sys_trash.py,Sys_Trash: 관리자(sysadmin 고정 계정) 전사 휴지통 문서 전량 삭제,--select-only 로 리허설
+hynix,실행 도구,hynix/tools/user_trash.py,User_Trash: 로그인한 개인 계정의 내/부서/프로젝트 업무함 휴지통 삭제,--select-only 로 리허설
+hynix,실행 도구,hynix/tools/user_auto_login.py,"계정 자동 로그인, 해당 계정이 고정된 EXE 생성 옵션 포함",--no-build 로 빌드 생략
+hynix,실행 도구,hynix/tools/user_upload_test.py,CSV 사용자의 로컬 폴더 문서를 청크 API 로 순차 업로드,--execute 가 있어야 실제 업로드
+hynix,실행 도구,hynix/tools/Main_Report.py,CSV 계정 순회 로그인/점검 종합 리포트,"--limit, --user-id"
+hynix,실행 도구,hynix/tools/sys_trash_list_test.py,휴지통 목록만 조회 (삭제/선택 없음),읽기 전용
+hynix,실행 도구,hynix/tools/user_trash_alert_test.py,"my work 삭제 후 완료 알림 감지 진단 (HTML, POST 응답, dialog 수집)",진단용
+hynix,실행 도구,hynix/tools/inspect_app_runtime.py,로그인 후 DOM 관찰자를 주입해 런타임 동작 점검,진단용
+hynix,실행 도구,hynix/tools/convert_upload_xlsx_to_csv.py,업로드 목록 엑셀을 CSV 로 변환,인자 없음
+hynix,공용 모듈,hynix/src/login_session_check.py,"로그인/세션 점검, 배치 업로드 로직",단독 실행 가능
+hynix,공용 모듈,hynix/src/explorer_path_test.py,"CSV 기준 로컬 폴더 경로, 탐색기 선택 테스트",pywin32 필요
+hynix,공용 모듈,common/window_layout.py,"콘솔은 화면 왼쪽, 브라우저는 오른쪽으로 창 배치",실행 파일 아님 (모듈)
+react,실행 도구,react/tools/re_user_trash.py,"react01 휴지통 삭제 (--execute 필요, --loop-until-empty 로 비울 때까지 반복)",
+react,조사 도구,react/probes/probe_login_dom.py,로그인 화면 DOM 구조 조사,
+react,조사 도구,react/probes/probe_login_timing.py,로그인 지연시간 측정,
+react,조사 도구,react/probes/probe_react01_menu.py,메뉴 구조 조사,
+react,조사 도구,react/probes/probe_user_home_dom.py,일반 사용자 홈 화면/메뉴 DOM 조사,
+react,조사 도구,react/probes/probe_enterprise_trash_dom.py,휴지통 화면 DOM 조사,
+react,조사 도구,react/probes/probe_enterprise_trash_select.py,"휴지통 행 선택, 우클릭 메뉴 동작 조사",
+react,조사 도구,react/probes/probe_enterprise_trash_select2.py,"휴지통 Shift 선택, 우클릭 메뉴 동작 조사",
+skmr,탐색 도구,skmr/probe_login_dom.py,로그인 폼 selector 확인,완료
+skmr,탐색 도구,skmr/probe_menu_discovery.py,로그인 후 메뉴 DOM 스캔,완료
+skmr,탐색 도구,skmr/api_discovery.py,"API 탐색 통합 도구: 로그인 호출 수집, 메뉴 자동 클릭 스캔, 수동 조작 캡처(업로드 등)를 한 번에 수행하고 엔드포인트 표(JSON, MD, CSV) 생성","--mode both/auto/manual, 현재 사용 (구 probe_deep_menu_discovery + capture_upload_api 통합)"
+skmr,탐색 도구,skmr/probe_panel_depth2.py,사이드바 하위 패널 조사,조사 완료
+skmr,탐색 도구,skmr/probe_trash_panel_dom.py,휴지통 패널 DOM 조사,조사 완료
+skmr,탐색 도구,skmr/concurrent_login_test.py,브라우저 방식 3계정 동시 로그인,대체됨 (apitest login)
+skmr,탐색 도구,skmr/concurrent_upload_test.py,브라우저 로그인 + API 업로드 (과도기 방식),대체됨 (apitest upload)
+apitest,명령,apitest list,시나리오 목록 출력,없음
+apitest,명령,apitest smoke,"기능 점검: 로그인, me, 폴더/문서 조회","--with-upload + --folder-id 로 업로드 세션 생성, 상태 조회, 취소까지"
+apitest,명령,apitest login,"동시 로그인, 세션 유지, 본인 확인","--users, --iterations, --relogin (로그인 API 부하), --ramp-up"
+apitest,명령,apitest upload,"청크 업로드 5개 API 동시 접근, 부하","--folder-id, --execute (필수), --chunk-concurrency, --file-concurrency, --source"
+빌드,빌드 스크립트,hynix/scripts/build_sys_trash_onefile.ps1 (바탕화면 배포: build_sys_trash_desktop.bat),산출 EXE: Sys_Trash,
+빌드,빌드 스크립트,hynix/scripts/build_user_trash_onefile.ps1 (바탕화면 배포: build_user_trash_desktop.bat),산출 EXE: User_Trash,
+빌드,빌드 스크립트,hynix/scripts/build_main_report.ps1,산출 EXE: Main_Report,
+빌드,빌드 스크립트,hynix/scripts/build_sys_trash_release.ps1,산출 EXE: Sys_Trash (폴더형 배포),
+빌드,빌드 스크립트,react/scripts/build_re_user_trash_onefile.ps1 (바탕화면 배포: build_re_user_trash_desktop.bat),산출 EXE: Enterprise_Trash_Delete,

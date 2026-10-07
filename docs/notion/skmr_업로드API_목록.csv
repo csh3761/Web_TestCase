@@ -1,0 +1,6 @@
+﻿메서드,경로,설명
+POST,/api/v1/document-uploads,청크 업로드 세션 생성
+PUT,/api/v1/document-uploads/uploadId/chunks/chunkIndex,청크 업로드
+GET,/api/v1/document-uploads/uploadId,청크 업로드 진행 상태 조회
+POST,/api/v1/document-uploads/uploadId/complete,청크 조립 및 문서 등록
+DELETE,/api/v1/document-uploads/uploadId,청크 업로드 취소
