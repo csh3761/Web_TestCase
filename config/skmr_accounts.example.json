@@ -1,7 +1,5 @@
 {
   "accounts": [
-    {"username": "<ID1>", "password": "<PW>"},
-    {"username": "<ID2>", "password": "<PW>"},
-    {"username": "<ID3>", "password": "<PW>"}
+    {"username": "<ID1>", "password": "<PW>"}
   ]
 }

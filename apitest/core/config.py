@@ -24,6 +24,7 @@ REPORT_DIR = REPO_ROOT / "reports"
 class Account:
     username: str
     password: str
+    client_type: str = ""  # 로그인 시 clientType 값이 필요한 대상(skmr_admin 등)에서만 사용. 빈 문자열이면 안 보냄
 
 
 @dataclass
@@ -65,7 +66,7 @@ def load_accounts(path: Path) -> list[Account]:
     if not path.exists():
         raise FileNotFoundError(f"계정 설정 파일이 없습니다: {path}")
     data = json.loads(path.read_text(encoding="utf-8-sig"))
-    return [Account(str(a["username"]), str(a["password"])) for a in data["accounts"]]
+    return [Account(str(a["username"]), str(a["password"]), str(a.get("client_type", ""))) for a in data["accounts"]]
 
 
 def load_target(

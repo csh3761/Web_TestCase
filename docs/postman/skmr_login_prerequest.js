@@ -7,6 +7,10 @@
 // crypto-js 에는 AES-GCM / RSA 가 없어서 아래에 직접 구현했다 (AES 블록 암호와 SHA-256 만 crypto-js 사용).
 // 참고: 스크립트가 오류로 중단돼도 Postman 은 요청을 그대로 보낸다 -> "본문 형식이 올바르지 않습니다"(VALIDATION_ERROR)가 나오면
 //       View > Show Postman Console 에서 스크립트 오류를 확인한다.
+// 전체를 즉시실행함수(IIFE)로 감싼다: 실행 환경에 따라 같은 pre-request 스크립트가 한 번 더 평가되는 경우가 있는데,
+// 최상위에 const 로 선언하면 그때 "Identifier 'CryptoJS' has already been declared" 로 전체가 깨진다.
+// 함수 스코프 안에 가두면 몇 번을 다시 실행해도 충돌하지 않는다.
+(function () {
 const CryptoJS = require('crypto-js');
 
 // ------------------------------------------------------------------ 바이트 유틸
@@ -198,3 +202,4 @@ pm.sendRequest(
     }));
   }
 );
+})();

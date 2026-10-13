@@ -11,7 +11,8 @@ apitest/
     crypto.py   로그인 암호화 (평문 구조/AAD 는 미확인 -> 이 파일만 수정)
     auth.py     challenge -> 암호화 -> login, refresh/재로그인
     api.py      엔드포인트 래퍼 + 청크 업로드 5개 API
-    scenarios.py  smoke(기능) / login(동시 로그인·부하) / upload(동시 업로드·부하)
+    scenarios.py  smoke(기능) / login(동시 로그인·부하) / upload(동시 업로드·부하) / survey(조회 API 과부하·스트레스)
+    probe_spec.py 명세(OpenAPI)의 모든 API 를 긁어와 태그·실제 응답값 카탈로그 생성 (GET만 실제 호출)
   mock/       로컬 모의 서버 (프레임워크 자체 검증용, 실제 서버 동작을 보증하지 않음)
 ```
 
@@ -22,7 +23,10 @@ apitest/
 .venv\Scripts\python.exe -m apitest smoke                      # 기능 점검
 .venv\Scripts\python.exe -m apitest login --users 30 --iterations 5 --relogin --ramp-up 5
 .venv\Scripts\python.exe -m apitest upload --folder-id <ID> --execute --iterations 3 --chunk-concurrency 4
+.venv\Scripts\python.exe -m apitest.targets.skmr.probe_spec --out-dir docs/api   # API 전체 카탈로그 수집 (GET만 실제 호출)
+.venv\Scripts\python.exe -m apitest survey --users 30 --iterations 10 --ramp-up 5   # 조회 API 과부하/스트레스 (쓰기 없음)
 ```
+- `survey` 는 기본적으로 업무 API만 반복한다. `--include-admin` 을 주면 검색엔진/클러스터 관리 API도 포함하는데, 공유 클러스터에 부하를 줄 수 있어 기본은 꺼져 있다.
 
 - `upload` 처럼 서버에 데이터를 만드는 시나리오는 `--execute` 가 있어야 실행된다.
 - 업로드 파일명에는 `ct<시각>_` 접두사가 붙어 테스트 문서를 구분/정리할 수 있다.

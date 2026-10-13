@@ -38,6 +38,7 @@ class Scenario:
 
     name = "scenario"
     description = ""
+    target = "skmr"  # 이 시나리오가 기본으로 쓰는 대상(config/<target>_api.json). cli 가 --target 기본값으로 사용
 
     @classmethod
     def add_args(cls, parser: Any) -> None: ...

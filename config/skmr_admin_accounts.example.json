@@ -1,0 +1,6 @@
+{
+  "accounts": [
+    {"username": "<업무함관리자 ID>", "password": "<PW>", "client_type": "WORKBOX"},
+    {"username": "<시스템관리자 ID>", "password": "<PW>"}
+  ]
+}

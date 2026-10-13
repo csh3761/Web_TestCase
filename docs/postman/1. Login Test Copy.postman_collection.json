@@ -1,1494 +1,1704 @@
 {
-  "info": {
-    "_postman_id": "90ef514f-94b8-48d1-96a0-f0f753173672",
-    "name": "Login Test Copy",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "57860640",
-    "_collection_link": "https://go.postman.co/collection/57860640-90ef514f-94b8-48d1-96a0-f0f753173672?source=collection_link"
-  },
-  "item": [
-    {
-      "name": "Logout",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "(function () {\r",
-              "    pm.test(\"Logout - HTTP 200\", function () {\r",
-              "        pm.response.to.have.status(200);\r",
-              "    });\r",
-              "\r",
-              "    if (pm.response.code !== 200) {\r",
-              "        console.error(\r",
-              "            \"Logout 실패:\",\r",
-              "            pm.response.text()\r",
-              "        );\r",
-              "\r",
-              "        return;\r",
-              "    }\r",
-              "\r",
-              "    const logoutResult = pm.response.json();\r",
-              "\r",
-              "    pm.test(\"Logout - 메시지 확인\", function () {\r",
-              "        pm.expect(logoutResult.message)\r",
-              "            .to.eql(\"로그아웃되었습니다.\");\r",
-              "    });\r",
-              "\r",
-              "    const setCookies = pm.response.headers\r",
-              "        .all()\r",
-              "        .filter(function (header) {\r",
-              "            return header.key.toLowerCase() ===\r",
-              "                \"set-cookie\";\r",
-              "        })\r",
-              "        .map(function (header) {\r",
-              "            return header.value;\r",
-              "        })\r",
-              "        .join(\"\\n\");\r",
-              "\r",
-              "    pm.test(\"Logout - 쿠키 만료 확인\", function () {\r",
-              "        pm.expect(setCookies)\r",
-              "            .to.include(\"Max-Age=0\");\r",
-              "\r",
-              "        pm.expect(setCookies)\r",
-              "            .to.include(\r",
-              "                \"__Host-DocSphere-Access=\"\r",
-              "            );\r",
-              "\r",
-              "        pm.expect(setCookies)\r",
-              "            .to.include(\r",
-              "                \"__Host-DocSphere-Agent-Access=\"\r",
-              "            );\r",
-              "\r",
-              "        pm.expect(setCookies)\r",
-              "            .to.include(\"refresh_token=\");\r",
-              "    });\r",
-              "})();"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/logout",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "logout"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Challenge",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "(function () {\r",
-              "    pm.test(\"Challenge - HTTP 200\", function () {\r",
-              "        pm.response.to.have.status(200);\r",
-              "    });\r",
-              "\r",
-              "    const challengeResult = pm.response.json();\r",
-              "\r",
-              "    pm.test(\"Challenge - 필수 필드 확인\", function () {\r",
-              "        pm.expect(challengeResult.challengeId)\r",
-              "            .to.be.a(\"string\").and.not.empty;\r",
-              "\r",
-              "        pm.expect(challengeResult.nonce)\r",
-              "            .to.be.a(\"string\").and.not.empty;\r",
-              "\r",
-              "        pm.expect(challengeResult.keyId)\r",
-              "            .to.be.a(\"string\").and.not.empty;\r",
-              "\r",
-              "        pm.expect(challengeResult.publicKey)\r",
-              "            .to.be.a(\"string\").and.not.empty;\r",
-              "\r",
-              "        pm.expect(challengeResult.algorithm)\r",
-              "            .to.eql(\"RSA-OAEP-256+A256GCM\");\r",
-              "\r",
-              "        pm.expect(challengeResult.expiresIn)\r",
-              "            .to.be.above(0);\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Challenge - 캐시 방지 확인\", function () {\r",
-              "        pm.expect(\r",
-              "            pm.response.headers.get(\"Cache-Control\")\r",
-              "        ).to.include(\"no-store\");\r",
-              "    });\r",
-              "\r",
-              "    pm.collectionVariables.set(\r",
-              "        \"challenge_id\",\r",
-              "        challengeResult.challengeId\r",
-              "    );\r",
-              "\r",
-              "    pm.collectionVariables.set(\r",
-              "        \"challenge_nonce\",\r",
-              "        challengeResult.nonce\r",
-              "    );\r",
-              "\r",
-              "    pm.collectionVariables.set(\r",
-              "        \"challenge_key_id\",\r",
-              "        challengeResult.keyId\r",
-              "    );\r",
-              "\r",
-              "    pm.collectionVariables.set(\r",
-              "        \"challenge_public_key\",\r",
-              "        challengeResult.publicKey\r",
-              "    );\r",
-              "\r",
-              "    console.log(\"Challenge 저장 완료\");\r",
-              "})();"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/login/challenge",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "login",
-            "challenge"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Login",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "const baseUrl = pm.variables\r\n    .replaceIn(\"{{base_url}}\")\r\n    .replace(/\\/$/, \"\");\r\n\r\nconst username = pm.variables.get(\"username\");\r\nconst password = pm.variables.get(\"password\");\r\nconst loginChannel =\r\n    pm.variables.get(\"loginChannel\") ||\r\n    pm.variables.get(\"login_channel\") ||\r\n    \"WEB\";\r\n\r\nif (!baseUrl) {\r\n    throw new Error(\"base_url 변수가 없습니다.\");\r\n}\r\n\r\nif (!username) {\r\n    throw new Error(\"username 변수가 없습니다.\");\r\n}\r\n\r\nif (password === undefined || password === null) {\r\n    throw new Error(\"password 변수가 없습니다.\");\r\n}\r\n\r\nif (![\"WEB\", \"AGENT\"].includes(loginChannel)) {\r\n    throw new Error(\"loginChannel은 WEB 또는 AGENT여야 합니다.\");\r\n}\r\n\r\nfunction decodeBase64(value) {\r\n    const normalized = value.replace(/\\s/g, \"\");\r\n    const binary = atob(normalized);\r\n    const result = new Uint8Array(binary.length);\r\n\r\n    for (let i = 0; i < binary.length; i += 1) {\r\n        result[i] = binary.charCodeAt(i);\r\n    }\r\n\r\n    return result;\r\n}\r\n\r\nfunction encodeBase64(value) {\r\n    const bytes = value instanceof Uint8Array\r\n        ? value\r\n        : new Uint8Array(value);\r\n\r\n    let binary = \"\";\r\n    const chunkSize = 0x8000;\r\n\r\n    for (let offset = 0; offset < bytes.length; offset += chunkSize) {\r\n        const chunk = bytes.subarray(\r\n            offset,\r\n            Math.min(offset + chunkSize, bytes.length)\r\n        );\r\n\r\n        binary += String.fromCharCode(...chunk);\r\n    }\r\n\r\n    return btoa(binary);\r\n}\r\n\r\nconst challengeResponse = await pm.sendRequest({\r\n    url: `${baseUrl}/api/v1/auth/login/challenge`,\r\n    method: \"GET\",\r\n    header: {\r\n        Accept: \"application/json\",\r\n        \"Cache-Control\": \"no-store\"\r\n    }\r\n});\r\n\r\nif (challengeResponse.code !== 200) {\r\n    throw new Error(\r\n        `Challenge 발급 실패: ${challengeResponse.code} ${challengeResponse.text()}`\r\n    );\r\n}\r\n\r\nconst challenge = challengeResponse.json();\r\n\r\nif (challenge.algorithm !== \"RSA-OAEP-256+A256GCM\") {\r\n    throw new Error(\r\n        `지원하지 않는 암호화 알고리즘입니다: ${challenge.algorithm}`\r\n    );\r\n}\r\n\r\nif (\r\n    !challenge.challengeId ||\r\n    !challenge.nonce ||\r\n    !challenge.keyId ||\r\n    !challenge.publicKey\r\n) {\r\n    throw new Error(\"Challenge 응답 필드가 올바르지 않습니다.\");\r\n}\r\n\r\nconst rsaPublicKey = await crypto.subtle.importKey(\r\n    \"spki\",\r\n    decodeBase64(challenge.publicKey.replace(/-----[^-]+-----/g, \"\")),\r\n    {\r\n        name: \"RSA-OAEP\",\r\n        hash: \"SHA-256\"\r\n    },\r\n    false,\r\n    [\"encrypt\"]\r\n);\r\n\r\nconst aesKey = await crypto.subtle.generateKey(\r\n    {\r\n        name: \"AES-GCM\",\r\n        length: 256\r\n    },\r\n    true,\r\n    [\"encrypt\"]\r\n);\r\n\r\nconst rawAesKey = await crypto.subtle.exportKey(\"raw\", aesKey);\r\nconst iv = crypto.getRandomValues(new Uint8Array(12));\r\n\r\nconst loginPayload = {\r\n    username,\r\n    password,\r\n    loginChannel,\r\n    challengeId: challenge.challengeId,\r\n    nonce: challenge.nonce,\r\n    issuedAt: Date.now()\r\n};\r\n\r\nconst plaintext = new TextEncoder().encode(JSON.stringify(loginPayload));\r\n\r\nconst ciphertext = await crypto.subtle.encrypt(\r\n    {\r\n        name: \"AES-GCM\",\r\n        iv,\r\n        tagLength: 128\r\n    },\r\n    aesKey,\r\n    plaintext\r\n);\r\n\r\nconst encryptedKey = await crypto.subtle.encrypt(\r\n    {\r\n        name: \"RSA-OAEP\"\r\n    },\r\n    rsaPublicKey,\r\n    rawAesKey\r\n);\r\n\r\nconst encryptedLoginBody = {\r\n    challengeId: challenge.challengeId,\r\n    keyId: challenge.keyId,\r\n    encryptedKey: encodeBase64(encryptedKey),\r\n    iv: encodeBase64(iv),\r\n    ciphertext: encodeBase64(ciphertext)\r\n};\r\n\r\npm.environment.set(\"encChallengeId\", encryptedLoginBody.challengeId);\r\npm.environment.set(\"encKeyId\", encryptedLoginBody.keyId);\r\npm.environment.set(\"encEncryptedKey\", encryptedLoginBody.encryptedKey);\r\npm.environment.set(\"encIv\", encryptedLoginBody.iv);\r\npm.environment.set(\"encCiphertext\", encryptedLoginBody.ciphertext);\r\n\r\nconsole.log(\"encrypted login body generated:\", {\r\n    challengeId: encryptedLoginBody.challengeId,\r\n    keyId: encryptedLoginBody.keyId,\r\n    encryptedKeyLength: encryptedLoginBody.encryptedKey.length,\r\n    iv: encryptedLoginBody.iv,\r\n    ciphertextLength: encryptedLoginBody.ciphertext.length\r\n});\r\n\r\npm.request.headers.upsert({\r\n    key: \"Content-Type\",\r\n    value: \"application/json\"\r\n});\r\n\r\npm.request.body.update(JSON.stringify(encryptedLoginBody));\r\n\r\nconsole.log(\"actual encrypted login body:\", encryptedLoginBody);"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"challengeId\": \"{{encChallengeId}}\",\r\n    \"keyId\": \"{{encKeyId}}\",\r\n    \"encryptedKey\": \"{{encEncryptedKey}}\",\r\n    \"iv\": \"{{encIv}}\",\r\n    \"ciphertext\": \"{{encCiphertext}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/login",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "login"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Me",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "(function () {\r",
-              "    pm.test(\"Me - HTTP 200\", function () {\r",
-              "        pm.response.to.have.status(200);\r",
-              "    });\r",
-              "\r",
-              "    if (pm.response.code !== 200) {\r",
-              "        console.error(\r",
-              "            \"Me 실패:\",\r",
-              "            pm.response.text()\r",
-              "        );\r",
-              "\r",
-              "        return;\r",
-              "    }\r",
-              "\r",
-              "    const meResult = pm.response.json();\r",
-              "\r",
-              "    pm.test(\"Me - 사용자 확인\", function () {\r",
-              "        pm.expect(meResult.username)\r",
-              "            .to.eql(pm.variables.get(\"username\"));\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Me - 채널 확인\", function () {\r",
-              "        pm.expect(meResult.loginChannel)\r",
-              "            .to.eql(\r",
-              "                pm.variables.get(\"login_channel\")\r",
-              "            );\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Me - 권한 확인\", function () {\r",
-              "        pm.expect(meResult.roles)\r",
-              "            .to.be.an(\"array\");\r",
-              "    });\r",
-              "})();"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/me",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "me"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Me After Logout",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "(function () {\r",
-              "    pm.test(\r",
-              "        \"로그아웃 후 Me - HTTP 401\",\r",
-              "        function () {\r",
-              "            pm.response.to.have.status(401);\r",
-              "        }\r",
-              "    );\r",
-              "\r",
-              "    const errorResult = pm.response.json();\r",
-              "\r",
-              "    pm.test(\r",
-              "        \"로그아웃 후 Me - UNAUTHORIZED\",\r",
-              "        function () {\r",
-              "            pm.expect(errorResult.code)\r",
-              "                .to.eql(\"UNAUTHORIZED\");\r",
-              "        }\r",
-              "    );\r",
-              "})();"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/me",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "me"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "위변조 토큰 테스트",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": ""
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Login",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "const baseUrl = pm.variables\r",
-              "    .replaceIn(\"{{base_url}}\")\r",
-              "    .replace(/\\/$/, \"\");\r",
-              "\r",
-              "const username = pm.variables.get(\"username\");\r",
-              "const password = pm.variables.get(\"password\");\r",
-              "const loginChannel =\r",
-              "    pm.variables.get(\"loginChannel\") ||\r",
-              "    pm.variables.get(\"login_channel\") ||\r",
-              "    \"WEB\";\r",
-              "\r",
-              "if (!baseUrl) {\r",
-              "    throw new Error(\"baseUrl 변수가 없습니다.\");\r",
-              "}\r",
-              "\r",
-              "if (!username) {\r",
-              "    throw new Error(\"username 변수가 없습니다.\");\r",
-              "}\r",
-              "\r",
-              "if (password === undefined || password === null) {\r",
-              "    throw new Error(\"password 변수가 없습니다.\");\r",
-              "}\r",
-              "\r",
-              "if (![\"WEB\", \"AGENT\"].includes(loginChannel)) {\r",
-              "    throw new Error(\"loginChannel은 WEB 또는 AGENT여야 합니다.\");\r",
-              "}\r",
-              "\r",
-              "function decodeBase64(value) {\r",
-              "    const normalized = value.replace(/\\s/g, \"\");\r",
-              "    const binary = atob(normalized);\r",
-              "    const result = new Uint8Array(binary.length);\r",
-              "\r",
-              "    for (let i = 0; i < binary.length; i += 1) {\r",
-              "        result[i] = binary.charCodeAt(i);\r",
-              "    }\r",
-              "\r",
-              "    return result;\r",
-              "}\r",
-              "\r",
-              "function encodeBase64(value) {\r",
-              "    const bytes = value instanceof Uint8Array\r",
-              "        ? value\r",
-              "        : new Uint8Array(value);\r",
-              "\r",
-              "    let binary = \"\";\r",
-              "    const chunkSize = 0x8000;\r",
-              "\r",
-              "    for (let offset = 0; offset < bytes.length; offset += chunkSize) {\r",
-              "        const chunk = bytes.subarray(\r",
-              "            offset,\r",
-              "            Math.min(offset + chunkSize, bytes.length)\r",
-              "        );\r",
-              "\r",
-              "        binary += String.fromCharCode(...chunk);\r",
-              "    }\r",
-              "\r",
-              "    return btoa(binary);\r",
-              "}\r",
-              "\r",
-              "/*\r",
-              " * 1. 서버에서 일회용 Challenge 발급\r",
-              " */\r",
-              "const challengeResponse = await pm.sendRequest({\r",
-              "    url: `${baseUrl}/api/v1/auth/login/challenge`,\r",
-              "    method: \"GET\",\r",
-              "    header: {\r",
-              "        Accept: \"application/json\",\r",
-              "        \"Cache-Control\": \"no-store\"\r",
-              "    }\r",
-              "});\r",
-              "\r",
-              "if (challengeResponse.code !== 200) {\r",
-              "    throw new Error(\r",
-              "        `Challenge 발급 실패: ${challengeResponse.code} ${challengeResponse.text()}`\r",
-              "    );\r",
-              "}\r",
-              "\r",
-              "const challenge = challengeResponse.json();\r",
-              "\r",
-              "if (challenge.algorithm !== \"RSA-OAEP-256+A256GCM\") {\r",
-              "    throw new Error(\r",
-              "        `지원하지 않는 암호화 알고리즘입니다: ${challenge.algorithm}`\r",
-              "    );\r",
-              "}\r",
-              "\r",
-              "if (\r",
-              "    !challenge.challengeId ||\r",
-              "    !challenge.nonce ||\r",
-              "    !challenge.keyId ||\r",
-              "    !challenge.publicKey\r",
-              ") {\r",
-              "    throw new Error(\"Challenge 응답 필드가 올바르지 않습니다.\");\r",
-              "}\r",
-              "\r",
-              "/*\r",
-              " * 2. 서버 RSA 공개키 로드\r",
-              " */\r",
-              "const rsaPublicKey = await crypto.subtle.importKey(\r",
-              "    \"spki\",\r",
-              "    decodeBase64(\r",
-              "        challenge.publicKey.replace(/-----[^-]+-----/g, \"\")\r",
-              "    ),\r",
-              "    {\r",
-              "        name: \"RSA-OAEP\",\r",
-              "        hash: \"SHA-256\"\r",
-              "    },\r",
-              "    false,\r",
-              "    [\"encrypt\"]\r",
-              ");\r",
-              "\r",
-              "/*\r",
-              " * 3. AES-256 키 생성\r",
-              " */\r",
-              "const aesKey = await crypto.subtle.generateKey(\r",
-              "    {\r",
-              "        name: \"AES-GCM\",\r",
-              "        length: 256\r",
-              "    },\r",
-              "    true,\r",
-              "    [\"encrypt\"]\r",
-              ");\r",
-              "\r",
-              "const rawAesKey = await crypto.subtle.exportKey(\"raw\", aesKey);\r",
-              "\r",
-              "/*\r",
-              " * AES-GCM IV는 12바이트\r",
-              " */\r",
-              "const iv = crypto.getRandomValues(new Uint8Array(12));\r",
-              "\r",
-              "/*\r",
-              " * 4. 실제 로그인 정보\r",
-              " */\r",
-              "const loginPayload = {\r",
-              "    username,\r",
-              "    password,\r",
-              "    loginChannel,\r",
-              "    challengeId: challenge.challengeId,\r",
-              "    nonce: challenge.nonce,\r",
-              "    issuedAt: Date.now()\r",
-              "};\r",
-              "\r",
-              "const plaintext = new TextEncoder().encode(\r",
-              "    JSON.stringify(loginPayload)\r",
-              ");\r",
-              "\r",
-              "/*\r",
-              " * 5. 로그인 정보를 AES-256-GCM으로 암호화\r",
-              " */\r",
-              "const ciphertext = await crypto.subtle.encrypt(\r",
-              "    {\r",
-              "        name: \"AES-GCM\",\r",
-              "        iv,\r",
-              "        tagLength: 128\r",
-              "    },\r",
-              "    aesKey,\r",
-              "    plaintext\r",
-              ");\r",
-              "\r",
-              "/*\r",
-              " * 6. AES 키를 서버 RSA 공개키로 암호화\r",
-              " */\r",
-              "const encryptedKey = await crypto.subtle.encrypt(\r",
-              "    {\r",
-              "        name: \"RSA-OAEP\"\r",
-              "    },\r",
-              "    rsaPublicKey,\r",
-              "    rawAesKey\r",
-              ");\r",
-              "\r",
-              "/*\r",
-              " * 7. 서버에 전송할 최종 Body\r",
-              " */\r",
-              "const encryptedLoginBody = {\r",
-              "    challengeId: challenge.challengeId,\r",
-              "    keyId: challenge.keyId,\r",
-              "    encryptedKey: encodeBase64(encryptedKey),\r",
-              "    iv: encodeBase64(iv),\r",
-              "    ciphertext: encodeBase64(ciphertext)\r",
-              "};\r",
-              "\r",
-              "pm.environment.set(\"encChallengeId\", encryptedLoginBody.challengeId);\r",
-              "pm.environment.set(\"encKeyId\", encryptedLoginBody.keyId);\r",
-              "pm.environment.set(\"encEncryptedKey\", encryptedLoginBody.encryptedKey);\r",
-              "pm.environment.set(\"encIv\", encryptedLoginBody.iv);\r",
-              "pm.environment.set(\"encCiphertext\", encryptedLoginBody.ciphertext);\r",
-              "\r",
-              "console.log(\"encChallengeId:\", pm.environment.get(\"encChallengeId\"));\r",
-              "console.log(\"encKeyId:\", pm.environment.get(\"encKeyId\"));\r",
-              "console.log(\"encEncryptedKey length:\", pm.environment.get(\"encEncryptedKey\")?.length);\r",
-              "console.log(\"encIv:\", pm.environment.get(\"encIv\"));\r",
-              "console.log(\"encCiphertext length:\", pm.environment.get(\"encCiphertext\")?.length);"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"로그인 응답은 200이다\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "const body = pm.response.json();\r",
-              "\r",
-              "pm.test(\"WEB 로그인 응답이다\", function () {\r",
-              "    pm.expect(body.loginChannel).to.eql(\"WEB\");\r",
-              "});\r",
-              "\r",
-              "pm.test(\"사용자 정보가 반환된다\", function () {\r",
-              "    pm.expect(body.username).to.eql(\r",
-              "        pm.variables.get(\"username\")\r",
-              "    );\r",
-              "});\r",
-              "\r",
-              "pm.test(\"응답 본문에 토큰이 노출되지 않는다\", function () {\r",
-              "    pm.expect(body).not.to.have.property(\"accessToken\");\r",
-              "    pm.expect(body).not.to.have.property(\"refreshToken\");\r",
-              "    pm.expect(body).not.to.have.property(\"token\");\r",
-              "});\r",
-              "\r",
-              "const setCookies = pm.response.headers\r",
-              "    .all()\r",
-              "    .filter(header => header.key.toLowerCase() === \"set-cookie\")\r",
-              "    .map(header => header.value);\r",
-              "\r",
-              "pm.test(\"Access Token 쿠키가 발급된다\", function () {\r",
-              "    pm.expect(\r",
-              "        setCookies.some(value =>\r",
-              "            value.startsWith(\"__Host-DocSphere-Access=\")\r",
-              "        )\r",
-              "    ).to.eql(true);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Refresh Token 쿠키가 발급된다\", function () {\r",
-              "    pm.expect(\r",
-              "        setCookies.some(value =>\r",
-              "            value.startsWith(\"refresh_token=\")\r",
-              "        )\r",
-              "    ).to.eql(true);\r",
-              "});"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "noauth"
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"challengeId\": \"{{encChallengeId}}\",\r\n  \"keyId\": \"{{encKeyId}}\",\r\n  \"encryptedKey\": \"{{encEncryptedKey}}\",\r\n  \"iv\": \"{{encIv}}\",\r\n  \"ciphertext\": \"{{encCiphertext}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/login",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "login"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "토큰만료 테스트",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "(function () {\r",
-              "    pm.test(\"Me - HTTP 200\", function () {\r",
-              "        pm.response.to.have.status(200);\r",
-              "    });\r",
-              "\r",
-              "    if (pm.response.code !== 200) {\r",
-              "        console.error(\r",
-              "            \"Me 실패:\",\r",
-              "            pm.response.text()\r",
-              "        );\r",
-              "\r",
-              "        return;\r",
-              "    }\r",
-              "\r",
-              "    const meResult = pm.response.json();\r",
-              "\r",
-              "    pm.test(\"Me - 사용자 확인\", function () {\r",
-              "        pm.expect(meResult.username)\r",
-              "            .to.eql(pm.variables.get(\"username\"));\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Me - 채널 확인\", function () {\r",
-              "        pm.expect(meResult.loginChannel)\r",
-              "            .to.eql(\r",
-              "                pm.variables.get(\"login_channel\")\r",
-              "            );\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Me - 권한 확인\", function () {\r",
-              "        pm.expect(meResult.roles)\r",
-              "            .to.be.an(\"array\");\r",
-              "    });\r",
-              "})();"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/me",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "me"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "RefreshToken",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "const channel = (\r",
-              "    pm.environment.get(\"loginChannel\") || \"WEB\"\r",
-              ").toUpperCase();\r",
-              "\r",
-              "if (![\"WEB\", \"AGENT\"].includes(channel)) {\r",
-              "    throw new Error(\"loginChannel은 WEB 또는 AGENT여야 합니다.\");\r",
-              "}\r",
-              "\r",
-              "const refreshPath = channel === \"AGENT\"\r",
-              "    ? \"/api/v1/agent/refresh\"\r",
-              "    : \"/api/v1/auth/refresh\";\r",
-              "\r",
-              "pm.variables.set(\"refreshPath\", refreshPath);\r",
-              "\r",
-              "console.log(\"Refresh channel:\", channel);\r",
-              "console.log(\"Refresh URL:\", pm.environment.get(\"baseUrl\") + refreshPath);"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "const channel = (\r",
-              "    pm.environment.get(\"loginChannel\") || \"WEB\"\r",
-              ").toUpperCase();\r",
-              "\r",
-              "let body = {};\r",
-              "\r",
-              "try {\r",
-              "    body = pm.response.json();\r",
-              "} catch (error) {\r",
-              "    console.error(\"JSON 응답이 아닙니다:\", pm.response.text());\r",
-              "}\r",
-              "\r",
-              "pm.test(\"응답 Content-Type은 JSON이다\", function () {\r",
-              "    pm.expect(pm.response.headers.get(\"Content-Type\"))\r",
-              "        .to.include(\"application/json\");\r",
-              "});\r",
-              "\r",
-              "if (pm.response.code === 200) {\r",
-              "    pm.test(\"Refresh API 호출 성공\", function () {\r",
-              "        pm.response.to.have.status(200);\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Refresh 응답 형식 확인\", function () {\r",
-              "        pm.expect(body.message).to.eql(\"인증 쿠키를 갱신했습니다.\");\r",
-              "        pm.expect(body.tokenType).to.eql(\"Bearer\");\r",
-              "        pm.expect(body.expiresIn).to.be.a(\"number\");\r",
-              "        pm.expect(body.expiresIn).to.be.above(0);\r",
-              "        pm.expect(body.username).to.be.a(\"string\").and.not.empty;\r",
-              "        pm.expect(body.roles).to.be.an(\"array\");\r",
-              "        pm.expect(body.loginChannel).to.eql(channel);\r",
-              "    });\r",
-              "\r",
-              "    const setCookieHeaders = pm.response.headers\r",
-              "        .all()\r",
-              "        .filter(header => header.key.toLowerCase() === \"set-cookie\")\r",
-              "        .map(header => header.value);\r",
-              "\r",
-              "    const expectedAccessCookie = channel === \"AGENT\"\r",
-              "        ? \"__Host-DocSphere-Agent-Access\"\r",
-              "        : \"__Host-DocSphere-Access\";\r",
-              "\r",
-              "    pm.test(\"새 Access Token 쿠키가 발급되었다\", function () {\r",
-              "        const found = setCookieHeaders.some(header =>\r",
-              "            header.startsWith(expectedAccessCookie + \"=\")\r",
-              "        );\r",
-              "\r",
-              "        pm.expect(\r",
-              "            found,\r",
-              "            `${expectedAccessCookie} Set-Cookie가 없습니다.`\r",
-              "        ).to.eql(true);\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"새 Refresh Token 쿠키가 발급되었다\", function () {\r",
-              "        const found = setCookieHeaders.some(header =>\r",
-              "            header.startsWith(\"refresh_token=\")\r",
-              "        );\r",
-              "\r",
-              "        pm.expect(\r",
-              "            found,\r",
-              "            \"refresh_token Set-Cookie가 없습니다.\"\r",
-              "        ).to.eql(true);\r",
-              "    });\r",
-              "\r",
-              "    pm.collectionVariables.set(\"refreshResult\", \"SUCCESS\");\r",
-              "    pm.collectionVariables.set(\"authenticatedUsername\", body.username);\r",
-              "    pm.collectionVariables.set(\"accessTokenExpiresIn\", String(body.expiresIn));\r",
-              "\r",
-              "    console.log(\"Refresh 성공:\", body);\r",
-              "} else {\r",
-              "    const refreshErrorCodes = [\r",
-              "        \"REFRESH_MISSING\",\r",
-              "        \"REFRESH_INVALID\",\r",
-              "        \"REFRESH_EXPIRED\",\r",
-              "        \"REFRESH_CONCURRENT\",\r",
-              "        \"REFRESH_REPLAY\",\r",
-              "        \"LOGIN_CHANNEL_MISMATCH\"\r",
-              "    ];\r",
-              "\r",
-              "    pm.test(\"Refresh 실패는 401이다\", function () {\r",
-              "        pm.response.to.have.status(401);\r",
-              "    });\r",
-              "\r",
-              "    pm.test(\"Refresh 오류 응답 형식 확인\", function () {\r",
-              "        pm.expect(body.message).to.be.a(\"string\").and.not.empty;\r",
-              "        pm.expect(body.code).to.be.oneOf(refreshErrorCodes);\r",
-              "    });\r",
-              "\r",
-              "    pm.collectionVariables.set(\r",
-              "        \"refreshResult\",\r",
-              "        body.code || \"UNKNOWN_ERROR\"\r",
-              "    );\r",
-              "\r",
-              "    console.error(\"Refresh 실패:\", body);\r",
-              "}"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/refresh",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "refresh"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "다중테스트",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "const baseUrl = pm.environment.get(\"base_url\");\r",
-              "const refreshUrl = `${baseUrl}/api/v1/auth/refresh`;\r",
-              "\r",
-              "// 반드시 아직 한 번도 사용하지 않은 Refresh Token이어야 합니다.\r",
-              "const oldRefreshToken = pm.environment.get(\"refresh_token\");\r",
-              "\r",
-              "if (!oldRefreshToken) {\r",
-              "    throw new Error(\"refresh_token 환경변수가 없습니다.\");\r",
-              "}\r",
-              "\r",
-              "const requestInfo = {\r",
-              "    url: refreshUrl,\r",
-              "    method: \"POST\",\r",
-              "    header: {\r",
-              "        \"X-Requested-With\": \"XMLHttpRequest\",\r",
-              "        \"Cookie\": `refresh_token=${oldRefreshToken}`\r",
-              "    }\r",
-              "};\r",
-              "\r",
-              "console.log(\"동일한 Refresh Token으로 5개 요청을 동시에 전송합니다.\");\r",
-              "\r",
-              "for (let i = 1; i <= 100; i++) {\r",
-              "    pm.sendRequest(requestInfo, function (err, response) {\r",
-              "        if (err) {\r",
-              "            console.error(`요청 ${i}: 네트워크 오류`, err);\r",
-              "            return;\r",
-              "        }\r",
-              "\r",
-              "        let body;\r",
-              "        try {\r",
-              "            body = response.json();\r",
-              "        } catch {\r",
-              "            body = response.text();\r",
-              "        }\r",
-              "\r",
-              "        console.log(`요청 ${i}: HTTP ${response.code}`, body);\r",
-              "\r",
-              "        if (response.code === 200) {\r",
-              "            console.log(`✅ 요청 ${i}: Refresh 성공`);\r",
-              "        } else {\r",
-              "            console.warn(\r",
-              "                `⛔ 요청 ${i}: 차단됨`,\r",
-              "                body?.code ?? \"응답 코드 없음\"\r",
-              "            );\r",
-              "        }\r",
-              "    });\r",
-              "}"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "https://localhost:8090/dummy",
-          "protocol": "https",
-          "host": [
-            "localhost"
-          ],
-          "port": "8090",
-          "path": [
-            "dummy"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "JWT알고리즘위변조",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "const validToken = pm.environment.get(\"valid_access_token\");\r",
-              "const attackCase = pm.environment.get(\"jwt_attack_case\") || \"none\";\r",
-              "console.log(\"attackCase : \" + attackCase);\r",
-              "\r",
-              "if (!validToken) {\r",
-              "    throw new Error(\"valid_access_token 환경변수가 없습니다.\");\r",
-              "}\r",
-              "\r",
-              "const parts = validToken.split(\".\");\r",
-              "\r",
-              "if (parts.length !== 3) {\r",
-              "    throw new Error(\"JWT 형식이 아닙니다.\");\r",
-              "}\r",
-              "\r",
-              "function base64UrlEncodeAscii(value) {\r",
-              "    return btoa(value)\r",
-              "        .replace(/\\+/g, \"-\")\r",
-              "        .replace(/\\//g, \"_\")\r",
-              "        .replace(/=+$/g, \"\");\r",
-              "}\r",
-              "\r",
-              "let tamperedToken;\r",
-              "\r",
-              "switch (attackCase) {\r",
-              "    case \"none\": {\r",
-              "        // alg:none으로 변경하고 서명을 제거\r",
-              "        const header = {\r",
-              "            typ: \"JWT\",\r",
-              "            alg: \"none\"\r",
-              "        };\r",
-              "\r",
-              "        tamperedToken =\r",
-              "            `${base64UrlEncodeAscii(JSON.stringify(header))}.${parts[1]}.`;\r",
-              "        break;\r",
-              "    }\r",
-              "\r",
-              "    case \"algorithm_swap\": {\r",
-              "        // 원래 서명은 유지하고 알고리즘만 RS256으로 조작\r",
-              "        const header = {\r",
-              "            typ: \"JWT\",\r",
-              "            alg: \"RS256\"\r",
-              "        };\r",
-              "\r",
-              "        tamperedToken =\r",
-              "            `${base64UrlEncodeAscii(JSON.stringify(header))}.${parts[1]}.${parts[2]}`;\r",
-              "        break;\r",
-              "    }\r",
-              "\r",
-              "    case \"signature_removed\": {\r",
-              "        // 기존 알고리즘을 유지한 채 서명만 제거\r",
-              "        tamperedToken = `${parts[0]}.${parts[1]}.`;\r",
-              "        break;\r",
-              "    }\r",
-              "\r",
-              "    case \"signature_modified\": {\r",
-              "        // 서명의 마지막 문자를 변경\r",
-              "        const signature = parts[2];\r",
-              "        const last = signature.slice(-1);\r",
-              "        const replacement = last === \"A\" ? \"B\" : \"A\";\r",
-              "\r",
-              "        tamperedToken =\r",
-              "            `${parts[0]}.${parts[1]}.${signature.slice(0, -1)}${replacement}`;\r",
-              "        break;\r",
-              "    }\r",
-              "\r",
-              "    default:\r",
-              "        throw new Error(`지원하지 않는 공격 유형: ${attackCase}`);\r",
-              "}\r",
-              "\r",
-              "pm.variables.set(\"tampered_access_token\", tamperedToken);\r",
-              "\r",
-              "console.log(`JWT 변조 테스트 실행: ${attackCase}`);"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/auth/me",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "me"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "다중접속로그인",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": ""
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "청크업로드세션생성",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"업로드 세션 생성 성공\", function () {\r",
-              "    pm.response.to.have.status(201);\r",
-              "});\r",
-              "\r",
-              "const body = pm.response.json();\r",
-              "\r",
-              "pm.expect(body.uploadId).to.be.a(\"string\").and.not.empty;\r",
-              "pm.expect(body.chunkSize).to.be.above(0);\r",
-              "pm.expect(body.totalChunks).to.be.above(0);\r",
-              "pm.expect(body.status).to.eql(\"UPLOADING\");\r",
-              "\r",
-              "pm.environment.set(\"upload_id\", body.uploadId);\r",
-              "pm.environment.set(\"chunk_size\", body.chunkSize);\r",
-              "pm.environment.set(\"total_chunks\", body.totalChunks);\r",
-              "\r",
-              "console.log(\"uploadId:\", body.uploadId);\r",
-              "console.log(\"chunkSize:\", body.chunkSize);\r",
-              "console.log(\"totalChunks:\", body.totalChunks);"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "{{access_token}}",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"operation\": \"UPLOAD\",\r\n  \"folderId\": \"{{folder_id}}\",\r\n  \"fileName\": \"{{file_name}}\",\r\n  \"fileSize\": {{file_size}},\r\n  \"mimeType\": \"application/pdf\",\r\n  \"expectedFileSha256\": \"{{file_sha256}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/document-uploads",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "document-uploads"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "단일 청크 업로드",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/octet-stream",
-            "type": "text"
-          },
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}/chunks/0",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "document-uploads",
-            "{{upload_id}}",
-            "chunks",
-            "0"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "업로드 진행상태",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"업로드 상태 조회 성공\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "const body = pm.response.json();\r",
-              "const totalChunks = Number(pm.environment.get(\"total_chunks\"));\r",
-              "const fileSize = Number(pm.environment.get(\"file_size\"));\r",
-              "\r",
-              "pm.test(\"모든 청크 업로드 완료\", function () {\r",
-              "    pm.expect(body.uploadedChunks).to.have.lengthOf(totalChunks);\r",
-              "    pm.expect(body.uploadedSize).to.eql(fileSize);\r",
-              "    pm.expect(body.status).to.eql(\"UPLOADING\");\r",
-              "});"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "document-uploads",
-            "{{upload_id}}"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "업로드 성공",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"청크 조립 및 문서 등록 성공\", function () {\r",
-              "    pm.response.to.have.status(201);\r",
-              "});\r",
-              "\r",
-              "const body = pm.response.json();\r",
-              "\r",
-              "pm.test(\"문서 코드 반환\", function () {\r",
-              "    pm.expect(body.contentCode).to.be.a(\"string\").and.not.empty;\r",
-              "    pm.expect(body.revisionCode).to.be.a(\"string\").and.not.empty;\r",
-              "});\r",
-              "\r",
-              "pm.environment.set(\"uploaded_content_code\", body.contentCode);\r",
-              "pm.environment.set(\"uploaded_revision_code\", body.revisionCode);"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}/complete",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "document-uploads",
-            "{{upload_id}}",
-            "complete"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "다운로드",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "{{access_token}}",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          },
-          {
-            "key": "X-Requested-With",
-            "value": "XMLHttpRequest",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"revisionCodes\": [\r\n    \"{{revision_code}}\"\r\n  ]\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/documents/download",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "documents",
-            "download"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "폴더생성",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"폴더 생성 성공: 201\", function () {\r",
-              "    pm.response.to.have.status(201);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Location 헤더 존재\", function () {\r",
-              "    pm.expect(pm.response.headers.has(\"Location\")).to.be.true;\r",
-              "});\r",
-              "\r",
-              "const location = pm.response.headers.get(\"Location\");\r",
-              "\r",
-              "if (location) {\r",
-              "    const createdFolderId = location.split(\"/\").filter(Boolean).pop();\r",
-              "    pm.environment.set(\"createdFolderId\", createdFolderId);\r",
-              "\r",
-              "    console.log(\"생성된 폴더 ID:\", createdFolderId);\r",
-              "}"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "{{access_token}}",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/v1/folders",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "folders"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": ""
-        }
-      },
-      "response": []
-    }
-  ],
-  "variable": [
-    {
-      "key": "challenge_id",
-      "value": ""
-    },
-    {
-      "key": "challenge_nonce",
-      "value": ""
-    },
-    {
-      "key": "challenge_key_id",
-      "value": ""
-    },
-    {
-      "key": "challenge_public_key",
-      "value": ""
-    },
-    {
-      "key": "challenge_algorithm",
-      "value": ""
-    },
-    {
-      "key": "login_request_body",
-      "value": ""
-    },
-    {
-      "key": "refreshResult",
-      "value": ""
-    },
-    {
-      "key": "authenticatedUsername",
-      "value": ""
-    },
-    {
-      "key": "accessTokenExpiresIn",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "90ef514f-94b8-48d1-96a0-f0f753173672",
+		"name": "Login Test Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "57860640",
+		"_collection_link": "https://go.postman.co/collection/57860640-90ef514f-94b8-48d1-96a0-f0f753173672?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(function () {\r",
+							"    pm.test(\"Logout - HTTP 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    if (pm.response.code !== 200) {\r",
+							"        console.error(\r",
+							"            \"Logout 실패:\",\r",
+							"            pm.response.text()\r",
+							"        );\r",
+							"\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    const logoutResult = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Logout - 메시지 확인\", function () {\r",
+							"        pm.expect(logoutResult.message)\r",
+							"            .to.eql(\"로그아웃되었습니다.\");\r",
+							"    });\r",
+							"\r",
+							"    const setCookies = pm.response.headers\r",
+							"        .all()\r",
+							"        .filter(function (header) {\r",
+							"            return header.key.toLowerCase() ===\r",
+							"                \"set-cookie\";\r",
+							"        })\r",
+							"        .map(function (header) {\r",
+							"            return header.value;\r",
+							"        })\r",
+							"        .join(\"\\n\");\r",
+							"\r",
+							"    pm.test(\"Logout - 쿠키 만료 확인\", function () {\r",
+							"        pm.expect(setCookies)\r",
+							"            .to.include(\"Max-Age=0\");\r",
+							"\r",
+							"        pm.expect(setCookies)\r",
+							"            .to.include(\r",
+							"                \"__Host-DocSphere-Access=\"\r",
+							"            );\r",
+							"\r",
+							"        pm.expect(setCookies)\r",
+							"            .to.include(\r",
+							"                \"__Host-DocSphere-Agent-Access=\"\r",
+							"            );\r",
+							"\r",
+							"        pm.expect(setCookies)\r",
+							"            .to.include(\"refresh_token=\");\r",
+							"    });\r",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Challenge",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(function () {\r",
+							"    pm.test(\"Challenge - HTTP 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    const challengeResult = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Challenge - 필수 필드 확인\", function () {\r",
+							"        pm.expect(challengeResult.challengeId)\r",
+							"            .to.be.a(\"string\").and.not.empty;\r",
+							"\r",
+							"        pm.expect(challengeResult.nonce)\r",
+							"            .to.be.a(\"string\").and.not.empty;\r",
+							"\r",
+							"        pm.expect(challengeResult.keyId)\r",
+							"            .to.be.a(\"string\").and.not.empty;\r",
+							"\r",
+							"        pm.expect(challengeResult.publicKey)\r",
+							"            .to.be.a(\"string\").and.not.empty;\r",
+							"\r",
+							"        pm.expect(challengeResult.algorithm)\r",
+							"            .to.eql(\"RSA-OAEP-256+A256GCM\");\r",
+							"\r",
+							"        pm.expect(challengeResult.expiresIn)\r",
+							"            .to.be.above(0);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Challenge - 캐시 방지 확인\", function () {\r",
+							"        pm.expect(\r",
+							"            pm.response.headers.get(\"Cache-Control\")\r",
+							"        ).to.include(\"no-store\");\r",
+							"    });\r",
+							"\r",
+							"    pm.collectionVariables.set(\r",
+							"        \"challenge_id\",\r",
+							"        challengeResult.challengeId\r",
+							"    );\r",
+							"\r",
+							"    pm.collectionVariables.set(\r",
+							"        \"challenge_nonce\",\r",
+							"        challengeResult.nonce\r",
+							"    );\r",
+							"\r",
+							"    pm.collectionVariables.set(\r",
+							"        \"challenge_key_id\",\r",
+							"        challengeResult.keyId\r",
+							"    );\r",
+							"\r",
+							"    pm.collectionVariables.set(\r",
+							"        \"challenge_public_key\",\r",
+							"        challengeResult.publicKey\r",
+							"    );\r",
+							"\r",
+							"    console.log(\"Challenge 저장 완료\");\r",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/login/challenge",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login",
+						"challenge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// DocSphere 로그인 Pre-request Script (Postman, crypto-js 전용 버전)",
+							"// 하는 일: 챌린지 조회 -> 로그인 정보를 AES-256-GCM 으로 암호화 -> AES 키를 서버 공개키로 RSA-OAEP(SHA-256) 암호화",
+							"//          -> 로그인 본문(JSON)을 변수 loginBody 에 저장. 요청 Body 는 {{loginBody}} 로 지정한다.",
+							"// 필요 변수: base_url, username, password",
+							"//",
+							"// 외부 패키지(pm.require, npm)나 Node crypto 없이, Postman 에 기본 내장된 crypto-js 만 사용한다.",
+							"// crypto-js 에는 AES-GCM / RSA 가 없어서 아래에 직접 구현했다 (AES 블록 암호와 SHA-256 만 crypto-js 사용).",
+							"// 참고: 스크립트가 오류로 중단돼도 Postman 은 요청을 그대로 보낸다 -> \"본문 형식이 올바르지 않습니다\"(VALIDATION_ERROR)가 나오면",
+							"//       View > Show Postman Console 에서 스크립트 오류를 확인한다.",
+							"const CryptoJS = require('crypto-js');",
+							"",
+							"// ------------------------------------------------------------------ 바이트 유틸",
+							"function bytesToWA(u8) {",
+							"  const words = [];",
+							"  for (let i = 0; i < u8.length; i++) { words[i >>> 2] = (words[i >>> 2] || 0) | (u8[i] << (24 - (i % 4) * 8)); }",
+							"  return CryptoJS.lib.WordArray.create(words, u8.length);",
+							"}",
+							"function waToBytes(wa) {",
+							"  const out = new Uint8Array(wa.sigBytes);",
+							"  for (let i = 0; i < wa.sigBytes; i++) { out[i] = (wa.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff; }",
+							"  return out;",
+							"}",
+							"function concat(...parts) {",
+							"  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));",
+							"  let off = 0;",
+							"  for (const p of parts) { out.set(p, off); off += p.length; }",
+							"  return out;",
+							"}",
+							"function xor(a, b) {",
+							"  const out = new Uint8Array(a.length);",
+							"  for (let i = 0; i < a.length; i++) { out[i] = a[i] ^ b[i]; }",
+							"  return out;",
+							"}",
+							"function toBig(u8) {",
+							"  let h = '';",
+							"  for (const b of u8) { h += b.toString(16).padStart(2, '0'); }",
+							"  return BigInt('0x' + (h || '0'));",
+							"}",
+							"function fromBig(n, len) {",
+							"  const h = n.toString(16).padStart(len * 2, '0');",
+							"  const out = new Uint8Array(len);",
+							"  for (let i = 0; i < len; i++) { out[i] = parseInt(h.substr(i * 2, 2), 16); }",
+							"  return out;",
+							"}",
+							"function randomBytes(n) {",
+							"  // Postman 샌드박스에는 globalThis 가 없을 수 있다. 전역 crypto 가 있을 때만 사용하고, 없으면 crypto-js 난수를 쓴다.",
+							"  // (typeof 는 선언되지 않은 식별자에 대해서만 안전하다 -> 속성 접근 전에 반드시 먼저 검사)",
+							"  if (typeof crypto !== 'undefined' && crypto && typeof crypto.getRandomValues === 'function') {",
+							"    return crypto.getRandomValues(new Uint8Array(n));",
+							"  }",
+							"  return waToBytes(CryptoJS.lib.WordArray.random(n));  // 테스트 도구 용도의 대체 난수",
+							"}",
+							"function sha256(u8) { return waToBytes(CryptoJS.SHA256(bytesToWA(u8))); }",
+							"function b64(u8) { return CryptoJS.enc.Base64.stringify(bytesToWA(u8)); }",
+							"function utf8(str) { return waToBytes(CryptoJS.enc.Utf8.parse(str)); }",
+							"",
+							"// ------------------------------------------------------------------ AES-256-GCM (iv 12바이트, 태그 16바이트, AAD 없음)",
+							"function aesEcb(key, data) {  // data 길이는 16의 배수 (패딩 없음)",
+							"  const enc = CryptoJS.AES.encrypt(bytesToWA(data), bytesToWA(key), { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });",
+							"  return waToBytes(enc.ciphertext);",
+							"}",
+							"const GCM_R = 0xe1n << 120n;",
+							"function gmul(x, y) {  // GF(2^128) 곱셈",
+							"  let z = 0n;",
+							"  let v = y;",
+							"  for (let i = 127n; i >= 0n; i--) {",
+							"    if ((x >> i) & 1n) { z ^= v; }",
+							"    v = (v & 1n) ? ((v >> 1n) ^ GCM_R) : (v >> 1n);",
+							"  }",
+							"  return z;",
+							"}",
+							"function ghash(h, ct) {",
+							"  let y = 0n;",
+							"  for (let off = 0; off < ct.length; off += 16) {",
+							"    const block = new Uint8Array(16);",
+							"    block.set(ct.subarray(off, off + 16));",
+							"    y = gmul(y ^ toBig(block), h);",
+							"  }",
+							"  return gmul(y ^ BigInt(ct.length * 8), h);  // [len(A)=0 || len(C)]",
+							"}",
+							"function aesGcmEncrypt(key, iv, plaintext) {",
+							"  const h = toBig(aesEcb(key, new Uint8Array(16)));",
+							"  const blocks = Math.max(1, Math.ceil(plaintext.length / 16));",
+							"  const counters = new Uint8Array(blocks * 16);",
+							"  for (let i = 0; i < blocks; i++) {  // 첫 데이터 블록의 카운터는 2 (1 은 태그용 J0)",
+							"    counters.set(iv, i * 16);",
+							"    const c = i + 2;",
+							"    counters.set([(c >>> 24) & 255, (c >>> 16) & 255, (c >>> 8) & 255, c & 255], i * 16 + 12);",
+							"  }",
+							"  const keystream = aesEcb(key, counters);",
+							"  const ct = xor(plaintext, keystream.subarray(0, plaintext.length));",
+							"  const j0 = new Uint8Array(16);",
+							"  j0.set(iv);",
+							"  j0[15] = 1;",
+							"  const tag = fromBig(ghash(h, ct) ^ toBig(aesEcb(key, j0)), 16);",
+							"  return concat(ct, tag);  // WebCrypto 와 동일: 암호문 뒤에 태그",
+							"}",
+							"",
+							"// ------------------------------------------------------------------ RSA-OAEP (SHA-256, MGF1 SHA-256, label 없음)",
+							"function derRead(buf, pos) {",
+							"  let len = buf[pos + 1];",
+							"  let p = pos + 2;",
+							"  if (len & 0x80) {",
+							"    const n = len & 0x7f;",
+							"    len = 0;",
+							"    for (let i = 0; i < n; i++) { len = (len * 256) + buf[p++]; }",
+							"  }",
+							"  return { start: p, end: p + len };",
+							"}",
+							"function stripZero(u8) {",
+							"  let i = 0;",
+							"  while (i < u8.length - 1 && u8[i] === 0) { i++; }",
+							"  return u8.subarray(i);",
+							"}",
+							"function parseSpkiPem(pem) {",
+							"  const der = waToBytes(CryptoJS.enc.Base64.parse(pem.replace(/-----[^-]+-----/g, '').replace(/\\s+/g, '')));",
+							"  const outer = derRead(der, 0);",
+							"  const algorithm = derRead(der, outer.start);",
+							"  const bitString = derRead(der, algorithm.end);",
+							"  const rsaKey = derRead(der, bitString.start + 1);  // BIT STRING 첫 바이트는 unused-bits",
+							"  const nField = derRead(der, rsaKey.start);",
+							"  const eField = derRead(der, nField.end);",
+							"  const n = stripZero(der.subarray(nField.start, nField.end));",
+							"  return { n: toBig(n), e: toBig(der.subarray(eField.start, eField.end)), k: n.length };",
+							"}",
+							"function modPow(base, exp, mod) {",
+							"  let result = 1n;",
+							"  let b = base % mod;",
+							"  let e = exp;",
+							"  while (e > 0n) {",
+							"    if (e & 1n) { result = (result * b) % mod; }",
+							"    e >>= 1n;",
+							"    b = (b * b) % mod;",
+							"  }",
+							"  return result;",
+							"}",
+							"function mgf1(seed, length) {",
+							"  const parts = [];",
+							"  let total = 0;",
+							"  for (let counter = 0; total < length; counter++) {",
+							"    const c = new Uint8Array([(counter >>> 24) & 255, (counter >>> 16) & 255, (counter >>> 8) & 255, counter & 255]);",
+							"    const h = sha256(concat(seed, c));",
+							"    parts.push(h);",
+							"    total += h.length;",
+							"  }",
+							"  return concat(...parts).subarray(0, length);",
+							"}",
+							"function rsaOaepEncrypt(pub, message) {",
+							"  const hLen = 32;",
+							"  if (message.length > pub.k - 2 * hLen - 2) { throw new Error('RSA-OAEP: 메시지가 너무 깁니다.'); }",
+							"  const db = new Uint8Array(pub.k - hLen - 1);",
+							"  db.set(sha256(new Uint8Array(0)), 0);           // lHash (label 없음)",
+							"  db[db.length - message.length - 1] = 1;          // 0x01 구분자 (그 앞은 0 패딩)",
+							"  db.set(message, db.length - message.length);",
+							"  const seed = randomBytes(hLen);",
+							"  const maskedDb = xor(db, mgf1(seed, db.length));",
+							"  const maskedSeed = xor(seed, mgf1(maskedDb, hLen));",
+							"  const em = concat(new Uint8Array([0]), maskedSeed, maskedDb);",
+							"  return fromBig(modPow(toBig(em), pub.e, pub.n), pub.k);",
+							"}",
+							"",
+							"// ------------------------------------------------------------------ 로그인 본문 생성",
+							"// 결과는 환경 변수 encChallengeId / encKeyId / encEncryptedKey / encIv / encCiphertext 에 저장한다.",
+							"// 요청 Body 의 {{encXxx}} 칸이 이 값으로 채워진다.",
+							"const baseUrl = String(pm.variables.get('base_url') || '').replace(/\\/$/, '');",
+							"const username = pm.variables.get('username');",
+							"const password = pm.variables.get('password');",
+							"const loginChannel = pm.variables.get('loginChannel') || 'WEB';",
+							"",
+							"pm.sendRequest(",
+							"  {",
+							"    url: `${baseUrl}/api/v1/auth/login/challenge`,",
+							"    method: 'GET',",
+							"    header: { 'Accept': 'application/json', 'Cache-Control': 'no-store' },",
+							"  },",
+							"  (err, res) => {",
+							"    if (err) { throw err; }",
+							"    const ch = res.json();",
+							"",
+							"    const plaintext = utf8(JSON.stringify({",
+							"      username,",
+							"      password,",
+							"      loginChannel,",
+							"      challengeId: ch.challengeId,",
+							"      nonce: ch.nonce,",
+							"      issuedAt: Date.now(),",
+							"    }));",
+							"",
+							"    const aesKey = randomBytes(32);",
+							"    const iv = randomBytes(12);",
+							"    const ciphertext = aesGcmEncrypt(aesKey, iv, plaintext);",
+							"    const encryptedKey = rsaOaepEncrypt(parseSpkiPem(ch.publicKey), aesKey);",
+							"",
+							"    pm.environment.set('encChallengeId', ch.challengeId);",
+							"    pm.environment.set('encKeyId', ch.keyId);",
+							"    pm.environment.set('encEncryptedKey', b64(encryptedKey));",
+							"    pm.environment.set('encIv', b64(iv));",
+							"    pm.environment.set('encCiphertext', b64(ciphertext));",
+							"  }",
+							");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"challengeId\": \"{{encChallengeId}}\",\r\n    \"keyId\": \"{{encKeyId}}\",\r\n    \"encryptedKey\": \"{{encEncryptedKey}}\",\r\n    \"iv\": \"{{encIv}}\",\r\n    \"ciphertext\": \"{{encCiphertext}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(function () {\r",
+							"    pm.test(\"Me - HTTP 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    if (pm.response.code !== 200) {\r",
+							"        console.error(\r",
+							"            \"Me 실패:\",\r",
+							"            pm.response.text()\r",
+							"        );\r",
+							"\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    const meResult = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Me - 사용자 확인\", function () {\r",
+							"        pm.expect(meResult.username)\r",
+							"            .to.eql(pm.variables.get(\"username\"));\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Me - 채널 확인\", function () {\r",
+							"        pm.expect(meResult.loginChannel)\r",
+							"            .to.eql(\r",
+							"                pm.variables.get(\"loginChannel\")\r",
+							"            );\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Me - 권한 확인\", function () {\r",
+							"        pm.expect(meResult.roles)\r",
+							"            .to.be.an(\"array\");\r",
+							"    });\r",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me After Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(function () {\r",
+							"    pm.test(\r",
+							"        \"로그아웃 후 Me - HTTP 401\",\r",
+							"        function () {\r",
+							"            pm.response.to.have.status(401);\r",
+							"        }\r",
+							"    );\r",
+							"\r",
+							"    const errorResult = pm.response.json();\r",
+							"\r",
+							"    pm.test(\r",
+							"        \"로그아웃 후 Me - UNAUTHORIZED\",\r",
+							"        function () {\r",
+							"            pm.expect(errorResult.code)\r",
+							"                .to.eql(\"UNAUTHORIZED\");\r",
+							"        }\r",
+							"    );\r",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "위변조 토큰 테스트",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// DocSphere 로그인 Pre-request Script (Postman, crypto-js 전용 버전)",
+							"// 하는 일: 챌린지 조회 -> 로그인 정보를 AES-256-GCM 으로 암호화 -> AES 키를 서버 공개키로 RSA-OAEP(SHA-256) 암호화",
+							"//          -> 로그인 본문(JSON)을 변수 loginBody 에 저장. 요청 Body 는 {{loginBody}} 로 지정한다.",
+							"// 필요 변수: base_url, username, password",
+							"//",
+							"// 외부 패키지(pm.require, npm)나 Node crypto 없이, Postman 에 기본 내장된 crypto-js 만 사용한다.",
+							"// crypto-js 에는 AES-GCM / RSA 가 없어서 아래에 직접 구현했다 (AES 블록 암호와 SHA-256 만 crypto-js 사용).",
+							"// 참고: 스크립트가 오류로 중단돼도 Postman 은 요청을 그대로 보낸다 -> \"본문 형식이 올바르지 않습니다\"(VALIDATION_ERROR)가 나오면",
+							"//       View > Show Postman Console 에서 스크립트 오류를 확인한다.",
+							"const CryptoJS = require('crypto-js');",
+							"",
+							"// ------------------------------------------------------------------ 바이트 유틸",
+							"function bytesToWA(u8) {",
+							"  const words = [];",
+							"  for (let i = 0; i < u8.length; i++) { words[i >>> 2] = (words[i >>> 2] || 0) | (u8[i] << (24 - (i % 4) * 8)); }",
+							"  return CryptoJS.lib.WordArray.create(words, u8.length);",
+							"}",
+							"function waToBytes(wa) {",
+							"  const out = new Uint8Array(wa.sigBytes);",
+							"  for (let i = 0; i < wa.sigBytes; i++) { out[i] = (wa.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff; }",
+							"  return out;",
+							"}",
+							"function concat(...parts) {",
+							"  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));",
+							"  let off = 0;",
+							"  for (const p of parts) { out.set(p, off); off += p.length; }",
+							"  return out;",
+							"}",
+							"function xor(a, b) {",
+							"  const out = new Uint8Array(a.length);",
+							"  for (let i = 0; i < a.length; i++) { out[i] = a[i] ^ b[i]; }",
+							"  return out;",
+							"}",
+							"function toBig(u8) {",
+							"  let h = '';",
+							"  for (const b of u8) { h += b.toString(16).padStart(2, '0'); }",
+							"  return BigInt('0x' + (h || '0'));",
+							"}",
+							"function fromBig(n, len) {",
+							"  const h = n.toString(16).padStart(len * 2, '0');",
+							"  const out = new Uint8Array(len);",
+							"  for (let i = 0; i < len; i++) { out[i] = parseInt(h.substr(i * 2, 2), 16); }",
+							"  return out;",
+							"}",
+							"function randomBytes(n) {",
+							"  // Postman 샌드박스에는 globalThis 가 없을 수 있다. 전역 crypto 가 있을 때만 사용하고, 없으면 crypto-js 난수를 쓴다.",
+							"  // (typeof 는 선언되지 않은 식별자에 대해서만 안전하다 -> 속성 접근 전에 반드시 먼저 검사)",
+							"  if (typeof crypto !== 'undefined' && crypto && typeof crypto.getRandomValues === 'function') {",
+							"    return crypto.getRandomValues(new Uint8Array(n));",
+							"  }",
+							"  return waToBytes(CryptoJS.lib.WordArray.random(n));  // 테스트 도구 용도의 대체 난수",
+							"}",
+							"function sha256(u8) { return waToBytes(CryptoJS.SHA256(bytesToWA(u8))); }",
+							"function b64(u8) { return CryptoJS.enc.Base64.stringify(bytesToWA(u8)); }",
+							"function utf8(str) { return waToBytes(CryptoJS.enc.Utf8.parse(str)); }",
+							"",
+							"// ------------------------------------------------------------------ AES-256-GCM (iv 12바이트, 태그 16바이트, AAD 없음)",
+							"function aesEcb(key, data) {  // data 길이는 16의 배수 (패딩 없음)",
+							"  const enc = CryptoJS.AES.encrypt(bytesToWA(data), bytesToWA(key), { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding });",
+							"  return waToBytes(enc.ciphertext);",
+							"}",
+							"const GCM_R = 0xe1n << 120n;",
+							"function gmul(x, y) {  // GF(2^128) 곱셈",
+							"  let z = 0n;",
+							"  let v = y;",
+							"  for (let i = 127n; i >= 0n; i--) {",
+							"    if ((x >> i) & 1n) { z ^= v; }",
+							"    v = (v & 1n) ? ((v >> 1n) ^ GCM_R) : (v >> 1n);",
+							"  }",
+							"  return z;",
+							"}",
+							"function ghash(h, ct) {",
+							"  let y = 0n;",
+							"  for (let off = 0; off < ct.length; off += 16) {",
+							"    const block = new Uint8Array(16);",
+							"    block.set(ct.subarray(off, off + 16));",
+							"    y = gmul(y ^ toBig(block), h);",
+							"  }",
+							"  return gmul(y ^ BigInt(ct.length * 8), h);  // [len(A)=0 || len(C)]",
+							"}",
+							"function aesGcmEncrypt(key, iv, plaintext) {",
+							"  const h = toBig(aesEcb(key, new Uint8Array(16)));",
+							"  const blocks = Math.max(1, Math.ceil(plaintext.length / 16));",
+							"  const counters = new Uint8Array(blocks * 16);",
+							"  for (let i = 0; i < blocks; i++) {  // 첫 데이터 블록의 카운터는 2 (1 은 태그용 J0)",
+							"    counters.set(iv, i * 16);",
+							"    const c = i + 2;",
+							"    counters.set([(c >>> 24) & 255, (c >>> 16) & 255, (c >>> 8) & 255, c & 255], i * 16 + 12);",
+							"  }",
+							"  const keystream = aesEcb(key, counters);",
+							"  const ct = xor(plaintext, keystream.subarray(0, plaintext.length));",
+							"  const j0 = new Uint8Array(16);",
+							"  j0.set(iv);",
+							"  j0[15] = 1;",
+							"  const tag = fromBig(ghash(h, ct) ^ toBig(aesEcb(key, j0)), 16);",
+							"  return concat(ct, tag);  // WebCrypto 와 동일: 암호문 뒤에 태그",
+							"}",
+							"",
+							"// ------------------------------------------------------------------ RSA-OAEP (SHA-256, MGF1 SHA-256, label 없음)",
+							"function derRead(buf, pos) {",
+							"  let len = buf[pos + 1];",
+							"  let p = pos + 2;",
+							"  if (len & 0x80) {",
+							"    const n = len & 0x7f;",
+							"    len = 0;",
+							"    for (let i = 0; i < n; i++) { len = (len * 256) + buf[p++]; }",
+							"  }",
+							"  return { start: p, end: p + len };",
+							"}",
+							"function stripZero(u8) {",
+							"  let i = 0;",
+							"  while (i < u8.length - 1 && u8[i] === 0) { i++; }",
+							"  return u8.subarray(i);",
+							"}",
+							"function parseSpkiPem(pem) {",
+							"  const der = waToBytes(CryptoJS.enc.Base64.parse(pem.replace(/-----[^-]+-----/g, '').replace(/\\s+/g, '')));",
+							"  const outer = derRead(der, 0);",
+							"  const algorithm = derRead(der, outer.start);",
+							"  const bitString = derRead(der, algorithm.end);",
+							"  const rsaKey = derRead(der, bitString.start + 1);  // BIT STRING 첫 바이트는 unused-bits",
+							"  const nField = derRead(der, rsaKey.start);",
+							"  const eField = derRead(der, nField.end);",
+							"  const n = stripZero(der.subarray(nField.start, nField.end));",
+							"  return { n: toBig(n), e: toBig(der.subarray(eField.start, eField.end)), k: n.length };",
+							"}",
+							"function modPow(base, exp, mod) {",
+							"  let result = 1n;",
+							"  let b = base % mod;",
+							"  let e = exp;",
+							"  while (e > 0n) {",
+							"    if (e & 1n) { result = (result * b) % mod; }",
+							"    e >>= 1n;",
+							"    b = (b * b) % mod;",
+							"  }",
+							"  return result;",
+							"}",
+							"function mgf1(seed, length) {",
+							"  const parts = [];",
+							"  let total = 0;",
+							"  for (let counter = 0; total < length; counter++) {",
+							"    const c = new Uint8Array([(counter >>> 24) & 255, (counter >>> 16) & 255, (counter >>> 8) & 255, counter & 255]);",
+							"    const h = sha256(concat(seed, c));",
+							"    parts.push(h);",
+							"    total += h.length;",
+							"  }",
+							"  return concat(...parts).subarray(0, length);",
+							"}",
+							"function rsaOaepEncrypt(pub, message) {",
+							"  const hLen = 32;",
+							"  if (message.length > pub.k - 2 * hLen - 2) { throw new Error('RSA-OAEP: 메시지가 너무 깁니다.'); }",
+							"  const db = new Uint8Array(pub.k - hLen - 1);",
+							"  db.set(sha256(new Uint8Array(0)), 0);           // lHash (label 없음)",
+							"  db[db.length - message.length - 1] = 1;          // 0x01 구분자 (그 앞은 0 패딩)",
+							"  db.set(message, db.length - message.length);",
+							"  const seed = randomBytes(hLen);",
+							"  const maskedDb = xor(db, mgf1(seed, db.length));",
+							"  const maskedSeed = xor(seed, mgf1(maskedDb, hLen));",
+							"  const em = concat(new Uint8Array([0]), maskedSeed, maskedDb);",
+							"  return fromBig(modPow(toBig(em), pub.e, pub.n), pub.k);",
+							"}",
+							"",
+							"// ------------------------------------------------------------------ 로그인 본문 생성",
+							"// 결과는 환경 변수 encChallengeId / encKeyId / encEncryptedKey / encIv / encCiphertext 에 저장한다.",
+							"// 요청 Body 의 {{encXxx}} 칸이 이 값으로 채워진다.",
+							"const baseUrl = String(pm.variables.get('base_url') || '').replace(/\\/$/, '');",
+							"const username = pm.variables.get('username');",
+							"const password = pm.variables.get('password');",
+							"const loginChannel = pm.variables.get('loginChannel') || 'WEB';",
+							"",
+							"pm.sendRequest(",
+							"  {",
+							"    url: `${baseUrl}/api/v1/auth/login/challenge`,",
+							"    method: 'GET',",
+							"    header: { 'Accept': 'application/json', 'Cache-Control': 'no-store' },",
+							"  },",
+							"  (err, res) => {",
+							"    if (err) { throw err; }",
+							"    const ch = res.json();",
+							"",
+							"    const plaintext = utf8(JSON.stringify({",
+							"      username,",
+							"      password,",
+							"      loginChannel,",
+							"      challengeId: ch.challengeId,",
+							"      nonce: ch.nonce,",
+							"      issuedAt: Date.now(),",
+							"    }));",
+							"",
+							"    const aesKey = randomBytes(32);",
+							"    const iv = randomBytes(12);",
+							"    const ciphertext = aesGcmEncrypt(aesKey, iv, plaintext);",
+							"    const encryptedKey = rsaOaepEncrypt(parseSpkiPem(ch.publicKey), aesKey);",
+							"",
+							"    pm.environment.set('encChallengeId', ch.challengeId);",
+							"    pm.environment.set('encKeyId', ch.keyId);",
+							"    pm.environment.set('encEncryptedKey', b64(encryptedKey));",
+							"    pm.environment.set('encIv', b64(iv));",
+							"    pm.environment.set('encCiphertext', b64(ciphertext));",
+							"  }",
+							");",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"로그인 응답은 200이다\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"\r",
+							"pm.test(\"WEB 로그인 응답이다\", function () {\r",
+							"    pm.expect(body.loginChannel).to.eql(\"WEB\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"사용자 정보가 반환된다\", function () {\r",
+							"    pm.expect(body.username).to.eql(\r",
+							"        pm.variables.get(\"username\")\r",
+							"    );\r",
+							"});\r",
+							"\r",
+							"pm.test(\"응답 본문에 토큰이 노출되지 않는다\", function () {\r",
+							"    pm.expect(body).not.to.have.property(\"accessToken\");\r",
+							"    pm.expect(body).not.to.have.property(\"refreshToken\");\r",
+							"    pm.expect(body).not.to.have.property(\"token\");\r",
+							"});\r",
+							"\r",
+							"const setCookies = pm.response.headers\r",
+							"    .all()\r",
+							"    .filter(header => header.key.toLowerCase() === \"set-cookie\")\r",
+							"    .map(header => header.value);\r",
+							"\r",
+							"pm.test(\"Access Token 쿠키가 발급된다\", function () {\r",
+							"    pm.expect(\r",
+							"        setCookies.some(value =>\r",
+							"            value.startsWith(\"__Host-DocSphere-Access=\")\r",
+							"        )\r",
+							"    ).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Refresh Token 쿠키가 발급된다\", function () {\r",
+							"    pm.expect(\r",
+							"        setCookies.some(value =>\r",
+							"            value.startsWith(\"refresh_token=\")\r",
+							"        )\r",
+							"    ).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"challengeId\": \"{{encChallengeId}}\",\r\n  \"keyId\": \"{{encKeyId}}\",\r\n  \"encryptedKey\": \"{{encEncryptedKey}}\",\r\n  \"iv\": \"{{encIv}}\",\r\n  \"ciphertext\": \"{{encCiphertext}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "토큰만료 테스트",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(function () {\r",
+							"    pm.test(\"Me - HTTP 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    if (pm.response.code !== 200) {\r",
+							"        console.error(\r",
+							"            \"Me 실패:\",\r",
+							"            pm.response.text()\r",
+							"        );\r",
+							"\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    const meResult = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Me - 사용자 확인\", function () {\r",
+							"        pm.expect(meResult.username)\r",
+							"            .to.eql(pm.variables.get(\"username\"));\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Me - 채널 확인\", function () {\r",
+							"        pm.expect(meResult.loginChannel)\r",
+							"            .to.eql(\r",
+							"                pm.variables.get(\"loginChannel\")\r",
+							"            );\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Me - 권한 확인\", function () {\r",
+							"        pm.expect(meResult.roles)\r",
+							"            .to.be.an(\"array\");\r",
+							"    });\r",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const channel = (\r",
+							"    pm.environment.get(\"loginChannel\") || \"WEB\"\r",
+							").toUpperCase();\r",
+							"\r",
+							"if (![\"WEB\", \"AGENT\"].includes(channel)) {\r",
+							"    throw new Error(\"loginChannel은 WEB 또는 AGENT여야 합니다.\");\r",
+							"}\r",
+							"\r",
+							"const refreshPath = channel === \"AGENT\"\r",
+							"    ? \"/api/v1/agent/refresh\"\r",
+							"    : \"/api/v1/auth/refresh\";\r",
+							"\r",
+							"pm.variables.set(\"refreshPath\", refreshPath);\r",
+							"\r",
+							"console.log(\"Refresh channel:\", channel);\r",
+							"console.log(\"Refresh URL:\", pm.environment.get(\"baseUrl\") + refreshPath);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const channel = (\r",
+							"    pm.environment.get(\"loginChannel\") || \"WEB\"\r",
+							").toUpperCase();\r",
+							"\r",
+							"let body = {};\r",
+							"\r",
+							"try {\r",
+							"    body = pm.response.json();\r",
+							"} catch (error) {\r",
+							"    console.error(\"JSON 응답이 아닙니다:\", pm.response.text());\r",
+							"}\r",
+							"\r",
+							"pm.test(\"응답 Content-Type은 JSON이다\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\"))\r",
+							"        .to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"if (pm.response.code === 200) {\r",
+							"    pm.test(\"Refresh API 호출 성공\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Refresh 응답 형식 확인\", function () {\r",
+							"        pm.expect(body.message).to.eql(\"인증 쿠키를 갱신했습니다.\");\r",
+							"        pm.expect(body.tokenType).to.eql(\"Bearer\");\r",
+							"        pm.expect(body.expiresIn).to.be.a(\"number\");\r",
+							"        pm.expect(body.expiresIn).to.be.above(0);\r",
+							"        pm.expect(body.username).to.be.a(\"string\").and.not.empty;\r",
+							"        pm.expect(body.roles).to.be.an(\"array\");\r",
+							"        pm.expect(body.loginChannel).to.eql(channel);\r",
+							"    });\r",
+							"\r",
+							"    const setCookieHeaders = pm.response.headers\r",
+							"        .all()\r",
+							"        .filter(header => header.key.toLowerCase() === \"set-cookie\")\r",
+							"        .map(header => header.value);\r",
+							"\r",
+							"    const expectedAccessCookie = channel === \"AGENT\"\r",
+							"        ? \"__Host-DocSphere-Agent-Access\"\r",
+							"        : \"__Host-DocSphere-Access\";\r",
+							"\r",
+							"    pm.test(\"새 Access Token 쿠키가 발급되었다\", function () {\r",
+							"        const found = setCookieHeaders.some(header =>\r",
+							"            header.startsWith(expectedAccessCookie + \"=\")\r",
+							"        );\r",
+							"\r",
+							"        pm.expect(\r",
+							"            found,\r",
+							"            `${expectedAccessCookie} Set-Cookie가 없습니다.`\r",
+							"        ).to.eql(true);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"새 Refresh Token 쿠키가 발급되었다\", function () {\r",
+							"        const found = setCookieHeaders.some(header =>\r",
+							"            header.startsWith(\"refresh_token=\")\r",
+							"        );\r",
+							"\r",
+							"        pm.expect(\r",
+							"            found,\r",
+							"            \"refresh_token Set-Cookie가 없습니다.\"\r",
+							"        ).to.eql(true);\r",
+							"    });\r",
+							"\r",
+							"    pm.collectionVariables.set(\"refreshResult\", \"SUCCESS\");\r",
+							"    pm.collectionVariables.set(\"authenticatedUsername\", body.username);\r",
+							"    pm.collectionVariables.set(\"accessTokenExpiresIn\", String(body.expiresIn));\r",
+							"\r",
+							"    console.log(\"Refresh 성공:\", body);\r",
+							"} else {\r",
+							"    const refreshErrorCodes = [\r",
+							"        \"REFRESH_MISSING\",\r",
+							"        \"REFRESH_INVALID\",\r",
+							"        \"REFRESH_EXPIRED\",\r",
+							"        \"REFRESH_CONCURRENT\",\r",
+							"        \"REFRESH_REPLAY\",\r",
+							"        \"LOGIN_CHANNEL_MISMATCH\"\r",
+							"    ];\r",
+							"\r",
+							"    pm.test(\"Refresh 실패는 401이다\", function () {\r",
+							"        pm.response.to.have.status(401);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Refresh 오류 응답 형식 확인\", function () {\r",
+							"        pm.expect(body.message).to.be.a(\"string\").and.not.empty;\r",
+							"        pm.expect(body.code).to.be.oneOf(refreshErrorCodes);\r",
+							"    });\r",
+							"\r",
+							"    pm.collectionVariables.set(\r",
+							"        \"refreshResult\",\r",
+							"        body.code || \"UNKNOWN_ERROR\"\r",
+							"    );\r",
+							"\r",
+							"    console.error(\"Refresh 실패:\", body);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/refresh",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "다중테스트",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const baseUrl = pm.environment.get(\"base_url\");\r",
+							"const refreshUrl = `${baseUrl}/api/v1/auth/refresh`;\r",
+							"\r",
+							"// 반드시 아직 한 번도 사용하지 않은 Refresh Token이어야 합니다.\r",
+							"const oldRefreshToken = pm.environment.get(\"refresh_token\");\r",
+							"\r",
+							"if (!oldRefreshToken) {\r",
+							"    throw new Error(\"refresh_token 환경변수가 없습니다.\");\r",
+							"}\r",
+							"\r",
+							"const requestInfo = {\r",
+							"    url: refreshUrl,\r",
+							"    method: \"POST\",\r",
+							"    header: {\r",
+							"        \"X-Requested-With\": \"XMLHttpRequest\",\r",
+							"        \"Cookie\": `refresh_token=${oldRefreshToken}`\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"console.log(\"동일한 Refresh Token으로 5개 요청을 동시에 전송합니다.\");\r",
+							"\r",
+							"for (let i = 1; i <= 100; i++) {\r",
+							"    pm.sendRequest(requestInfo, function (err, response) {\r",
+							"        if (err) {\r",
+							"            console.error(`요청 ${i}: 네트워크 오류`, err);\r",
+							"            return;\r",
+							"        }\r",
+							"\r",
+							"        let body;\r",
+							"        try {\r",
+							"            body = response.json();\r",
+							"        } catch {\r",
+							"            body = response.text();\r",
+							"        }\r",
+							"\r",
+							"        console.log(`요청 ${i}: HTTP ${response.code}`, body);\r",
+							"\r",
+							"        if (response.code === 200) {\r",
+							"            console.log(`✅ 요청 ${i}: Refresh 성공`);\r",
+							"        } else {\r",
+							"            console.warn(\r",
+							"                `⛔ 요청 ${i}: 차단됨`,\r",
+							"                body?.code ?? \"응답 코드 없음\"\r",
+							"            );\r",
+							"        }\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8090/dummy",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"dummy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "JWT알고리즘위변조",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const validToken = pm.environment.get(\"valid_access_token\");\r",
+							"const attackCase = pm.environment.get(\"jwt_attack_case\") || \"none\";\r",
+							"console.log(\"attackCase : \" + attackCase);\r",
+							"\r",
+							"if (!validToken) {\r",
+							"    throw new Error(\"valid_access_token 환경변수가 없습니다.\");\r",
+							"}\r",
+							"\r",
+							"const parts = validToken.split(\".\");\r",
+							"\r",
+							"if (parts.length !== 3) {\r",
+							"    throw new Error(\"JWT 형식이 아닙니다.\");\r",
+							"}\r",
+							"\r",
+							"function base64UrlEncodeAscii(value) {\r",
+							"    return btoa(value)\r",
+							"        .replace(/\\+/g, \"-\")\r",
+							"        .replace(/\\//g, \"_\")\r",
+							"        .replace(/=+$/g, \"\");\r",
+							"}\r",
+							"\r",
+							"let tamperedToken;\r",
+							"\r",
+							"switch (attackCase) {\r",
+							"    case \"none\": {\r",
+							"        // alg:none으로 변경하고 서명을 제거\r",
+							"        const header = {\r",
+							"            typ: \"JWT\",\r",
+							"            alg: \"none\"\r",
+							"        };\r",
+							"\r",
+							"        tamperedToken =\r",
+							"            `${base64UrlEncodeAscii(JSON.stringify(header))}.${parts[1]}.`;\r",
+							"        break;\r",
+							"    }\r",
+							"\r",
+							"    case \"algorithm_swap\": {\r",
+							"        // 원래 서명은 유지하고 알고리즘만 RS256으로 조작\r",
+							"        const header = {\r",
+							"            typ: \"JWT\",\r",
+							"            alg: \"RS256\"\r",
+							"        };\r",
+							"\r",
+							"        tamperedToken =\r",
+							"            `${base64UrlEncodeAscii(JSON.stringify(header))}.${parts[1]}.${parts[2]}`;\r",
+							"        break;\r",
+							"    }\r",
+							"\r",
+							"    case \"signature_removed\": {\r",
+							"        // 기존 알고리즘을 유지한 채 서명만 제거\r",
+							"        tamperedToken = `${parts[0]}.${parts[1]}.`;\r",
+							"        break;\r",
+							"    }\r",
+							"\r",
+							"    case \"signature_modified\": {\r",
+							"        // 서명의 마지막 문자를 변경\r",
+							"        const signature = parts[2];\r",
+							"        const last = signature.slice(-1);\r",
+							"        const replacement = last === \"A\" ? \"B\" : \"A\";\r",
+							"\r",
+							"        tamperedToken =\r",
+							"            `${parts[0]}.${parts[1]}.${signature.slice(0, -1)}${replacement}`;\r",
+							"        break;\r",
+							"    }\r",
+							"\r",
+							"    default:\r",
+							"        throw new Error(`지원하지 않는 공격 유형: ${attackCase}`);\r",
+							"}\r",
+							"\r",
+							"pm.variables.set(\"tampered_access_token\", tamperedToken);\r",
+							"\r",
+							"console.log(`JWT 변조 테스트 실행: ${attackCase}`);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "다중접속로그인",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "청크업로드세션생성",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"업로드 세션 생성 성공\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"\r",
+							"pm.expect(body.uploadId).to.be.a(\"string\").and.not.empty;\r",
+							"pm.expect(body.chunkSize).to.be.above(0);\r",
+							"pm.expect(body.totalChunks).to.be.above(0);\r",
+							"pm.expect(body.status).to.eql(\"UPLOADING\");\r",
+							"\r",
+							"pm.environment.set(\"upload_id\", body.uploadId);\r",
+							"pm.environment.set(\"chunk_size\", body.chunkSize);\r",
+							"pm.environment.set(\"total_chunks\", body.totalChunks);\r",
+							"\r",
+							"console.log(\"uploadId:\", body.uploadId);\r",
+							"console.log(\"chunkSize:\", body.chunkSize);\r",
+							"console.log(\"totalChunks:\", body.totalChunks);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operation\": \"UPLOAD\",\r\n  \"folderId\": \"{{folder_id}}\",\r\n  \"fileName\": \"{{file_name}}\",\r\n  \"fileSize\": {{file_size}},\r\n  \"mimeType\": \"application/pdf\",\r\n  \"expectedFileSha256\": \"{{file_sha256}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/document-uploads",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"document-uploads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "단일 청크 업로드",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/octet-stream",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}/chunks/0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"document-uploads",
+						"{{upload_id}}",
+						"chunks",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "업로드 진행상태",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"업로드 상태 조회 성공\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"const totalChunks = Number(pm.environment.get(\"total_chunks\"));\r",
+							"const fileSize = Number(pm.environment.get(\"file_size\"));\r",
+							"\r",
+							"pm.test(\"모든 청크 업로드 완료\", function () {\r",
+							"    pm.expect(body.uploadedChunks).to.have.lengthOf(totalChunks);\r",
+							"    pm.expect(body.uploadedSize).to.eql(fileSize);\r",
+							"    pm.expect(body.status).to.eql(\"UPLOADING\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"document-uploads",
+						"{{upload_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "업로드 성공",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"청크 조립 및 문서 등록 성공\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"\r",
+							"pm.test(\"문서 코드 반환\", function () {\r",
+							"    pm.expect(body.contentCode).to.be.a(\"string\").and.not.empty;\r",
+							"    pm.expect(body.revisionCode).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"uploaded_content_code\", body.contentCode);\r",
+							"pm.environment.set(\"uploaded_revision_code\", body.revisionCode);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/document-uploads/{{upload_id}}/complete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"document-uploads",
+						"{{upload_id}}",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "다운로드",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"revisionCodes\": [\r\n    \"{{revision_code}}\"\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/documents/download",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "폴더생성",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"폴더 생성 성공: 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Location 헤더 존재\", function () {\r",
+							"    pm.expect(pm.response.headers.has(\"Location\")).to.be.true;\r",
+							"});\r",
+							"\r",
+							"const location = pm.response.headers.get(\"Location\");\r",
+							"\r",
+							"if (location) {\r",
+							"    const createdFolderId = location.split(\"/\").filter(Boolean).pop();\r",
+							"    pm.environment.set(\"createdFolderId\", createdFolderId);\r",
+							"\r",
+							"    console.log(\"생성된 폴더 ID:\", createdFolderId);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/folders",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"folders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "challenge_id",
+			"value": ""
+		},
+		{
+			"key": "challenge_nonce",
+			"value": ""
+		},
+		{
+			"key": "challenge_key_id",
+			"value": ""
+		},
+		{
+			"key": "challenge_public_key",
+			"value": ""
+		},
+		{
+			"key": "challenge_algorithm",
+			"value": ""
+		},
+		{
+			"key": "login_request_body",
+			"value": ""
+		},
+		{
+			"key": "refreshResult",
+			"value": ""
+		},
+		{
+			"key": "authenticatedUsername",
+			"value": ""
+		},
+		{
+			"key": "accessTokenExpiresIn",
+			"value": ""
+		}
+	]
 }

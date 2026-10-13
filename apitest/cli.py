@@ -19,7 +19,10 @@ from .core.config import load_target, parse_header_args
 from .core.metrics import Recorder
 from .core.report import checks_passed, print_summary, write_report
 from .core.runner import run_scenario
-from .targets.skmr.scenarios import SCENARIOS
+from .targets.skmr.scenarios import SCENARIOS as SKMR_SCENARIOS
+from .targets.skmr_admin.scenarios import SCENARIOS as SKMR_ADMIN_SCENARIOS
+
+SCENARIOS: dict[str, type] = {**SKMR_SCENARIOS, **SKMR_ADMIN_SCENARIOS}
 
 
 def configure_console() -> None:
@@ -38,7 +41,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("list", help="시나리오 목록")
     for name, cls in SCENARIOS.items():
         p = sub.add_parser(name, help=cls.description)
-        p.add_argument("--target", default="skmr")
+        p.add_argument("--target", default=getattr(cls, "target", "skmr"))
         p.add_argument("--users", type=int, default=0, help="가상 유저 수 (0=계정 수). 계정보다 많으면 순환 배정")
         p.add_argument("--iterations", type=int, default=1, help="유저당 반복 횟수")
         p.add_argument("--duration", type=float, default=0, help="초. 지정하면 iterations 대신 이 시간 동안 반복")

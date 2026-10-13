@@ -6,21 +6,37 @@ skmr 로그인은 서버가 낸 일회용 챌린지에 맞춰 로그인 정보�
 스크립트는 외부 패키지나 Node crypto 없이 Postman 에 기본 내장된 `crypto-js` 만 사용합니다.
 (Postman 스크립트 환경에는 Node crypto 가 없고, npm 패키지(pm.require)도 환경에 따라 막혀 있습니다.)
 
+## 세트 목록
+
+컬렉션과 환경은 항상 번호가 같은 것끼리 짝입니다 (`N. ...postman_collection.json` + `N. ...postman_environment.json`).
+
+예전에는 1~4까지 네 세트였지만, 2·3번(로그인+조회 5종 / 1·2 병합+업로드)의 기능이 전부 4번에 포함되어 있어
+2·3번은 지우고 4번을 **2번으로** 정리했습니다. 지금은 두 세트만 있습니다.
+
+| 세트 | 컬렉션 | 내용 | 상태 |
+|---|---|---|---|
+| 1 | `1. Login Test Copy` | 로그인/로그아웃/토큰 갱신/청크 업로드 등 원본 설계 (가장 풍부한 검증 문구) | 실서버 로그인 확인. 업로드 구간은 폴더 설정에 따라 다름 |
+| **2** | `2. API 전체 루틴` | 명세(OpenAPI) 기반 자동 생성. 로그인부터 끝까지 82개 요청이 한 루틴으로 연결 (인증 흐름, 조회, 업로드 5개 API, 조회 확장 포함). 읽기 전용 76개 + 확인된 서버 오류 참고 5개 | Postman CLI 로 2회 연속 82/82 요청·109~145/109~145 검증 통과 (서버 상태에 따라 검증 개수 변동) |
+
+처음 쓰신다면 **세트 2**를 추천합니다. 범위가 가장 넓고 실서버로 반복 검증했습니다. 세트 1은 원본 설계 참고용으로 남겨뒀습니다.
+
 ## 파일
 
 | 파일 | 용도 |
 |---|---|
-| skmr_api.postman_collection.json | 요청 5개 (로그인, me, 루트 폴더, 문서 목록, 토큰 갱신) |
-| skmr.postman_environment.json | 환경 변수 (base_url, username, password) |
-| skmr_login_prerequest.js | 로그인 암호화 스크립트 단독본 |
+| `N. ...postman_collection.json` / `N. ...postman_environment.json` | 세트별 컬렉션/환경 (위 표 참고) |
+| `skmr_login_prerequest.js` | 로그인 암호화 Pre-request Script 단독본 (아래 "방법 2"로 직접 설정할 때 사용) |
+| `Jenkinsfile` | Postman CLI 로 컬렉션을 CI 에서 돌리는 파이프라인 예시 (아래 CI 섹션 참고) |
 
 ## 방법 1. 파일 가져오기 (권장)
 
-1. Postman 왼쪽 위 Import 클릭, JSON 파일 2개(collection, environment)를 끌어다 놓습니다. 이전에 가져온 컬렉션이 있으면 삭제하고 다시 가져옵니다.
-2. 오른쪽 위 환경 선택 칸에서 skmr 를 고릅니다.
-3. 환경 편집에서 password 의 Current value 에 비밀번호를 입력하고 저장합니다.
-4. 컬렉션의 "1. 로그인 (암호화)" 를 Send 합니다. 200 과 "로그인에 성공했습니다." 가 나오면 성공입니다.
-5. 이어서 2~5번 요청을 Send 합니다. 로그인 쿠키가 Postman Cookie Jar 에 저장되어 자동으로 인증됩니다.
+세트 2 기준입니다. 세트 1도 번호만 맞춰 똑같이 하면 됩니다.
+
+1. Postman 왼쪽 위 Import 클릭, `2. API 전체 루틴.postman_collection.json`과 `2. API 전체 루틴.postman_environment.json`을 끌어다 놓습니다. 이전에 가져온 같은 번호의 컬렉션/환경이 있으면 삭제하고 다시 가져옵니다.
+2. 오른쪽 위 환경 선택 칸에서 `DocSphere API 전체 루틴`을 고릅니다.
+3. 환경 편집에서 `password`의 Current value 에 비밀번호를 입력하고 저장합니다. `username`/`base_url`/`loginChannel`은 이미 채워져 있습니다 (`username`은 `seungho.choi`).
+4. 컬렉션 우클릭 > Run 으로 `1. 전체 API 루틴` 폴더를 실행합니다. 로그인부터 끝까지 한 번에 돕니다.
+5. 나머지 변수(`folder_id`, `revision_code` 등)는 실행 중 앞 요청들이 자동으로 채웁니다. 직접 입력할 필요 없습니다.
 
 ## 방법 2. 직접 설정 (가져오기가 안 될 때)
 
@@ -29,7 +45,7 @@ skmr 로그인은 서버가 낸 일회용 챌린지에 맞춰 로그인 정보�
    | 변수 | 값 |
    |---|---|
    | base_url | https://skmr-api.ifns.work |
-   | username | 계정 아이디 (예: new1) |
+   | username | 계정 아이디 (예: seungho.choi) |
    | password | 비밀번호 |
 
 2. 새 요청 만들기: 메서드 POST, 주소 `{{base_url}}/api/v1/auth/login`
@@ -61,9 +77,23 @@ skmr 로그인은 서버가 낸 일회용 챌린지에 맞춰 로그인 정보�
 
 ## 검증 범위
 
-스크립트는 Postman 과 같은 조건(Node crypto 없음, Buffer 없음, require 는 crypto-js 3.1.9-1 만 허용)의 하네스에서 실행해,
-실서버 로그인이 200 으로 연속 3회 통과하는 것까지 확인했습니다. Postman 앱 안에서의 실행은 직접 확인하지 못했습니다.
+로그인 스크립트는 실제 Postman 앱과 Postman CLI 양쪽에서 실서버 로그인 성공을 확인했습니다.
+세트 2는 Postman CLI(`postman collection run`)로 실서버에 반복 실행해 전수 통과를 확인했습니다.
+
+## CI (Jenkins)
+
+`Jenkinsfile`이 Postman CLI로 컬렉션을 돌리는 예시입니다. 쓰기 전에 다음을 본인 환경에 맞게 바꿔야 합니다.
+
+1. Postman 앱에서 원하는 세트의 컬렉션/환경을 Import 하고, Postman 클라우드 워크스페이스에 저장(동기화)합니다.
+2. 컬렉션 우클릭 > Share 로 나오는 링크에서 `{workspaceId}-{collectionId}` 형태의 ID 를 확인해 `Jenkinsfile`의 `COLLECTION_ID`/`ENVIRONMENT_ID`에 넣습니다.
+3. Postman 계정 설정 > API keys 에서 키를 발급하고, Jenkins Job 의 Credentials 에 **Secret text**로 등록합니다 (ID: `postman-api-key`). 평문 환경변수로 넘기지 않고 `withCredentials`로 바인딩합니다.
+4. `tools { nodejs ... }` 줄은 Postman CLI 설치 자체에는 필요 없습니다. 다른 스테이지가 Node 를 안 쓰면 지워도 됩니다.
+5. `--output postman-results` 로 결과를 YAML 파일로 남기고, `archiveArtifacts`로 실패 시에도 보관합니다.
+
+콘솔 출력(Console Output)에 터미널과 같은 Pass/Fail 표가 그대로 찍힙니다. 그 구간을 복사해서 공유하면 결과를 같이 볼 수 있습니다.
 
 ## 대안
 
 - Python 도구로 로그인 검증: `.venv\Scripts\python.exe -m apitest smoke`
+- Python 도구로 API 전체 카탈로그(실제 응답값 포함) 수집: `.venv\Scripts\python.exe -m apitest.targets.skmr.probe_spec --out-dir docs/api`
+- Python 도구로 동시 접근 과부하/스트레스: `.venv\Scripts\python.exe -m apitest survey --users 30 --iterations 10`

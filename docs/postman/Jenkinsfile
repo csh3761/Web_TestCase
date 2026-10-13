@@ -1,0 +1,49 @@
+// DocSphere(skmr) Postman 컬렉션을 Jenkins 에서 실행하는 파이프라인.
+// 실행 전 준비:
+//   1. Postman 앱에서 docs/postman 의 컬렉션/환경 파일을 본인 워크스페이스로 Import.
+//   2. 환경의 password 값을 채우고(Current value), 컬렉션/환경을 Postman 클라우드에 저장(동기화).
+//   3. Postman 계정 설정 > API keys 에서 키 발급.
+//   4. Jenkins > 해당 Job > Credentials 에 Secret text 로 등록 (ID 는 아래 credentialsId 와 맞춤).
+//   5. 아래 COLLECTION_ID / ENVIRONMENT_ID 를 본인 것으로 교체.
+//      Postman 에서 컬렉션 우클릭 > Share > 링크의 "{workspaceId}-{collectionId}" 부분이 ID 이다.
+pipeline {
+  agent any
+
+  tools { nodejs '{your_nodejs_configured_tool_name}' }  // Postman CLI 설치 자체엔 Node 가 필요 없음. 다른 스테이지에서 안 쓰면 이 줄은 지워도 된다.
+
+  environment {
+    COLLECTION_ID = '57860640-c1186823-9167-4021-84c3-63ad438ea01d'
+    ENVIRONMENT_ID = '57860640-b52807fd-d1a4-4519-81b1-942938c7d268'
+  }
+
+  stages {
+    stage('Install Postman CLI') {
+      steps {
+        sh 'curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh'
+      }
+    }
+
+    stage('Postman CLI Login') {
+      steps {
+        withCredentials([string(credentialsId: 'postman-api-key', variable: 'POSTMAN_API_KEY')]) {
+          sh 'postman login --with-api-key $POSTMAN_API_KEY'
+        }
+      }
+    }
+
+    stage('Running collection') {
+      steps {
+        // 원래 스니펫은 "<id>"-e 사이에 공백이 없어 두 인자가 한 문자열로 붙어버리는 오타가 있었음 (고침).
+        // --output 으로 결과를 파일로도 남겨 실패 시에도 아티팩트로 확인할 수 있게 한다.
+        sh 'postman collection run "$COLLECTION_ID" -e "$ENVIRONMENT_ID" --output postman-results'
+      }
+    }
+  }
+
+  post {
+    always {
+      // collection run 이 실패(테스트 실패/오류)해도 결과 파일은 항상 보관한다.
+      archiveArtifacts artifacts: 'postman-results/**', allowEmptyArchive: true
+    }
+  }
+}

@@ -1,0 +1,6033 @@
+{
+  "seeds": {
+    "folderId": [
+      "DOCBOXM_000000000000706",
+      "DOCBOXM_000000000000663",
+      "DOCBOXM_000000000000709"
+    ],
+    "gubun": [
+      "D",
+      "G"
+    ],
+    "departmentCode": [
+      "DEPT_00000000000035",
+      "DEPT_00000000000037",
+      "DEPT_000000000000029"
+    ],
+    "groupCode": [
+      "GROUP_00000000000046",
+      "GROUP_00000000000054"
+    ],
+    "revisionCode": [
+      "R0000000000000002506",
+      "R0000000000000002084"
+    ],
+    "approvalId": [
+      "APPROVAL_000000000000415",
+      "APPROVAL_000000000000414",
+      "APPROVAL_000000000000413"
+    ],
+    "indexName": [
+      "top_queries-2026.10.08-59467",
+      "top_queries-2026.10.07-59466",
+      "top_queries-2026.10.06-59465"
+    ],
+    "aliasName": [
+      ".kibana",
+      ".kibana_92668751_admin",
+      ".opendistro-ism-managed-index-history-write"
+    ],
+    "repo": [
+      "ecm-backup",
+      "production-backups"
+    ],
+    "name": [
+      "123",
+      "tenant_template",
+      "query_insights_top_queries_template"
+    ],
+    "policyId": [
+      "policy-001",
+      "policy-002",
+      "policy-003"
+    ],
+    "clusterId": [
+      "cluster-1"
+    ],
+    "nodeId": [
+      "os-standard-61",
+      "K4silGQ8Ry6BubZ1pVoO4A"
+    ],
+    "repository": [
+      "ecm-backup"
+    ],
+    "repoName": [
+      "ecm-backup"
+    ]
+  },
+  "rows": [
+    {
+      "tag": "Folder Favorites",
+      "method": "GET",
+      "path": "/api/v1/folder-favorites",
+      "summary": "폴더 즐겨찾기 목록",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FolderFavoriteItemResponse"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folder-favorites",
+      "status": 200,
+      "sample": "{\"items\": []}"
+    },
+    {
+      "tag": "Folder Favorites",
+      "method": "PUT",
+      "path": "/api/v1/folder-favorites",
+      "summary": "폴더 즐겨찾기 추가",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "gubun": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scopeCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "folderId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "folderId",
+          "gubun",
+          "scopeCode"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "favoritesCode": {
+            "type": "string"
+          },
+          "gubun": {
+            "type": "string"
+          },
+          "scopeCode": {
+            "type": "string"
+          },
+          "scopeKey": {
+            "type": "string"
+          },
+          "folderId": {
+            "type": "string"
+          },
+          "scopeName": {
+            "type": "string"
+          },
+          "folderName": {
+            "type": "string"
+          },
+          "displayPath": {
+            "type": "string"
+          },
+          "segments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sortOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Folder Favorites",
+      "method": "DELETE",
+      "path": "/api/v1/folder-favorites",
+      "summary": "폴더 즐겨찾기 해제(폴더)",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "PUT",
+      "path": "/api/v1/documents/{revisionCode}/favorite",
+      "summary": "즐겨찾기 추가",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "DELETE",
+      "path": "/api/v1/documents/{revisionCode}/favorite",
+      "summary": "즐겨찾기 해제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "PUT",
+      "path": "/api/v1/documents/locks",
+      "summary": "문서 편집 잠금",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "DELETE",
+      "path": "/api/v1/documents/locks",
+      "summary": "문서 잠금 해제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "PUT",
+      "path": "/api/v1/documents/favorites",
+      "summary": "즐겨찾기 추가(일괄)",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "DELETE",
+      "path": "/api/v1/documents/favorites",
+      "summary": "즐겨찾기 해제(일괄)",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Document chunk uploads",
+      "method": "PUT",
+      "path": "/api/v1/document-uploads/{uploadId}/chunks/{chunkIndex}",
+      "summary": "청크 업로드",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Dashboard",
+      "method": "GET",
+      "path": "/api/v1/dashboard/layout",
+      "summary": "레이아웃 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDefault": {
+            "type": "boolean"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWidgetInstanceResponse"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/dashboard/layout",
+      "status": 200,
+      "sample": "{\"version\": 1, \"fromDefault\": false, \"widgets\": [{\"id\": \"w-default-1\", \"type\": \"APPROVAL_PENDING\", \"title\": \"결재 대기\", \"x\": 0, \"y\": 0, \"w\": 6, \"h\": 4, \"config\": {\"limit\": 10}}, {\"id\": \"w-default-2\", \"type\": \"RECENT_WORKED\", \"title\": \"최근 작업 문서\", \"x\": 6, \"y\": 0, \"w\": 6, \"h\": 4, \"config\": {\"limit\": 10}}, {\"id\": \"w-default-3\", \"type\": \"FAVORITES\", \"title\": \"즐겨찾기\", \"x\": 0, \"y\": 4, \"w\": 6, \"h\": 4, \"config\": {\"limit\": 10}}, {\"id\": \"w-default-4\", \"type\": \"FOLDER_ROOTS\", \"title\": \"FOLDER_ROOTS\", \"x\": 6, \"y\": 4, \"w\": 6, \"h\": 6, \"config\": {\"expandDepth\": 1}}, {\"id\": \"w-1d38dfa8-5330-464f-81de-69e8fc61a879\"...(생략)"
+    },
+    {
+      "tag": "Dashboard",
+      "method": "PUT",
+      "path": "/api/v1/dashboard/layout",
+      "summary": "레이아웃 저장",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WidgetInstancePayload"
+            }
+          }
+        },
+        "required": [
+          "widgets"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDefault": {
+            "type": "boolean"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWidgetInstanceResponse"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "PUT",
+      "path": "/api/v1/agent/documents/{revisionCode}/favorite",
+      "summary": "단일 문서 즐겨찾기 추가",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "DELETE",
+      "path": "/api/v1/agent/documents/{revisionCode}/favorite",
+      "summary": "단일 문서 즐겨찾기 해제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "PUT",
+      "path": "/api/v1/agent/documents/locks",
+      "summary": "문서 체크아웃",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/documents/locks",
+      "summary": "문서 체크아웃 취소",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Agent",
+      "method": "PUT",
+      "path": "/api/v1/agent/documents/favorites",
+      "summary": "즐겨찾기 추가",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/documents/favorites",
+      "summary": "즐겨찾기 해제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "repository-controller",
+      "method": "PUT",
+      "path": "/api/repositories/{name}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/RepositorySettings"
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "repository-controller",
+      "method": "DELETE",
+      "path": "/api/repositories/{name}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "GET",
+      "path": "/api/index-templates/{name}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/index-templates/123",
+      "status": 200,
+      "sample": "{\"template\": {\"settings\": {}, \"mappings\": {}}, \"name\": \"123\"}"
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "PUT",
+      "path": "/api/index-templates/{name}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "templateName": {
+            "type": "string"
+          },
+          "indexPattern": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfShards": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfReplicas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "templateSettings": {
+            "type": "string"
+          },
+          "templateMappings": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateFieldRequest"
+            }
+          },
+          "templateMappingsSafe": {
+            "type": "string"
+          },
+          "templateSettingsSafe": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object"
+      }
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "DELETE",
+      "path": "/api/index-templates/{name}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object"
+      }
+    },
+    {
+      "tag": "alias-controller",
+      "method": "PUT",
+      "path": "/api/aliases/{aliasName}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "mappedIndices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "writeIndex": {
+            "type": "string"
+          },
+          "routing": {
+            "type": "string"
+          },
+          "filter": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "alias-controller",
+      "method": "DELETE",
+      "path": "/api/aliases/{aliasName}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search/form",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SearchForm"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/search/form",
+      "status": 500,
+      "sample": "{\"message\": \"요청 처리 중 오류가 발생했습니다.\", \"code\": \"INTERNAL_SERVER_ERROR\"}"
+    },
+    {
+      "tag": "search-controller",
+      "method": "POST",
+      "path": "/api/v1/search/form",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "errCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {},
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tag": "search-controller",
+      "method": "DELETE",
+      "path": "/api/v1/search/form",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "errCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {},
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Folders",
+      "method": "POST",
+      "path": "/api/v1/folders",
+      "summary": "폴더 생성",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "folderId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gubun": {
+            "type": "string",
+            "minLength": 1
+          },
+          "folderName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetCode": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "folderId",
+          "folderName",
+          "gubun"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Folders",
+      "method": "POST",
+      "path": "/api/v1/folders/{folderId}/share-links",
+      "summary": "폴더 공유 링크 발급",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "gubun": {
+            "type": "string"
+          },
+          "trash": {
+            "type": "boolean"
+          },
+          "expiresInDays": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "linkCode": {
+            "type": "string"
+          },
+          "shareUrl": {
+            "type": "string"
+          },
+          "folderId": {
+            "type": "string"
+          },
+          "gubun": {
+            "type": "string"
+          },
+          "trash": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Eapproval",
+      "method": "POST",
+      "path": "/api/v1/eapprovals",
+      "summary": "전자결재 상신",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 0
+          },
+          "requestComment": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 0
+          },
+          "requestType": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "downloadDeadline": {
+            "type": "string",
+            "format": "date"
+          },
+          "reviewUser1": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewUser2": {
+            "type": "string"
+          },
+          "reviewUser3": {
+            "type": "string"
+          },
+          "approveUser": {
+            "type": "string",
+            "minLength": 1
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EapprovalCreateFileItem"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "approveUser",
+          "files",
+          "requestComment",
+          "requestType",
+          "reviewUser1",
+          "title"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "eapprovalCode": {
+            "type": "string"
+          },
+          "eapprovalTitle": {
+            "type": "string"
+          },
+          "requestType": {
+            "type": "string"
+          },
+          "eapprovalState": {
+            "type": "string"
+          },
+          "downloadDeadline": {
+            "type": "string",
+            "format": "date"
+          },
+          "fileCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requestUser": {
+            "type": "string"
+          },
+          "requestDt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/documents/{revisionCode}/share-links",
+      "summary": "문서 공유 링크 발급",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "shareUrl": {
+            "type": "string"
+          },
+          "linkCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/documents/upload",
+      "summary": "Web 일반 문서 업로드",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/documents/download",
+      "summary": "문서 다운로드",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/documents/download-jobs",
+      "summary": "재개 가능한 다운로드 준비",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "downloadUrl": {
+            "type": "string"
+          },
+          "chunkUrlTemplate": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chunkSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalChunks": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fileSha256": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Document chunk uploads",
+      "method": "POST",
+      "path": "/api/v1/document-uploads",
+      "summary": "청크 업로드 세션 생성",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "pattern": "(?i)^\\s*$|^\\s*(UPLOAD|CHECK_IN)\\s*$"
+          },
+          "folderId": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "fileName": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 0
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mimeType": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "expectedFileSha256": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "(?i)^[0-9a-f]{64}$"
+          },
+          "contentCategory": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "securityLevel": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "retentionType": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "contentCode": {
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 0
+          },
+          "versionType": {
+            "type": "string",
+            "pattern": "(?i)^\\s*$|^\\s*(MAJOR|MINOR)\\s*$"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 0
+          },
+          "permissionGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PermissionGrant"
+            },
+            "maxItems": 200,
+            "minItems": 0
+          }
+        },
+        "required": [
+          "expectedFileSha256",
+          "fileName"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chunkSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalChunks": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "uploadedSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "uploadedChunks": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "document": {
+            "$ref": "#/components/schemas/DocUploadResponse"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Document chunk uploads",
+      "method": "POST",
+      "path": "/api/v1/document-uploads/{uploadId}/complete",
+      "summary": "청크 조립 및 문서 등록",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/document-moves",
+      "summary": "문서 이동",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          }
+        },
+        "required": [
+          "revisionCodes",
+          "target"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "moved": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoveResultItem"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "POST",
+      "path": "/api/v1/document-copies",
+      "summary": "문서 복사",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/Properties"
+          }
+        },
+        "required": [
+          "revisionCodes",
+          "target"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "copied": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CopyResultItem"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Dashboard",
+      "method": "GET",
+      "path": "/api/v1/dashboard/widgets",
+      "summary": "위젯 카탈로그 조회",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/WidgetCatalogItemResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/dashboard/widgets",
+      "status": 200,
+      "sample": "[{\"widgetType\": \"APPROVAL_PENDING\", \"title\": \"결재 대기\", \"description\": \"내가 처리할 대기 결재\", \"defaultWidth\": 6, \"defaultHeight\": 4, \"minWidth\": 4, \"minHeight\": 3, \"maxWidth\": null, \"maxHeight\": null}, {\"widgetType\": \"MY_WORKBOXES\", \"title\": \"내 업무함\", \"description\": \"내가 속한 개인·부서·프로젝트 업무함 목록\", \"defaultWidth\": 4, \"defaultHeight\": 5, \"minWidth\": 3, \"minHeight\": 3, \"maxWidth\": null, \"maxHeight\": null}, {\"widgetType\": \"APPROVAL_SENT_PENDING\", \"title\": \"내 요청 결재(대기)\", \"description\": \"내가 요청한 대기 결재\", \"defaultWidth\": 6, \"defaultHeight\": 4, \"minWidth\": 4, \"minHeight\": 3, \"maxWidth\": null, \"maxHeight\": null}, {\"wid...(생략)"
+    },
+    {
+      "tag": "Dashboard",
+      "method": "POST",
+      "path": "/api/v1/dashboard/widgets",
+      "summary": "위젯 추가",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "x": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "w": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "h": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDefault": {
+            "type": "boolean"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWidgetInstanceResponse"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Auth",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "summary": "인증 쿠키 갱신",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object"
+      }
+    },
+    {
+      "tag": "Auth",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "summary": "Web/Agent 통합 로그아웃",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Auth",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "summary": "Web/Agent 통합 로그인",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "keyId": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "encryptedKey": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 0
+          },
+          "iv": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "ciphertext": {
+            "type": "string",
+            "maxLength": 16384,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "challengeId",
+          "ciphertext",
+          "encryptedKey",
+          "iv",
+          "keyId"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "loginChannel": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Approval",
+      "method": "GET",
+      "path": "/api/v1/approvals",
+      "summary": "결재 목록 조회",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ApprovalListItemResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/approvals",
+      "status": 200,
+      "sample": "[{\"approvalCode\": \"APPROVAL_000000000000415\", \"approvalTitle\": \"문서 열람 권한 요청\", \"approvalFileCount\": 1, \"approvalState\": \"PJ\", \"approvalWantUser\": \"user_1\", \"approvalAuthUser\": \"\", \"approvalReqDate\": \"2026-07-29T14:47:13.45816\", \"approvalType\": \"READ\", \"approvalEndDate\": \"2026-07-31T09:32:14.441654\"}, {\"approvalCode\": \"APPROVAL_000000000000414\", \"approvalTitle\": \"문서 열람 권한 요청\", \"approvalFileCount\": 1, \"approvalState\": \"PA\", \"approvalWantUser\": \"user_1\", \"approvalAuthUser\": \"\", \"approvalReqDate\": \"2026-07-29T14:47:11.47452\", \"approvalType\": \"READ\", \"approvalEndDate\": \"2026-07-31T09:32:17.277453\"},...(생략)"
+    },
+    {
+      "tag": "Approval",
+      "method": "POST",
+      "path": "/api/v1/approvals",
+      "summary": "결재 요청 생성",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "approvalTitle": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "requestComment": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 0
+          },
+          "authorCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "approvalReqtypeCd": {
+            "type": "string"
+          },
+          "approvalType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "approvalTitle",
+          "authorCodes",
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "approvalCode": {
+            "type": "string"
+          },
+          "approvalState": {
+            "type": "string"
+          },
+          "approvalFileCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approvalWantUser": {
+            "type": "string"
+          },
+          "approvalReqDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/permission-requests",
+      "summary": "권한 요청",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "approvalTitle": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "requestComment": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 0
+          },
+          "authorCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "approvalReqtypeCd": {
+            "type": "string"
+          },
+          "approvalType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "approvalTitle",
+          "authorCodes",
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "approvalCode": {
+            "type": "string"
+          },
+          "approvalState": {
+            "type": "string"
+          },
+          "approvalFileCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approvalWantUser": {
+            "type": "string"
+          },
+          "approvalReqDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/logout",
+      "summary": "Agent 로그아웃",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/login",
+      "summary": "Agent 로그인",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "password",
+          "username"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "loginChannel": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "agent-handoff-controller",
+      "method": "POST",
+      "path": "/api/v1/agent/handoff",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "to"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "loginUrl": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/documents/{revisionCode}/share-links",
+      "summary": "문서 URL 복사",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "shareUrl": {
+            "type": "string"
+          },
+          "linkCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/documents/upload",
+      "summary": "Agent 일반 문서 업로드",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/document-moves",
+      "summary": "문서 이동",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          }
+        },
+        "required": [
+          "revisionCodes",
+          "target"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "moved": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoveResultItem"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "POST",
+      "path": "/api/v1/agent/document-copies",
+      "summary": "문서 복사",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/Properties"
+          }
+        },
+        "required": [
+          "revisionCodes",
+          "target"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "copied": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CopyResultItem"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "GET",
+      "path": "/api/snapshot",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Snapshot"
+        }
+      },
+      "called": true,
+      "called_path": "/api/snapshot",
+      "status": 500,
+      "sample": "{\"message\": \"요청 처리 중 오류가 발생했습니다.\", \"code\": \"INTERNAL_SERVER_ERROR\"}"
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "POST",
+      "path": "/api/snapshot",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "repository": {
+            "type": "string"
+          },
+          "snapshotName": {
+            "type": "string"
+          },
+          "indicesToInclude": {
+            "type": "string"
+          },
+          "includeGlobalState": {
+            "type": "boolean"
+          },
+          "ignoreUnavailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "repository": {
+            "type": "string"
+          },
+          "includedIndices": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "POST",
+      "path": "/api/snapshot/{repo}/{snapshot}/restore",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "includeGlobalState": {
+            "type": "boolean"
+          },
+          "ignoreUnavailable": {
+            "type": "boolean"
+          },
+          "partial": {
+            "type": "boolean"
+          },
+          "includeAliases": {
+            "type": "boolean"
+          },
+          "renamePattern": {
+            "type": "string"
+          },
+          "renameReplacement": {
+            "type": "string"
+          },
+          "indices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RestoreIndexItem"
+            }
+          },
+          "aliasMappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AliasMappingItem"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "POST",
+      "path": "/api/snapshot/restore",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "POST",
+      "path": "/api/snapshot/repository",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "POST",
+      "path": "/api/snapshot/create",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "repository-controller",
+      "method": "GET",
+      "path": "/api/repositories",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Repository"
+        }
+      },
+      "called": true,
+      "called_path": "/api/repositories",
+      "status": 200,
+      "sample": "[{\"id\": \"ecm-backup\", \"name\": \"ecm-backup\", \"type\": \"fs\", \"location\": \"snapshots/ecm-backup\", \"compress\": \"true\", \"readonly\": \"false\", \"lastUpdated\": \"2026-10-08 10:06:16\"}, {\"id\": \"production-backups\", \"name\": \"production-backups\", \"type\": \"fs\", \"location\": \"snapshots/production-backups\", \"compress\": \"true\", \"readonly\": \"false\", \"lastUpdated\": \"2026-10-08 10:06:16\"}]"
+    },
+    {
+      "tag": "repository-controller",
+      "method": "POST",
+      "path": "/api/repositories",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/RepositorySettings"
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "ism-controller",
+      "method": "GET",
+      "path": "/api/ism/policies/{policyId}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IsmPolicy"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/ism/policies/policy-001",
+      "status": 200,
+      "sample": "{\"data\": {\"policyId\": \"policy-001\", \"description\": \"converted from ILM (hot/warm/delete)\", \"defaultState\": \"hot\", \"priority\": null, \"schemaVersion\": 24, \"lastUpdatedTime\": \"-\", \"states\": [\"hot\", \"warm\", \"delete\"], \"indexPatterns\": [], \"appliedIndices\": [], \"raw\": {\"_id\": \"policy-001\", \"_version\": 1, \"_seq_no\": 0, \"_primary_term\": 1, \"policy\": {\"policy_id\": \"policy-001\", \"description\": \"converted from ILM (hot/warm/delete)\", \"last_updated_time\": 1774833855650, \"schema_version\": 24, \"error_notification\": null, \"default_state\": \"hot\", \"states\": [{\"name\": \"hot\", \"actions\": [], \"transitions\": [{\"st...(생략)"
+    },
+    {
+      "tag": "ism-controller",
+      "method": "POST",
+      "path": "/api/ism/policies/{policyId}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "ism-controller",
+      "method": "DELETE",
+      "path": "/api/ism/policies/{policyId}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "ism-controller",
+      "method": "POST",
+      "path": "/api/ism/policies/{policyId}/detach-and-delete",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "ism-controller",
+      "method": "POST",
+      "path": "/api/ism/policies/detach",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "ism-controller",
+      "method": "POST",
+      "path": "/api/ism/policies/apply",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "enum": [
+              "APPLIED",
+              "ALREADY_ASSIGNED",
+              "DIFFERENT_POLICY_EXISTS",
+              "FAILED"
+            ]
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SearchPageResponseIndex"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices",
+      "status": 200,
+      "sample": "{\"data\": {\"items\": [{\"id\": \"top_queries-2026.10.08-59467\", \"name\": \"top_queries-2026.10.08-59467\", \"status\": \"OPEN\", \"health\": \"GREEN\", \"docsCount\": 42, \"storageSize\": \"248.1kb\", \"primarySize\": \"248.1kb\", \"shards\": 1, \"replicas\": 0, \"createdDate\": \"2026-10-08\"}, {\"id\": \"top_queries-2026.10.07-59466\", \"name\": \"top_queries-2026.10.07-59466\", \"status\": \"OPEN\", \"health\": \"GREEN\", \"docsCount\": 861, \"storageSize\": \"390.3kb\", \"primarySize\": \"390.3kb\", \"shards\": 1, \"replicas\": 0, \"createdDate\": \"2026-10-07\"}, {\"id\": \"top_queries-2026.10.06-59465\", \"name\": \"top_queries-2026.10.06-59465\", \"status\": \"OPE...(생략)"
+    },
+    {
+      "tag": "index-controller",
+      "method": "POST",
+      "path": "/api/indices",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "indexName": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "mappings": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManagingIndexField"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "DELETE",
+      "path": "/api/indices",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "indexNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "POST",
+      "path": "/api/indices/{name}/open",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "POST",
+      "path": "/api/indices/{name}/close",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "POST",
+      "path": "/api/indices/open",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "indexNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "POST",
+      "path": "/api/indices/close",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "indexNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "GET",
+      "path": "/api/index-templates",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/IndexTemplate"
+        }
+      },
+      "called": true,
+      "called_path": "/api/index-templates",
+      "status": 200,
+      "sample": "[{\"id\": \"123\", \"templateName\": \"123\", \"indexPattern\": \"12\", \"priority\": 0, \"version\": 1, \"lastModified\": \"\\\"2026-05-13 10:38:44\\\"\"}, {\"id\": \"tenant_template\", \"templateName\": \"tenant_template\", \"indexPattern\": \".kibana_-*_*\", \"priority\": 2147483647, \"version\": 1, \"lastModified\": \"2026-10-08 10:06:16\"}, {\"id\": \"query_insights_top_queries_template\", \"templateName\": \"query_insights_top_queries_template\", \"indexPattern\": \"top_queries-*\", \"priority\": 1847, \"version\": 1, \"lastModified\": \"2026-10-08 10:06:16\"}]"
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "POST",
+      "path": "/api/index-templates",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "templateName": {
+            "type": "string"
+          },
+          "indexPattern": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfShards": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfReplicas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "templateSettings": {
+            "type": "string"
+          },
+          "templateMappings": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateFieldRequest"
+            }
+          },
+          "templateMappingsSafe": {
+            "type": "string"
+          },
+          "templateSettingsSafe": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object"
+      }
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "POST",
+      "path": "/api/index-templates/{templateId}/create-index",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "indexName": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "POST",
+      "path": "/api/document-indexing/sync-users",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "POST",
+      "path": "/api/document-indexing/queue",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "POST",
+      "path": "/api/document-indexing/index/{documentId}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "POST",
+      "path": "/api/document-indexing/bulk-index",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "documentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    {
+      "tag": "secure-disk-controller",
+      "method": "POST",
+      "path": "/api/cfa/nodes/{fileId}/secure-key/",
+      "summary": "IFNS-S SecureDisk 파일 키 요청",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "alias-controller",
+      "method": "GET",
+      "path": "/api/aliases",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Alias"
+        }
+      },
+      "called": true,
+      "called_path": "/api/aliases",
+      "status": 200,
+      "sample": "[{\"id\": \".kibana\", \"aliasName\": \".kibana\", \"mappedIndices\": [\".kibana_1\"], \"writeIndex\": null, \"lastUpdated\": null, \"created\": null, \"routing\": null, \"filter\": null}, {\"id\": \".kibana_92668751_admin\", \"aliasName\": \".kibana_92668751_admin\", \"mappedIndices\": [\".kibana_92668751_admin_1\"], \"writeIndex\": null, \"lastUpdated\": null, \"created\": null, \"routing\": null, \"filter\": null}, {\"id\": \".opendistro-ism-managed-index-history-write\", \"aliasName\": \".opendistro-ism-managed-index-history-write\", \"mappedIndices\": [\".opendistro-ism-managed-index-history-2026.10.07-000192\"], \"writeIndex\": null, \"lastUpdat...(생략)"
+    },
+    {
+      "tag": "alias-controller",
+      "method": "POST",
+      "path": "/api/aliases",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "aliasName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mappedIndices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "writeIndex": {
+            "type": "string"
+          },
+          "routing": {
+            "type": "string"
+          },
+          "filter": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "aliasName",
+          "mappedIndices"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Folders",
+      "method": "DELETE",
+      "path": "/api/v1/folders/{folderId}",
+      "summary": "폴더 삭제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Folders",
+      "method": "PATCH",
+      "path": "/api/v1/folders/{folderId}",
+      "summary": "폴더 수정",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "folderName": {
+            "type": "string"
+          },
+          "parentFolderCode": {
+            "type": "string"
+          },
+          "targetCode": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Folder Favorites",
+      "method": "PATCH",
+      "path": "/api/v1/folder-favorites/order",
+      "summary": "폴더 즐겨찾기 순서 변경",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "orderedFavoritesCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "orderedFavoritesCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FolderFavoriteItemResponse"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents",
+      "summary": "문서 목록 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Documents"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents",
+      "status": 200,
+      "sample": "{\"items\": [], \"page\": 1, \"size\": 30, \"totalCount\": 0, \"totalPages\": 0, \"hasNext\": false}"
+    },
+    {
+      "tag": "Documents",
+      "method": "DELETE",
+      "path": "/api/v1/documents",
+      "summary": "문서 삭제(휴지통)",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCode"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "PATCH",
+      "path": "/api/v1/documents",
+      "summary": "문서 일괄 수정",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "state": {
+            "type": "string"
+          },
+          "ownerCode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "revisionCodes"
+        ]
+      },
+      "response_schema": {
+        "type": "object"
+      }
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/shares",
+      "summary": "문서 공유 목록 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "shares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocShareItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/shares",
+      "status": 403,
+      "sample": "{\"message\": \"권한이 없습니다.\", \"code\": \"FORBIDDEN\"}"
+    },
+    {
+      "tag": "Documents",
+      "method": "PATCH",
+      "path": "/api/v1/documents/{revisionCode}/shares",
+      "summary": "문서 공유 수정",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "addShares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareAdd"
+            }
+          },
+          "removeShares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareRemove"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/properties",
+      "summary": "문서 속성 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          },
+          "contentTitle": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "contentCategory": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileExe": {
+            "type": "string"
+          },
+          "securityLevelCode": {
+            "type": "string"
+          },
+          "securityLevelName": {
+            "type": "string"
+          },
+          "documentBoxType": {
+            "type": "string"
+          },
+          "contentVersion": {
+            "type": "string"
+          },
+          "retentionTypeCode": {
+            "type": "string"
+          },
+          "retentionTypeName": {
+            "type": "string"
+          },
+          "retentionEndDate": {
+            "type": "string"
+          },
+          "contentOwnUser": {
+            "type": "string"
+          },
+          "ownerName": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/properties",
+      "status": 200,
+      "sample": "{\"contentCode\": \"C0000000000000002370\", \"revisionCode\": \"R0000000000000002506\", \"contentTitle\": \"이름 수정.rtf\", \"location\": \"QnA / seungho.choi의 폴더\", \"contentCategory\": \"GENERALDOC\", \"categoryName\": \"일반문서\", \"fileSize\": 40478, \"fileExe\": \"rtf\", \"securityLevelCode\": \"H1\", \"securityLevelName\": \"대내비\", \"documentBoxType\": \"SECRET\", \"contentVersion\": \"0.1\", \"retentionTypeCode\": \"5-DOC\", \"retentionTypeName\": \"5Y\", \"retentionEndDate\": \"2031-07-29\", \"contentOwnUser\": \"USER_00000000000058\", \"ownerName\": \"최승호\"}"
+    },
+    {
+      "tag": "Documents",
+      "method": "PATCH",
+      "path": "/api/v1/documents/{revisionCode}/properties",
+      "summary": "문서 속성 수정",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "contentTitle": {
+            "type": "string",
+            "description": "문서 이름",
+            "maxLength": 500
+          },
+          "contentCategory": {
+            "type": "string"
+          },
+          "securityLevel": {
+            "type": "string"
+          },
+          "retention": {
+            "type": "string"
+          },
+          "retentionDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contentTitle"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/permissions",
+      "summary": "문서 권한 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "memberPermission": {
+            "type": "string"
+          },
+          "extendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocAuthorItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/permissions",
+      "status": 403,
+      "sample": "{\"message\": \"권한이 없습니다.\", \"code\": \"FORBIDDEN\"}"
+    },
+    {
+      "tag": "Documents",
+      "method": "PATCH",
+      "path": "/api/v1/documents/{revisionCode}/permissions",
+      "summary": "문서 권한 수정",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "memberPermission": {
+            "type": "string"
+          },
+          "addExtendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendedAdd"
+            }
+          },
+          "removeExtendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendedRemove"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Dashboard",
+      "method": "DELETE",
+      "path": "/api/v1/dashboard/widgets/{widgetId}",
+      "summary": "위젯 삭제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDefault": {
+            "type": "boolean"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWidgetInstanceResponse"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Dashboard",
+      "method": "PATCH",
+      "path": "/api/v1/dashboard/widgets/{widgetId}",
+      "summary": "위젯 설정 변경",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "w": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "h": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDefault": {
+            "type": "boolean"
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWidgetInstanceResponse"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "Approval",
+      "method": "GET",
+      "path": "/api/v1/approvals/{approvalId}",
+      "summary": "결재 상세 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "approvalCode": {
+            "type": "string"
+          },
+          "approvalTitle": {
+            "type": "string"
+          },
+          "approvalFileCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approvalState": {
+            "type": "string"
+          },
+          "approvalWantUser": {
+            "type": "string"
+          },
+          "approvalReqDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gubunCd": {
+            "type": "string"
+          },
+          "approvalReqtypeCd": {
+            "type": "string"
+          },
+          "approvalType": {
+            "type": "string"
+          },
+          "approvalEndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "authorities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApprovalAuthorityItem"
+            }
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApprovalFileItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/approvals/APPROVAL_000000000000415",
+      "status": 200,
+      "sample": "{\"approvalCode\": \"APPROVAL_000000000000415\", \"approvalTitle\": \"문서 열람 권한 요청\", \"approvalFileCount\": 1, \"approvalState\": \"PJ\", \"approvalWantUser\": \"user_1\", \"approvalReqDate\": \"2026-07-29T14:47:13.45816\", \"gubunCd\": \"REQ_PUB\", \"approvalReqtypeCd\": \"REQ\", \"approvalType\": \"READ\", \"approvalEndDate\": \"2026-07-31T09:32:14.441654\", \"authorities\": [], \"files\": []}"
+    },
+    {
+      "tag": "Approval",
+      "method": "PATCH",
+      "path": "/api/v1/approvals/{approvalId}",
+      "summary": "결재 처리",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "approvalCode": {
+            "type": "string"
+          },
+          "approvalState": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Approval",
+      "method": "PATCH",
+      "path": "/api/v1/approvals/{approvalId}/cancel",
+      "summary": "결재 요청 취소",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "approvalCode": {
+            "type": "string"
+          },
+          "approvalState": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/shares",
+      "summary": "공유 정보 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "shares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/shares",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "PATCH",
+      "path": "/api/v1/agent/documents/{revisionCode}/shares",
+      "summary": "공유 저장",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "addShares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareAdd"
+            }
+          },
+          "removeShares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareRemove"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/properties",
+      "summary": "문서 속성 보기",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          },
+          "contentTitle": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "contentCategory": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileExe": {
+            "type": "string"
+          },
+          "securityLevelCode": {
+            "type": "string"
+          },
+          "securityLevelName": {
+            "type": "string"
+          },
+          "contentVersion": {
+            "type": "string"
+          },
+          "retentionTypeCode": {
+            "type": "string"
+          },
+          "retentionTypeName": {
+            "type": "string"
+          },
+          "retentionEndDate": {
+            "type": "string"
+          },
+          "contentOwnUser": {
+            "type": "string"
+          },
+          "ownerName": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/properties",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "PATCH",
+      "path": "/api/v1/agent/documents/{revisionCode}/properties",
+      "summary": "문서 속성 변경",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "contentTitle": {
+            "type": "string"
+          },
+          "contentCategory": {
+            "type": "string"
+          },
+          "securityLevel": {
+            "type": "string"
+          },
+          "retention": {
+            "type": "string"
+          },
+          "retentionDate": {
+            "type": "string"
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/permissions",
+      "summary": "권한 정보 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "memberPermission": {
+            "type": "string"
+          },
+          "extendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/permissions",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "PATCH",
+      "path": "/api/v1/agent/documents/{revisionCode}/permissions",
+      "summary": "권한 저장",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "memberPermission": {
+            "type": "string"
+          },
+          "addExtendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendedAdd"
+            }
+          },
+          "removeExtendedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendedRemove"
+            }
+          }
+        }
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "Agent",
+      "method": "PATCH",
+      "path": "/api/v1/agent/documents/owner",
+      "summary": "소유권 이전",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "newOwner": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "newOwner",
+          "revisionCodes"
+        ]
+      },
+      "response_schema": null
+    },
+    {
+      "tag": "User",
+      "method": "GET",
+      "path": "/api/v1/users",
+      "summary": "사용자·부서·그룹 검색",
+      "response_schema": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserSearchItem"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          }
+        ]
+      },
+      "called": true,
+      "called_path": "/api/v1/users",
+      "status": 200,
+      "sample": "[{\"code\": \"DEPT_000000000000030\", \"name\": \"A 부서\", \"type\": \"DEPT\"}, {\"code\": \"DEPT_00000000000035\", \"name\": \"QnA\", \"type\": \"DEPT\"}, {\"code\": \"GROUP_00000000000047\", \"name\": \"A TFT\", \"type\": \"GROUP\"}, {\"code\": \"GROUP_00000000000058\", \"name\": \"A 프로젝트\", \"type\": \"GROUP\"}, {\"code\": \"GROUP_00000000000051\", \"name\": \"Part1\", \"type\": \"GROUP\"}, {\"code\": \"GROUP_00000000000054\", \"name\": \"QnA TFT\", \"type\": \"GROUP\"}, {\"code\": \"USER_00000000000065\", \"name\": \"docadm (docadm)\", \"type\": \"USER\"}, {\"code\": \"USER_000000000000050\", \"name\": \"감감사 (audit01)\", \"type\": \"USER\"}, {\"code\": \"USER_000000000000051\", \"name\": \"감...(생략)"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/share-links/{linkCode}",
+      "summary": "문서 공유 링크 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "hasPermission": {
+            "type": "boolean"
+          },
+          "isRequested": {
+            "type": "boolean"
+          },
+          "approvalCode": {
+            "type": "string"
+          },
+          "linkCode": {
+            "type": "string"
+          },
+          "revisionCode": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DocPropertiesResponse"
+          },
+          "latestVersion": {
+            "$ref": "#/components/schemas/DocShareVersionInfo"
+          },
+          "snapshotVersion": {
+            "$ref": "#/components/schemas/DocShareVersionInfo"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/DocShareOwnerInfo"
+          }
+        }
+      },
+      "called": false,
+      "note": "필요한 값 확보 못함: linkCode"
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/v1/search",
+      "status": 200,
+      "sample": "{\"data\": {\"pagination\": {\"page\": 1, \"totalCount\": 0}, \"contents\": []}, \"searchAfter\": null}"
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search/suggest",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "didYouMean": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "autocomplete": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "recommend": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "trending": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trend"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/search/suggest",
+      "status": 200,
+      "sample": "{\"query\": \"a\", \"didYouMean\": [], \"autocomplete\": [], \"recommend\": [], \"trending\": []}"
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search/facet",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/v1/search/facet",
+      "status": 200,
+      "sample": "{\"success\": true, \"lang\": \"en\", \"radioSearchCondition\": \"and\", \"sections\": [\"today\", \"week\", \"month\", \"year\", \"etc\"], \"createdSums\": {\"today\": 0, \"week\": 0, \"month\": 0, \"year\": 0, \"etc\": 0}, \"aggrByCreatedDateList\": [{\"today\": {}, \"week\": {}, \"month\": {}, \"year\": {}, \"etc\": {}}], \"aggrBySpace\": {}, \"aggrBySpaceLabel\": {}, \"aggrByOwner\": {}, \"aggrByOwnerLabel\": {}, \"aggrBySecurity\": {}, \"aggrBySecurityLabel\": {}, \"aggrByFormat\": {}, \"categoryDateSum\": {\"today\": {}, \"week\": {}, \"month\": {}, \"year\": {}, \"etc\": {}}, \"categoryTotalSum\": {\"today\": 0, \"week\": 0, \"month\": 0, \"year\": 0, \"etc\": 0}, \"dat...(생략)"
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search/author",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/search/author",
+      "status": 500,
+      "sample": "{\"message\": \"요청 처리 중 오류가 발생했습니다.\", \"code\": \"INTERNAL_SERVER_ERROR\"}"
+    },
+    {
+      "tag": "search-controller",
+      "method": "GET",
+      "path": "/api/v1/search/attr",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SearchAttr"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/search/attr",
+      "status": 200,
+      "sample": "[]"
+    },
+    {
+      "tag": "Menus",
+      "method": "GET",
+      "path": "/api/v1/menus/top",
+      "summary": "활성 상단 메뉴",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TopMenuResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/menus/top",
+      "status": 200,
+      "sample": "[{\"menuCode\": \"MENU_000000000000020\", \"workboxId\": \"dept\", \"menuName\": \"부서문서함|TEAM WORK\", \"displayName\": \"부서문서함\", \"menuUrl\": \"-\", \"menuIcon\": \"\", \"menuSort\": 2}, {\"menuCode\": \"MENU_000000000000120\", \"workboxId\": \"project\", \"menuName\": \"그룹문서함|PROJECT WORK\", \"displayName\": \"그룹문서함\", \"menuUrl\": \"-\", \"menuIcon\": \"\", \"menuSort\": 3}]"
+    },
+    {
+      "tag": "Log",
+      "method": "GET",
+      "path": "/api/v1/logs/api",
+      "summary": "API 접근 로그 조회 (Grafana)",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/v1/logs/api",
+      "status": 200,
+      "sample": "{\"content\": [{\"Request Time\": \"2026-10-08 01:06:18\", \"Method\": \"GET\", \"API URL\": \"/api/v1/menus/top\", \"Code\": 200, \"User\": \"user_1 (new1)\", \"Request Params\": null, \"Log ID\": 836614}, {\"Request Time\": \"2026-10-08 01:06:18\", \"Method\": \"GET\", \"API URL\": \"/api/v1/search/attr\", \"Code\": 200, \"User\": \"user_1 (new1)\", \"Request Params\": null, \"Log ID\": 836613}, {\"Request Time\": \"2026-10-08 01:06:18\", \"Method\": \"GET\", \"API URL\": \"/api/v1/search/author\", \"Code\": 500, \"User\": \"user_1 (new1)\", \"Request Params\": null, \"Log ID\": 836612}, {\"Request Time\": \"2026-10-08 01:06:18\", \"Method\": \"GET\", \"API URL\": \"/a...(생략)"
+    },
+    {
+      "tag": "Folders",
+      "method": "GET",
+      "path": "/api/v1/folders/{folderId}/document-attributes",
+      "summary": "폴더 문서 속성 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "contentCategory": {
+            "type": "string"
+          },
+          "securityLevelCode": {
+            "type": "string"
+          },
+          "retentionTypeCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folders/DOCBOXM_000000000000706/document-attributes",
+      "status": 200,
+      "sample": "{\"contentCategory\": \"GENERALDOC\", \"securityLevelCode\": \"H4\", \"retentionTypeCode\": \"5-DOC\"}"
+    },
+    {
+      "tag": "Folders",
+      "method": "GET",
+      "path": "/api/v1/folders/{folderId}/children",
+      "summary": "하위 폴더 목록",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FolderChildResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folders/DOCBOXM_000000000000706/children",
+      "status": 200,
+      "sample": "[{\"id\": \"DOCBOXM_000000000000708\", \"folderId\": \"DOCBOXM_000000000000708\", \"name\": \"02. 이미지\", \"parentFolderId\": \"DOCBOXM_000000000000706\", \"gubun\": \"D\", \"hasChildren\": false, \"userUniqCode\": null, \"departmentCode\": \"DEPT_00000000000035\", \"groupCode\": null, \"root_encryption_policy\": \"IFNS_S\"}, {\"id\": \"DOCBOXM_000000000000732\", \"folderId\": \"DOCBOXM_000000000000732\", \"name\": \"03. 업로드\", \"parentFolderId\": \"DOCBOXM_000000000000706\", \"gubun\": \"D\", \"hasChildren\": false, \"userUniqCode\": null, \"departmentCode\": \"DEPT_00000000000035\", \"groupCode\": null, \"root_encryption_policy\": \"IFNS_S\"}, {\"id\": \"DOCBOXM...(생략)"
+    },
+    {
+      "tag": "Folders",
+      "method": "GET",
+      "path": "/api/v1/folders/{folderId}/capabilities",
+      "summary": "폴더 권한·기능 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "folderId": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/FolderCapabilities"
+          },
+          "hasChildren": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folders/DOCBOXM_000000000000706/capabilities",
+      "status": 200,
+      "sample": "{\"folderId\": \"DOCBOXM_000000000000706\", \"context\": \"regular\", \"capabilities\": {\"createSubfolder\": true, \"rename\": false, \"move\": false, \"delete\": false, \"emptyTrash\": false}, \"hasChildren\": true}"
+    },
+    {
+      "tag": "Folders",
+      "method": "GET",
+      "path": "/api/v1/folders/roots",
+      "summary": "폴더 루트 목록",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FolderRootResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folders/roots",
+      "status": 200,
+      "sample": "[{\"id\": \"DOCBOXM_000000000005\", \"folderId\": \"DOCBOXM_000000000005\", \"name\": \"바로가기\", \"parentFolderId\": null, \"gubun\": \"Q\", \"encryption_policy\": \"IFNS_S\"}, {\"id\": \"DOCBOXM_000000000001\", \"folderId\": \"DOCBOXM_000000000001\", \"name\": \"부서문서함\", \"parentFolderId\": null, \"gubun\": \"D\", \"encryption_policy\": \"IFNS_S\"}, {\"id\": \"DOCBOXM_000000000002\", \"folderId\": \"DOCBOXM_000000000002\", \"name\": \"그룹문서함\", \"parentFolderId\": null, \"gubun\": \"G\", \"encryption_policy\": \"IFNS_S\"}]"
+    },
+    {
+      "tag": "Folders",
+      "method": "GET",
+      "path": "/api/v1/folder-share-links/{linkCode}",
+      "summary": "폴더 공유 링크 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "linkCode": {
+            "type": "string"
+          },
+          "folderId": {
+            "type": "string"
+          },
+          "gubun": {
+            "type": "string"
+          },
+          "trash": {
+            "type": "boolean"
+          },
+          "folderPath": {
+            "type": "string"
+          },
+          "folderName": {
+            "type": "string"
+          },
+          "hasPermission": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/FolderShareCreatorInfo"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "called": false,
+      "note": "필요한 값 확보 못함: linkCode"
+    },
+    {
+      "tag": "Folders",
+      "method": "DELETE",
+      "path": "/api/v1/folder-share-links/{linkCode}",
+      "summary": "폴더 공유 링크 비활성화",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Folder Favorites",
+      "method": "GET",
+      "path": "/api/v1/folder-favorites/candidates",
+      "summary": "폴더 즐겨찾기 후보",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FolderFavoriteCandidateResponse"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/folder-favorites/candidates",
+      "status": 200,
+      "sample": "[{\"gubun\": \"U\", \"scopeCode\": \"USER_00000000000059\", \"scopeKey\": \"MY_WORK_USER:USER_00000000000059\", \"folderId\": \"DOCBOXM_000000000000715\", \"scopeName\": \"user_1\", \"displayPath\": \"user_1\", \"favorited\": false}, {\"gubun\": \"D\", \"scopeCode\": \"DEPT_00000000000035\", \"scopeKey\": \"DEPT_WORK:DEPT_00000000000035\", \"folderId\": \"DOCBOXM_000000000000706\", \"scopeName\": \"QnA\", \"displayPath\": \"QnA\", \"favorited\": false}, {\"gubun\": \"G\", \"scopeCode\": \"GROUP_00000000000046\", \"scopeKey\": \"PROJECT_WORK:GROUP_00000000000046\", \"folderId\": \"DOCBOXM_000000000000663\", \"scopeName\": \"IDS TFT\", \"displayPath\": \"IDS TFT\", \"fav...(생략)"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/versions",
+      "summary": "문서 버전 목록",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocVersionResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/versions",
+      "status": 200,
+      "sample": "{\"items\": [{\"revisionCode\": \"R0000000000000002506\", \"contentVersion\": \"0.1\", \"contentTitle\": \"이름 수정.rtf\", \"contentState\": \"CR\", \"modifierName\": \"최승호\", \"modifiedAt\": \"2026-07-31 09:28:26\", \"fileExe\": \"rtf\", \"fileSize\": 40478, \"current\": true}], \"page\": 1, \"size\": 30, \"totalCount\": 1, \"totalPages\": 1, \"hasNext\": false}"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/move-options",
+      "summary": "이동 대화상자 옵션",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "sourceProperties": {
+            "$ref": "#/components/schemas/DocPropertiesResponse"
+          },
+          "workbox": {
+            "$ref": "#/components/schemas/MoveWorkbox"
+          },
+          "availableWorkboxes": {
+            "$ref": "#/components/schemas/Workboxes"
+          },
+          "crossWorkboxMoveEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/move-options",
+      "status": 403,
+      "sample": "{\"message\": \"권한이 없습니다.\", \"code\": \"FORBIDDEN\"}"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/history",
+      "summary": "문서 이력 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocHistoryResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/history",
+      "status": 200,
+      "sample": "{\"items\": [{\"contentLogCode\": \"L_c0c7223e714249209bfeb1\", \"revisionCode\": \"R0000000000000002506\", \"logGubun\": \"COPY\", \"logGubuNm\": \"COPY\", \"logContent\": \"원본 문서(R0000000000000002486)에서 복사\", \"logUserCode\": \"USER_00000000000058\", \"userNm\": \"최승호\", \"logDate\": \"2026-07-31 09:28:26\"}], \"page\": 1, \"size\": 30, \"totalCount\": 1, \"totalPages\": 1, \"hasNext\": false}"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{revisionCode}/copy-options",
+      "summary": "복사 대화상자 옵션",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "defaultTab": {
+            "type": "string"
+          },
+          "sourceProperties": {
+            "$ref": "#/components/schemas/DocPropertiesResponse"
+          },
+          "propertyOptions": {
+            "$ref": "#/components/schemas/PropertyOptions"
+          },
+          "workboxes": {
+            "$ref": "#/components/schemas/Workboxes"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/R0000000000000002506/copy-options",
+      "status": 200,
+      "sample": "{\"revisionCode\": \"R0000000000000002506\", \"defaultTab\": \"user\", \"sourceProperties\": {\"contentCode\": \"C0000000000000002370\", \"revisionCode\": \"R0000000000000002506\", \"contentTitle\": \"이름 수정.rtf\", \"location\": \"QnA / seungho.choi의 폴더\", \"contentCategory\": \"GENERALDOC\", \"categoryName\": \"일반문서\", \"fileSize\": 40478, \"fileExe\": \"rtf\", \"securityLevelCode\": \"H1\", \"securityLevelName\": \"대내비\", \"documentBoxType\": \"SECRET\", \"contentVersion\": \"0.1\", \"retentionTypeCode\": \"5-DOC\", \"retentionTypeName\": \"5Y\", \"retentionEndDate\": \"2031-07-29\", \"contentOwnUser\": \"USER_00000000000058\", \"ownerName\": \"최승호\"}, \"propertyOptio...(생략)"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/{boxType}/latest",
+      "summary": "최신 문서",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Documents"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/MY_DOC/latest",
+      "status": 200,
+      "sample": "[]"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/recent",
+      "summary": "최근 작업 문서",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Documents"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/recent",
+      "status": 200,
+      "sample": "[{\"author\": \"최승호\", \"contentCategory\": \"GENERALDOC\", \"contentCategoryName\": null, \"contentCode\": \"C0000000000000002370\", \"contentTitle\": \"이름 수정.rtf\", \"contentVersion\": \"0.1\", \"createDate\": \"2026-07-31 09:28\", \"encryption_algorithm\": null, \"encryption_format\": null, \"encryption_key_id\": null, \"encryption_state\": null, \"fileExe\": \"rtf\", \"fileSize\": \"40 kB\", \"folderPath\": \"QnA > seungho.choi의 폴더\", \"lockUser\": null, \"lockUserName\": null, \"modifyDate\": \"2026-07-31 09:28\", \"revisionCode\": \"R0000000000000002506\", \"root_encryption_policy\": null, \"storage_mode\": null, \"userUniqCode\": \"USER_0000000000005...(생략)"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/download-jobs/{token}/content",
+      "summary": "Range 문서 다운로드",
+      "response_schema": null,
+      "called": false,
+      "note": "다운로드 작업 생성(쓰기성 흐름)이 선행되어야 함"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/download-jobs/{token}/chunks/{chunkIndex}",
+      "summary": "청크 문서 다운로드",
+      "response_schema": null,
+      "called": false,
+      "note": "다운로드 작업 생성이 선행되어야 함"
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/documents/context-menu-items",
+      "summary": "문서 컨텍스트 메뉴",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DocContextMenuItem"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/documents/context-menu-items",
+      "status": 200,
+      "sample": "[{\"menuCd\": \"VIEW\", \"menuNm\": \"보기\", \"menuIcon\": \"eye\", \"securityLevel\": \"secret\", \"menuCode\": \"VIEW\", \"parentMenuCode\": null, \"actionCode\": \"VIEW\", \"children\": []}, {\"menuCd\": \"EDIT\", \"menuNm\": \"편집\", \"menuIcon\": \"pencil\", \"securityLevel\": \"secret\", \"menuCode\": \"EDIT\", \"parentMenuCode\": null, \"actionCode\": \"EDIT\", \"children\": []}, {\"menuCd\": \"COPY\", \"menuNm\": \"복사\", \"menuIcon\": \"copy\", \"securityLevel\": \"secret\", \"menuCode\": \"COPY\", \"parentMenuCode\": null, \"actionCode\": \"COPY\", \"children\": []}, {\"menuCd\": \"DUPLICATE_LIST\", \"menuNm\": \"중복문서조회\", \"menuIcon\": \"files\", \"securityLevel\": \"secret\", \"menuC...(생략)"
+    },
+    {
+      "tag": "Document chunk uploads",
+      "method": "GET",
+      "path": "/api/v1/document-uploads/{uploadId}",
+      "summary": "청크 업로드 진행 상태 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chunkSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalChunks": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "uploadedSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "uploadedChunks": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "document": {
+            "$ref": "#/components/schemas/DocUploadResponse"
+          }
+        }
+      },
+      "called": false,
+      "note": "업로드 세션 생성(쓰기)이 선행되어야 함. 별도 업로드 테스트에서 확인함"
+    },
+    {
+      "tag": "Document chunk uploads",
+      "method": "DELETE",
+      "path": "/api/v1/document-uploads/{uploadId}",
+      "summary": "청크 업로드 취소",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "GET",
+      "path": "/api/v1/document-moves/owner-candidates",
+      "summary": "문서 이동 owner 후보",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/MoveOwnerCandidate"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/document-moves/owner-candidates",
+      "status": 200,
+      "sample": "[{\"userUniqCode\": \"USER_00000000000062\", \"userId\": \"New_ID\", \"userNm\": \"User01\", \"departmentNm\": \"QnA\"}, {\"userUniqCode\": \"USER_00000000000063\", \"userId\": \"New_Id2\", \"userNm\": \"user119\", \"departmentNm\": \"QnA\"}, {\"userUniqCode\": \"USER_00000000000059\", \"userId\": \"new1\", \"userNm\": \"user_1\", \"departmentNm\": \"QnA\"}, {\"userUniqCode\": \"USER_00000000000060\", \"userId\": \"new2\", \"userNm\": \"user_2\", \"departmentNm\": \"QnA\"}, {\"userUniqCode\": \"USER_00000000000061\", \"userId\": \"new3\", \"userNm\": \"user_3\", \"departmentNm\": \"QnA\"}, {\"userUniqCode\": \"USER_00000000000058\", \"userId\": \"seungho.choi\", \"userNm\": \"최승호\", ...(생략)"
+    },
+    {
+      "tag": "User",
+      "method": "GET",
+      "path": "/api/v1/departments",
+      "summary": "부서 목록 조회",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DepartmentItem"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/departments",
+      "status": 200,
+      "sample": "[{\"departmentCode\": \"DEPT_00000000000037\", \"departmentNm\": \"IT 부서\", \"parentDepartmentCode\": null, \"sortNo\": 0}, {\"departmentCode\": \"DEPT_000000000000029\", \"departmentNm\": \"MR\", \"parentDepartmentCode\": null, \"sortNo\": 0}, {\"departmentCode\": \"DEPT_00000000000035\", \"departmentNm\": \"QnA\", \"parentDepartmentCode\": null, \"sortNo\": 0}, {\"departmentCode\": \"DEPT_00000000000177\", \"departmentNm\": \"Test Dept.\", \"parentDepartmentCode\": null, \"sortNo\": 0}, {\"departmentCode\": \"DEPT_00000000000105\", \"departmentNm\": \"인피니솔루션\", \"parentDepartmentCode\": null, \"sortNo\": 1}, {\"departmentCode\": \"DEPT_00000000000106\", ...(생략)"
+    },
+    {
+      "tag": "Common",
+      "method": "GET",
+      "path": "/api/v1/common/sdms-manager",
+      "summary": "전사문서관리자 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "userUniqCode": {
+            "type": "string"
+          },
+          "userNm": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/common/sdms-manager",
+      "status": 200,
+      "sample": "{\"userUniqCode\": \"USER_000000000000045\", \"userNm\": \"김지훈\"}"
+    },
+    {
+      "tag": "Common",
+      "method": "GET",
+      "path": "/api/v1/common/doc-types",
+      "summary": "문서 검색 옵션 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "documentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionItem"
+            }
+          },
+          "securityLevels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionItem"
+            }
+          },
+          "retentionYears": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionItem"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/common/doc-types",
+      "status": 200,
+      "sample": "{\"documentTypes\": [{\"commoncodeId\": \"SECRET_DOC\", \"commoncodeNm\": \"비밀문서\"}], \"securityLevels\": [{\"commoncodeId\": \"H2\", \"commoncodeNm\": \"Confidential\"}, {\"commoncodeId\": \"H4\", \"commoncodeNm\": \"Secret\"}, {\"commoncodeId\": \"H5\", \"commoncodeNm\": \"Top Secret\"}], \"retentionYears\": [{\"commoncodeId\": \"1-DOC\", \"commoncodeNm\": \"1Y\"}, {\"commoncodeId\": \"3-DOC\", \"commoncodeNm\": \"3Y\"}, {\"commoncodeId\": \"5-DOC\", \"commoncodeNm\": \"5Y\"}, {\"commoncodeId\": \"10-DOC\", \"commoncodeNm\": \"10Y\"}, {\"commoncodeId\": \"15-DOC\", \"commoncodeNm\": \"15Y\"}, {\"commoncodeId\": \"20-DOC\", \"commoncodeNm\": \"20Y\"}, {\"commoncodeId\": \"LIMITLE...(생략)"
+    },
+    {
+      "tag": "Auth",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "summary": "Web/Agent 통합 내 정보 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "loginChannel": {
+            "type": "string"
+          },
+          "userNm": {
+            "type": "string"
+          },
+          "departmentNames": {
+            "type": "string"
+          },
+          "enterpriseAdmin": {
+            "type": "boolean"
+          },
+          "workboxAdmin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/auth/me",
+      "status": 200,
+      "sample": "{\"username\": \"new1\", \"loginChannel\": \"WEB\", \"userNm\": \"user_1\", \"departmentNames\": \"QnA\", \"enterpriseAdmin\": false, \"workboxAdmin\": true}"
+    },
+    {
+      "tag": "Auth",
+      "method": "GET",
+      "path": "/api/v1/auth/login/challenge",
+      "summary": "로그인 암호화 Challenge 발급",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string"
+          },
+          "nonce": {
+            "type": "string"
+          },
+          "keyId": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string"
+          },
+          "algorithm": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/auth/login/challenge",
+      "status": 200,
+      "sample": "{\"challengeId\": \"7a59dfc5-71d7-4556-8002-ddbb47183eb5\", \"nonce\": \"5pcuY_phaNIPwIcTMZmz4kuz1H2xHwDE6lFdBxPa5k8\", \"keyId\": \"YUBTk8--E6bA3Aee\", \"publicKey\": \"-----BEGIN PUBLIC KEY-----\\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEArsqiK8JzZj7kipxM3Rpz\\nb6KSdc5K0oQqY754rvm3oMMukVeryjcz/HU0aSdKvZkQV5j/OGAzLuwOnzSdgn1w\\nzpowN+Cvkv0K2P2j2gooYLUOvd3MtItqZTaS3WRsP+ty2Uu04sq7XlEGLiAUhL7U\\nsSV+nLbc9PmL6S5gtH680weGwOKg3gGulkiLUaIupDpzo96kjwYNlj/UhSlfwqnk\\nnk70x+hbRXs/czmDm383n/sOWmwB9DGAlB/6UupiEEqGyOX15G5lgj7wr5yLGwtj\\nWPgNkn4WbnhFzQr9hL6KX3VJ6a6eFVY2LKcnFdE8UOt26T9c788RqWW/Q6yN6ktd\\nalGbj/8Uge+MdMa0FWcap...(생략)"
+    },
+    {
+      "tag": "agent-login-controller",
+      "method": "GET",
+      "path": "/api/v1/auth/agent-login",
+      "summary": "",
+      "response_schema": null,
+      "called": false,
+      "note": "인증 코드(code)가 필요하고, 임의 값으로 시도하면 인증 시도 기록이 남을 수 있어 호출하지 않음"
+    },
+    {
+      "tag": "Approval",
+      "method": "GET",
+      "path": "/api/v1/approvals/{approvalId}/documents",
+      "summary": "결재 문서 목록 조회",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ApprovalDocumentItem"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/approvals/APPROVAL_000000000000415/documents",
+      "status": 200,
+      "sample": "[]"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/root-menus",
+      "summary": "ROOT 메뉴 조회",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FolderNode"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/root-menus",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/me",
+      "summary": "Agent 내 정보 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "loginChannel": {
+            "type": "string"
+          },
+          "userNm": {
+            "type": "string"
+          },
+          "departmentNames": {
+            "type": "string"
+          },
+          "enterpriseAdmin": {
+            "type": "boolean"
+          },
+          "workboxAdmin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/me",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/folders/{folderId}/children",
+      "summary": "하위 폴더 목록",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FolderNode"
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/folders/DOCBOXM_000000000000706/children",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/folders/{folderId}/access",
+      "summary": "내 폴더 권한 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "folderId": {
+            "type": "string"
+          },
+          "permissionId": {
+            "type": "string"
+          },
+          "permissionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/folders/DOCBOXM_000000000000706/access",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents",
+      "summary": "문서 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/versions",
+      "summary": "버전 이력 보기",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VersionResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/versions",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/history",
+      "summary": "문서 이력 보기",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/history",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "Agent",
+      "method": "GET",
+      "path": "/api/v1/agent/documents/{revisionCode}/access",
+      "summary": "내 문서 권한 조회",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "string"
+          },
+          "permissionId": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/v1/agent/documents/R0000000000000002506/access",
+      "status": 401,
+      "sample": "{\"message\": \"로그인 채널이 일치하지 않습니다.\", \"code\": \"LOGIN_CHANNEL_MISMATCH\"}"
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "GET",
+      "path": "/api/snapshot/{repository}/{snapshotName}/detail",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "repository": {
+            "type": "string"
+          },
+          "snapshotName": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "indices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliasMappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AliasMappingDto"
+            }
+          }
+        }
+      },
+      "called": false,
+      "note": "필요한 값 확보 못함: snapshotName"
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "GET",
+      "path": "/api/snapshot/list/{repoName}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/snapshot/list/ecm-backup",
+      "status": 500,
+      "sample": "{\"message\": \"요청 처리 중 오류가 발생했습니다.\", \"code\": \"INTERNAL_SERVER_ERROR\"}"
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "GET",
+      "path": "/api/snapshot/list/repository",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/snapshot/list/repository",
+      "status": 200,
+      "sample": "{\"data\": [{\"settings\": {\"compress\": true, \"location\": \"snapshots/ecm-backup\", \"read_only\": false}, \"name\": \"ecm-backup\", \"type\": \"fs\"}, {\"settings\": {\"compress\": true, \"location\": \"snapshots/production-backups\", \"read_only\": false}, \"name\": \"production-backups\", \"type\": \"fs\"}], \"message\": \"Repository created successfully\", \"resultCode\": \"I200\", \"success\": true}"
+    },
+    {
+      "tag": "search-result-controller",
+      "method": "GET",
+      "path": "/api/search/results",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "analyzer": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          },
+          "searchAfter": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/search/results",
+      "status": 200,
+      "sample": "{\"success\": true, \"message\": \"OK\", \"index\": \"docs-*\", \"query\": \"\", \"analyzer\": \"all\", \"fields\": [], \"page\": 1, \"pageSize\": 10, \"totalItems\": 0, \"totalPages\": 0, \"results\": [], \"searchAfter\": null}"
+    },
+    {
+      "tag": "search-result-controller",
+      "method": "GET",
+      "path": "/api/search/fields",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchField"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/search/fields",
+      "status": 200,
+      "sample": "{\"success\": true, \"message\": \"OK\", \"index\": \"top_queries-2026.10.08-59467\", \"fields\": [{\"name\": \"wlm_group_id\", \"type\": \"text\", \"searchable\": true}, {\"name\": \"source.highlight.pre_tags\", \"type\": \"text\", \"searchable\": true}, {\"name\": \"source.highlight.highlight_query.multi_match.query\", \"type\": \"text\", \"searchable\": true}, {\"name\": \"source.highlight.highlight_query.multi_match.zero_terms_query\", \"type\": \"text\", \"searchable\": true}, {\"name\": \"source.highlight.highlight_query.multi_match.fields\", \"type\": \"text\", \"searchable\": true}, {\"name\": \"source.highlight.highlight_query.multi_match.type\", \"t...(생략)"
+    },
+    {
+      "tag": "search-result-controller",
+      "method": "GET",
+      "path": "/api/search/analyzers",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Analyzer"
+        }
+      },
+      "called": true,
+      "called_path": "/api/search/analyzers",
+      "status": 200,
+      "sample": "[]"
+    },
+    {
+      "tag": "search-result-controller",
+      "method": "GET",
+      "path": "/api/search/analyze",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "analyzer": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalyzeToken"
+            }
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/search/analyze",
+      "status": 200,
+      "sample": "{\"success\": true, \"message\": \"OK\", \"index\": null, \"analyzer\": \"standard\", \"text\": \"a\", \"tokens\": [{\"token\": \"a\", \"startOffset\": 0, \"endOffset\": 1, \"position\": 0, \"type\": \"<ALPHANUM>\"}]}"
+    },
+    {
+      "tag": "overview-controller",
+      "method": "GET",
+      "path": "/api/overview",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/Cluster"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeStat"
+            }
+          },
+          "recentActivity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Activity"
+            }
+          },
+          "stats": {
+            "$ref": "#/components/schemas/Stats"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/overview",
+      "status": 200,
+      "sample": "{\"cluster\": {\"health\": \"YELLOW\", \"numberOfNodes\": 1, \"totalShards\": 161, \"pendingTasks\": 0}, \"nodes\": [{\"node\": \"os-standard-61\", \"cpu\": 2, \"memory\": 53, \"disk\": 35}], \"recentActivity\": [{\"time\": \"2026-05-13T01:38:33.579051800Z\", \"event\": \"Index [search_log-2026.05.11] opened\"}, {\"time\": \"2026-05-13T01:38:33.442687800Z\", \"event\": \"Index [search_log-2026.05.12] opened\"}, {\"time\": \"2026-05-13T01:38:26.340241100Z\", \"event\": \"Index [search_log-2026.05.11] closed\"}, {\"time\": \"2026-05-13T01:38:26.171585700Z\", \"event\": \"Index [search_log-2026.05.12] closed\"}, {\"time\": \"2026-05-13T01:37:08.346612700Z\"...(생략)"
+    },
+    {
+      "tag": "ism-controller",
+      "method": "GET",
+      "path": "/api/ism/policies",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IsmPolicyListResponse"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/ism/policies",
+      "status": 200,
+      "sample": "{\"data\": {\"items\": [{\"policyId\": \"policy-001\", \"description\": \"converted from ILM (hot/warm/delete)\", \"defaultState\": \"hot\", \"priority\": null, \"schemaVersion\": 24, \"lastUpdatedTime\": \"-\", \"states\": [\"hot\", \"warm\", \"delete\"], \"indexPatterns\": [], \"appliedIndices\": [], \"raw\": {\"_id\": \"policy-001\", \"_seq_no\": 0, \"_primary_term\": 1, \"policy\": {\"policy_id\": \"policy-001\", \"description\": \"converted from ILM (hot/warm/delete)\", \"last_updated_time\": 1774833855650, \"schema_version\": 24, \"error_notification\": null, \"default_state\": \"hot\", \"states\": [{\"name\": \"hot\", \"actions\": [], \"transitions\": [{\"state_...(생략)"
+    },
+    {
+      "tag": "ism-controller",
+      "method": "GET",
+      "path": "/api/ism/index-policy-status",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/ism/index-policy-status",
+      "status": 200,
+      "sample": "{\"data\": {\"indices\": [{\"index\": \".kibana_1\", \"status\": \"open\", \"docs\": \"2\", \"store\": \"10kb\", \"managed\": false, \"policy_id\": null, \"state\": null, \"has_error\": false}, {\"index\": \".kibana_92668751_admin_1\", \"status\": \"open\", \"docs\": \"2\", \"store\": \"10kb\", \"managed\": false, \"policy_id\": null, \"state\": null, \"has_error\": false}, {\"index\": \".opendistro-job-scheduler-lock\", \"status\": \"open\", \"docs\": \"1\", \"store\": \"15kb\", \"managed\": false, \"policy_id\": null, \"state\": null, \"has_error\": false}, {\"index\": \".opendistro_security\", \"status\": \"open\", \"docs\": \"9\", \"store\": \"81.3kb\", \"managed\": false, \"policy_...(생략)"
+    },
+    {
+      "tag": "ism-controller",
+      "method": "GET",
+      "path": "/api/ism/explain/{indexName}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JsonNode"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/ism/explain/top_queries-2026.10.08-59467",
+      "status": 200,
+      "sample": "{\"data\": {\"array\": false, \"bigDecimal\": false, \"bigInteger\": false, \"binary\": false, \"boolean\": false, \"containerNode\": true, \"double\": false, \"empty\": false, \"float\": false, \"floatingPointNumber\": false, \"int\": false, \"integralNumber\": false, \"long\": false, \"missingNode\": false, \"nodeType\": \"OBJECT\", \"null\": false, \"number\": false, \"object\": true, \"pojo\": false, \"short\": false, \"textual\": false, \"valueNode\": false}, \"message\": \"ilm explained successfully\", \"resultCode\": \"I200\", \"success\": true}"
+    },
+    {
+      "tag": "ism-controller",
+      "method": "GET",
+      "path": "/api/ism/applyable-indices",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/ism/applyable-indices",
+      "status": 200,
+      "sample": "{\"data\": {\"indices\": [\"auto-user-v1\", \"ecm-document-v7\", \"os-auto-document\", \"os-auto-document-v1\", \"os-ecm-documents-v1\", \"os-ecm-documents-v10\", \"os-ecm-documents-v11\", \"os-ecm-documents-v14\", \"os-ecm-documents-v15\", \"os-ecm-documents-v2\", \"os-ecm-documents-v3\", \"os-ecm-documents-v4\", \"os-ecm-documents-v9\", \"os-query-dict\", \"os-query-dict-v2\", \"query_dict_v1\", \"query_dict_v2-restored\", \"query_dict_v2-restored1\", \"search-activity-log\", \"search_log-2026.09.08\", \"search_log-2026.09.09\", \"search_log-2026.09.10\", \"search_log-2026.09.11\", \"search_log-2026.09.12\", \"search_log-2026.09.13\", \"search_l...(생략)"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "health": {
+            "type": "string"
+          },
+          "docsCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "deletedDocs": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "storageSize": {
+            "type": "string"
+          },
+          "primarySize": {
+            "type": "string"
+          },
+          "replicaSize": {
+            "type": "string"
+          },
+          "avgDocSize": {
+            "type": "string"
+          },
+          "shards": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "replicas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdDate": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467",
+      "status": 200,
+      "sample": "{\"id\": \"top_queries-2026.10.08-59467\", \"name\": \"top_queries-2026.10.08-59467\", \"status\": \"OPEN\", \"health\": \"GREEN\", \"docsCount\": 42, \"deletedDocs\": 12, \"storageSize\": \"248.2 KB\", \"primarySize\": \"248.2 KB\", \"replicaSize\": \"0.0 B\", \"avgDocSize\": \"5.9 KB\", \"shards\": 1, \"replicas\": 0, \"createdDate\": \"2026-10-08\"}"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}/stats",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "indexingRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalIndexed": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "indexTimeMs": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "searchRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalQueries": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "avgQueryTimeMs": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP50Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP95Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP99Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "segmentCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "segmentMemoryBytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastMerge": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467/stats",
+      "status": 200,
+      "sample": "{\"indexingRate\": 0.36, \"totalIndexed\": 156, \"indexTimeMs\": 9893, \"searchRate\": 0.0, \"totalQueries\": 0, \"avgQueryTimeMs\": 0.0, \"queryLatencyP50Ms\": null, \"queryLatencyP95Ms\": null, \"queryLatencyP99Ms\": null, \"segmentCount\": 7, \"segmentMemoryBytes\": 0, \"lastMerge\": null}"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}/shards",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Shard"
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467/shards",
+      "status": 200,
+      "sample": "[{\"id\": 0, \"node\": \"os-standard-61\", \"state\": \"STARTED\", \"docs\": 42, \"storeSize\": \"248.1kb\", \"primary\": true}]"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}/settings",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Setting"
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467/settings",
+      "status": 200,
+      "sample": "[{\"key\": \"index.number_of_shards\", \"value\": \"1\"}, {\"key\": \"index.number_of_replicas\", \"value\": \"0\"}, {\"key\": \"index.creation_date\", \"value\": \"1791417602501\"}]"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}/metrics",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "indexingRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalIndexed": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "indexTimeMs": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "searchRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalQueries": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "avgQueryTimeMs": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP50Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP95Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "queryLatencyP99Ms": {
+            "type": "number",
+            "format": "double"
+          },
+          "segmentCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "segmentMemoryBytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastMerge": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467/metrics",
+      "status": 200,
+      "sample": "{\"indexingRate\": 0.0, \"totalIndexed\": 156, \"indexTimeMs\": 9893, \"searchRate\": 0.0, \"totalQueries\": 0, \"avgQueryTimeMs\": 0.0, \"queryLatencyP50Ms\": null, \"queryLatencyP95Ms\": null, \"queryLatencyP99Ms\": null, \"segmentCount\": 7, \"segmentMemoryBytes\": 0, \"lastMerge\": null}"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/{indexName}/mapping",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/indices/top_queries-2026.10.08-59467/mapping",
+      "status": 200,
+      "sample": "{\"top_queries-2026.10.08-59467\": {\"mappings\": {\"dynamic\": \"true\", \"_meta\": {\"schema_version\": 1, \"query_insights_feature_space\": \"top_n_queries\"}, \"properties\": {\"group_by\": {\"type\": \"text\", \"fields\": {\"keyword\": {\"type\": \"keyword\", \"ignore_above\": 256}}}, \"id\": {\"type\": \"keyword\"}, \"indices\": {\"type\": \"text\", \"fields\": {\"keyword\": {\"type\": \"keyword\", \"ignore_above\": 256}}}, \"labels\": {\"type\": \"object\"}, \"measurements\": {\"properties\": {\"cpu\": {\"properties\": {\"aggregationType\": {\"type\": \"text\", \"fields\": {\"keyword\": {\"type\": \"keyword\", \"ignore_above\": 256}}}, \"count\": {\"type\": \"long\"}, \"number\"...(생략)"
+    },
+    {
+      "tag": "index-controller",
+      "method": "GET",
+      "path": "/api/indices/suggest",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Index"
+        }
+      },
+      "called": true,
+      "called_path": "/api/indices/suggest",
+      "status": 200,
+      "sample": "[{\"id\": null, \"name\": \"search_log-2026.09.21\", \"status\": \"open\", \"health\": \"yellow\", \"docsCount\": 0, \"storageSize\": \"208b\", \"primarySize\": null, \"shards\": null, \"replicas\": null, \"createdDate\": null}, {\"id\": null, \"name\": \"search_log-2026.09.23\", \"status\": \"open\", \"health\": \"yellow\", \"docsCount\": 0, \"storageSize\": \"208b\", \"primarySize\": null, \"shards\": null, \"replicas\": null, \"createdDate\": null}, {\"id\": null, \"name\": \".ql-datasources\", \"status\": \"open\", \"health\": \"green\", \"docsCount\": 0, \"storageSize\": \"208b\", \"primarySize\": null, \"shards\": null, \"replicas\": null, \"createdDate\": null}, {\"id\":...(생략)"
+    },
+    {
+      "tag": "index-template-controller",
+      "method": "GET",
+      "path": "/api/index-templates/validate-pattern",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/index-templates/validate-pattern",
+      "status": 200,
+      "sample": "{\"data\": true, \"message\": \"available\", \"resultCode\": \"I200\", \"success\": true}"
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "GET",
+      "path": "/api/document-indexing/targets",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DocumentIndexingTarget"
+        }
+      },
+      "called": true,
+      "called_path": "/api/document-indexing/targets",
+      "status": 200,
+      "sample": "[{\"authCode\": \"DEPT_00000000000035,USER_00000000000059\", \"authorId\": null, \"bid\": null, \"byteFileSize\": null, \"chkRequestDw\": null, \"chkRequestLev\": null, \"chkRequestOut\": null, \"contentCategory\": \"GENERALDOC\", \"contentCategoryNm\": \"일반문서\", \"contentCode\": \"Cf3eb3130a7ad482cbde350b4dc58ca26\", \"contentDelDate\": null, \"contentLockDate\": null, \"contentLockUser\": \" \", \"contentLockUserNm\": null, \"contentOwnUser\": \"USER_00000000000059\", \"contentOwnUserNm\": \"user_1\", \"contentReadCnt\": 0, \"contentRegDate\": \"2026-10-07\", \"contentRegId\": \"USER_00000000000059\", \"contentRegNm\": \"user_1\", \"contentSecurityLev...(생략)"
+    },
+    {
+      "tag": "cluster-controller",
+      "method": "GET",
+      "path": "/api/clusters",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "called": true,
+      "called_path": "/api/clusters",
+      "status": 200,
+      "sample": "[{\"name\": \"cluster-1\", \"baseUrl\": \"https://srch.ifns.devel:9909\", \"id\": \"cluster-1\"}]"
+    },
+    {
+      "tag": "cluster-controller",
+      "method": "GET",
+      "path": "/api/clusters/{clusterId}/health",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "called": true,
+      "called_path": "/api/clusters/cluster-1/health",
+      "status": 200,
+      "sample": "{\"status\": \"YELLOW\", \"clusterId\": \"cluster-1\"}"
+    },
+    {
+      "tag": "cluster-node-controller",
+      "method": "GET",
+      "path": "/api/cluster/nodes",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "overview": {
+            "$ref": "#/components/schemas/ClusterOverview"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeDto"
+            }
+          },
+          "shardAllocation": {
+            "$ref": "#/components/schemas/ShardAllocation"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/cluster/nodes",
+      "status": 200,
+      "sample": "{\"overview\": {\"clusterName\": \"opensearch\", \"status\": \"YELLOW\", \"nodes\": 1, \"activeShards\": 88, \"indices\": 88, \"totalDocuments\": 8989, \"totalSize\": \"195.9 MB\", \"version\": \"OpenSearch 3.3.2\"}, \"nodes\": [{\"id\": \"K4silGQ8Ry6BubZ1pVoO4A\", \"name\": \"os-standard-61\", \"ip\": \"127.0.0.1:9900\", \"role\": \"cluster_manager,data,ingest\", \"cpu\": 1, \"memory\": 43, \"disk\": 35, \"heapUsed\": \"602.5 MB\", \"heapMax\": \"1.0 GB\"}], \"shardAllocation\": {\"primaryShards\": 88, \"replicaShards\": 0, \"unassignedShards\": 73}}"
+    },
+    {
+      "tag": "cluster-node-controller",
+      "method": "GET",
+      "path": "/api/cluster/nodes/{nodeId}",
+      "summary": "",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "nodeId": {
+            "type": "string"
+          },
+          "cpu": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "heap": {
+            "$ref": "#/components/schemas/Heap"
+          },
+          "disk": {
+            "$ref": "#/components/schemas/Disk"
+          }
+        }
+      },
+      "called": true,
+      "called_path": "/api/cluster/nodes/os-standard-61",
+      "status": 500,
+      "sample": "{\"message\": \"요청 처리 중 오류가 발생했습니다.\", \"code\": \"INTERNAL_SERVER_ERROR\"}"
+    },
+    {
+      "tag": "alias-controller",
+      "method": "GET",
+      "path": "/api/aliases/indices/names",
+      "summary": "",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "called": true,
+      "called_path": "/api/aliases/indices/names",
+      "status": 200,
+      "sample": "[\"auto-user-v1\", \"ecm-document-v7\", \"os-auto-document\", \"os-auto-document-v1\", \"os-ecm-documents-v1\", \"os-ecm-documents-v10\", \"os-ecm-documents-v11\", \"os-ecm-documents-v14\", \"os-ecm-documents-v15\", \"os-ecm-documents-v2\", \"os-ecm-documents-v3\", \"os-ecm-documents-v4\", \"os-ecm-documents-v9\", \"os-query-dict\", \"os-query-dict-v2\", \"query_dict_v1\", \"query_dict_v2-restored\", \"query_dict_v2-restored1\", \"search-activity-log\", \"search_log-2026.09.08\", \"search_log-2026.09.09\", \"search_log-2026.09.10\", \"search_log-2026.09.11\", \"search_log-2026.09.12\", \"search_log-2026.09.13\", \"search_log-2026.09.14\", \"sear...(생략)"
+    },
+    {
+      "tag": "Folders",
+      "method": "DELETE",
+      "path": "/api/v1/folders/{folderId}/trash-items",
+      "summary": "휴지통 비우기",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "deletedCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    {
+      "tag": "Folder Favorites",
+      "method": "DELETE",
+      "path": "/api/v1/folder-favorites/{favoritesCode}",
+      "summary": "폴더 즐겨찾기 해제(코드)",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "Documents",
+      "method": "DELETE",
+      "path": "/api/v1/documents/permanent",
+      "summary": "문서 영구 삭제",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": {
+        "type": "object",
+        "properties": {
+          "revisionCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "revisionCode"
+        ]
+      },
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "requestedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "successRevisionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocBulkActionFailure"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "restoredWithFolderCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "DELETE",
+      "path": "/api/snapshot/{repo}/{snapshot}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": null
+    },
+    {
+      "tag": "snapshot-controller",
+      "method": "DELETE",
+      "path": "/api/snapshot/delete",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "index-controller",
+      "method": "DELETE",
+      "path": "/api/indices/{name}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "resultCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "tag": "document-indexing-controller",
+      "method": "DELETE",
+      "path": "/api/document-indexing/{documentId}",
+      "summary": "",
+      "called": false,
+      "note": "쓰기/삭제 API 는 이 도구가 호출하지 않음 (명세만 기록)",
+      "request_schema": null,
+      "response_schema": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    }
+  ]
+}

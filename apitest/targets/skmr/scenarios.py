@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""skmr 시나리오: smoke(기능), login(동시 로그인/부하), upload(동시 업로드/부하)."""
+"""skmr 시나리오: smoke(기능), login(동시 로그인/부하), upload(동시 업로드/부하), survey(조회 API 과부하/스트레스)."""
 from __future__ import annotations
 
 import asyncio
@@ -240,4 +240,128 @@ class UploadScenario(Scenario):
         return checks
 
 
-SCENARIOS: dict[str, type[Scenario]] = {s.name: s for s in (SmokeScenario, LoginScenario, UploadScenario)}
+# ------------------------------------------------------------------ survey (조회 API 과부하/스트레스)
+
+# (이름, 경로, 필요한 시드 키들) — 시드가 없으면 그 반복에서 건너뛴다.
+# Postman 세트 4("API 전체 루틴")와 같은 읽기 전용 업무 API 묶음. 명세상 서버 데이터를 바꾸지 않는다.
+BUSINESS_ENDPOINTS: list[tuple[str, str, tuple[str, ...]]] = [
+    ("auth.me", "/auth/me", ()),
+    ("common.doc_types", "/common/doc-types", ()),
+    ("common.sdms_manager", "/common/sdms-manager", ()),
+    ("dashboard.layout", "/dashboard/layout", ()),
+    ("dashboard.widgets", "/dashboard/widgets", ()),
+    ("folders.roots", "/folders/roots", ()),
+    ("folders.children", "/folders/{folder_id}/children", ("folder_id",)),
+    ("folders.document_attributes", "/folders/{folder_id}/document-attributes", ("folder_id",)),
+    ("folders.capabilities", "/folders/{folder_id}/capabilities?gubun={gubun}", ("folder_id", "gubun")),
+    ("folder_favorites.list", "/folder-favorites", ()),
+    ("folder_favorites.candidates", "/folder-favorites/candidates", ()),
+    ("documents.list", "/documents?boxId={folder_id_root}&page=1&size=30", ("folder_id_root",)),
+    ("documents.recent", "/documents/recent", ()),
+    ("documents.context_menu", "/documents/context-menu-items?revisionCodes={revision_code}", ("revision_code",)),
+    ("documents.versions", "/documents/{revision_code}/versions", ("revision_code",)),
+    ("documents.history", "/documents/{revision_code}/history", ("revision_code",)),
+    ("documents.move_options", "/documents/{revision_code}/move-options", ("revision_code",)),
+    ("documents.copy_options", "/documents/{revision_code}/copy-options", ("revision_code",)),
+    ("document_moves.owner_candidates",
+     "/document-moves/owner-candidates?folderId={folder_id}&gubun={gubun}&departmentCode={department_code}",
+     ("folder_id", "gubun", "department_code")),
+    ("approvals.list", "/approvals", ()),
+    ("menus.top", "/menus/top", ()),
+    ("departments.list", "/departments", ()),
+    ("users.search", "/users?q=a", ()),
+    ("logs.api", "/logs/api", ()),
+]
+
+ADMIN_ENDPOINTS: list[tuple[str, str, tuple[str, ...]]] = [
+    ("admin.indices", "/indices", ()),
+    ("admin.aliases", "/aliases", ()),
+    ("admin.repositories", "/repositories", ()),
+    ("admin.index_templates", "/index-templates", ()),
+    ("admin.ism_policies", "/ism/policies", ()),
+    ("admin.clusters", "/clusters", ()),
+    ("admin.cluster_nodes", "/cluster/nodes", ()),
+    ("admin.overview", "/overview", ()),
+]
+
+
+class SurveyScenario(Scenario):
+    name = "survey"
+    description = ("조회(읽기 전용) API 묶음을 과부하/스트레스로 반복 호출. 쓰기 없음. "
+                    "서버가 계정당 세션 1개만 허용해(재로그인 시 기존 세션 SESSION_REPLACED) "
+                    "--users 로 유저 '수'를 늘리는 대신 --burst 로 세션마다 보내는 동시 요청 '양'을 늘린다 "
+                    "(--users 는 계정 수 이하로 유지할 것)")
+
+    @classmethod
+    def add_args(cls, parser: Any) -> None:
+        parser.add_argument("--include-admin", action="store_true",
+                             help="검색엔진/클러스터 관리 API(인덱스·정책 등)도 포함. 공유 클러스터에 부하를 줄 수 있어 기본 비활성")
+        parser.add_argument("--endpoints", default="", help="이름을 콤마로 지정해 이 목록만 반복 (기본: 전체)")
+        parser.add_argument("--think-ms", type=int, default=0, help="반복 사이 대기(ms). --burst 안 호출들 사이에는 적용 안 됨")
+        parser.add_argument("--burst", type=int, default=1,
+                             help="한 반복(iteration)에서 엔드포인트 묶음을 동시에 몇 벌 쏠지 (세션 1개당 동시 요청 수 배수)")
+
+    def _endpoint_list(self) -> list[tuple[str, str, tuple[str, ...]]]:
+        all_eps = BUSINESS_ENDPOINTS + (ADMIN_ENDPOINTS if self.args.include_admin else [])
+        if not self.args.endpoints:
+            return all_eps
+        wanted = {n.strip() for n in self.args.endpoints.split(",") if n.strip()}
+        return [e for e in all_eps if e[0] in wanted]
+
+    async def setup(self, vu: VU) -> None:
+        api = await _login(vu)
+        vu.state["identity_before"] = await _check_identity(vu)
+
+        seeds: dict[str, str] = {}
+        roots = await api.roots()
+        root_list = roots.body if isinstance(roots.body, list) else []
+        real_root = next((r for r in root_list if r.get("gubun") == "D"), None) or \
+            next((r for r in root_list if r.get("gubun") != "Q"), None)
+        if real_root:
+            seeds["folder_id_root"] = real_root["folderId"]
+            children = await api.children(real_root["folderId"])
+            kids = children.body if isinstance(children.body, list) else []
+            if kids:
+                seeds["folder_id"] = kids[0]["folderId"]
+                seeds["gubun"] = kids[0].get("gubun", "")
+                seeds["department_code"] = kids[0].get("departmentCode", "") or ""
+
+        recent = await vu.client.request("documents.recent", "GET", "/documents/recent")
+        if isinstance(recent.body, list) and recent.body:
+            seeds["revision_code"] = recent.body[0].get("revisionCode", "")
+
+        vu.state["seeds"] = seeds
+
+    async def _call_one(self, vu: VU, ep_name: str, path: str) -> None:
+        try:
+            await vu.client.request(ep_name, "GET", path, retry_401=True)
+        except Exception:  # noqa: BLE001  네트워크 예외는 client.request 가 이미 status=0 으로 기록함
+            pass
+
+    async def run(self, vu: VU, iteration: int) -> None:
+        seeds = vu.state["seeds"]
+        calls: list[tuple[str, str]] = []
+        for ep_name, template, needs in self._endpoint_list():
+            if any(not seeds.get(k) for k in needs):
+                continue  # 이 VU 에서 시드를 못 구한 엔드포인트는 건너뜀 (오류로 치지 않음)
+            calls.append((ep_name, template.format(**seeds)))
+
+        if self.args.burst <= 1 and not self.args.think_ms:
+            # burst=1 이고 think-ms 도 없으면 굳이 순차로 늦출 이유가 없어 그냥 동시에 보낸다
+            await asyncio.gather(*(self._call_one(vu, n, p) for n, p in calls))
+            return
+
+        for _ in range(max(1, self.args.burst)):
+            # 세션 1개가 엔드포인트 묶음 전체를 한 번에(동시에) 쏜다 -> 세션 수가 아니라 이 동시 요청량으로 부하를 올린다
+            await asyncio.gather(*(self._call_one(vu, n, p) for n, p in calls))
+            if self.args.think_ms:
+                await asyncio.sleep(self.args.think_ms / 1000)
+
+    async def teardown(self, vu: VU) -> None:
+        vu.state["identity_after"] = await _check_identity(vu)
+
+    async def finalize(self, vus: list[VU]) -> dict[str, Any]:
+        return _identity_check(vus)
+
+
+SCENARIOS: dict[str, type[Scenario]] = {s.name: s for s in (SmokeScenario, LoginScenario, UploadScenario, SurveyScenario)}
