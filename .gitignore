@@ -20,3 +20,7 @@ release/
 archive/*.zip
 # 직원/조직 목록 등 개인정보가 들어 있을 수 있는 엑셀
 archive/*.xlsx
+
+# IDS(탐색기 클라이언트) 기능/API 명세서 - 사내 전용 문서, 추적 제외
+IDS_기능_명세서.xlsx
+.gitignore

@@ -1,0 +1,9 @@
+{
+  "base_url": "https://otcs.ifns.devel",
+  "api_prefix": "/pcexplorer",
+  "verify_tls": false,
+  "timeout_s": 30,
+  "max_connections": 50,
+  "headers": {},
+  "accounts_file": "config/ids_accounts.json"
+}

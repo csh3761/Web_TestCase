@@ -19,10 +19,11 @@ from .core.config import load_target, parse_header_args
 from .core.metrics import Recorder
 from .core.report import checks_passed, print_summary, write_report
 from .core.runner import run_scenario
+from .targets.ids.scenarios import SCENARIOS as IDS_SCENARIOS
 from .targets.skmr.scenarios import SCENARIOS as SKMR_SCENARIOS
 from .targets.skmr_admin.scenarios import SCENARIOS as SKMR_ADMIN_SCENARIOS
 
-SCENARIOS: dict[str, type] = {**SKMR_SCENARIOS, **SKMR_ADMIN_SCENARIOS}
+SCENARIOS: dict[str, type] = {**SKMR_SCENARIOS, **SKMR_ADMIN_SCENARIOS, **IDS_SCENARIOS}
 
 
 def configure_console() -> None:
