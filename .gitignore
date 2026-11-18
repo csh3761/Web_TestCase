@@ -24,3 +24,7 @@ archive/*.xlsx
 # IDS(탐색기 클라이언트) 기능/API 명세서 - 사내 전용 문서, 추적 제외
 IDS_기능_명세서.xlsx
 .gitignore
+
+# SecuDISK 사용자 매뉴얼/퀵가이드 작업 폴더 및 참고 양식 - 추적 제외
+메뉴얼작업/
+양식/
